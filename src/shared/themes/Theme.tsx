@@ -21,7 +21,6 @@ export const Theme = createTheme({
     background: {
       default: "#EFF6F1",
       paper: "#FFF"
-
     },
   },
 });
