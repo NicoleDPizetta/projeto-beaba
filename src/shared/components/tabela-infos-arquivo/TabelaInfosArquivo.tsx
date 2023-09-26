@@ -1,7 +1,17 @@
 import React, { useState, useEffect } from "react";
-import { Table, TableBody, TableCell, TableRow, Paper } from "@mui/material";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableRow,
+  Paper,
+  useTheme,
+  Typography,
+} from "@mui/material";
 
 export const TabelaInfosArquivo: React.FC = () => {
+  const theme = useTheme();
+
   const [dados, setDados] = useState({
     extensao: "",
     colunas: 0,
@@ -21,19 +31,25 @@ export const TabelaInfosArquivo: React.FC = () => {
   }, []);
 
   return (
-    <Paper elevation={1} style={{ maxWidth: 300, margin: "auto" }}>
-      <Table>
+    <Paper elevation={1} style={{ width: "20rem", margin: "auto" }}>
+      <Table size="medium">
         <TableBody>
           <TableRow>
-            <TableCell className="cor-destaque">Tipo de arquivo:</TableCell>
+            <TableCell sx={{color:'primary.main', fontSize: '1rem'}}>
+              Tipo de arquivo:
+            </TableCell>
             <TableCell>{dados.extensao}</TableCell>
           </TableRow>
           <TableRow>
-            <TableCell className="cor-destaque">Colunas:</TableCell>
+            <TableCell sx={{color:'primary.main', fontSize: '1rem'}}>Colunas:</TableCell>
             <TableCell>{dados.linhas}</TableCell>
           </TableRow>
           <TableRow>
-            <TableCell className="cor-destaque">Linhas:</TableCell>
+            <TableCell
+              sx={{color:'primary.main', fontSize: '1rem'}}
+            >
+              Linhas:
+            </TableCell>
             <TableCell>{dados.linhas}</TableCell>
           </TableRow>
         </TableBody>

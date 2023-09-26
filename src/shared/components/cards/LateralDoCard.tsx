@@ -2,6 +2,7 @@ import React from "react";
 import { Button, Box, Typography, useTheme } from "@mui/material";
 import Avatar from "@mui/material/Avatar";
 import CalendarMonthOutlinedIcon from "@mui/icons-material/CalendarMonthOutlined";
+import Grid3x3OutlinedIcon from "@mui/icons-material/Grid3x3Outlined";
 
 export const LateralDoCard: React.FC = () => {
   const theme = useTheme();
@@ -13,9 +14,9 @@ export const LateralDoCard: React.FC = () => {
       display="flex"
       flexDirection="column"
       alignItems="center"
-      gap={2}
-      padding={4}
-      borderRadius="0 1rem 1rem 0"
+      justifyItems="space-between"
+      padding="2rem"
+      borderRadius="0 0 1rem 0"
     >
       <Box
         display="flex"
@@ -24,11 +25,11 @@ export const LateralDoCard: React.FC = () => {
         gap={3}
         marginBottom={4}
       >
-        <Box display="flex" alignItems="center" gap={1.5}>
+        <Box display="flex" alignItems="center" gap={1}>
           <Avatar
             sx={{
-              width: "2.2rem",
-              height: "2.2rem",
+              width: "1.5rem",
+              height: "1.5rem",
               backgroundColor: (Theme) => Theme.palette.primary.contrastText,
               color: (Theme) => Theme.palette.primary.main,
             }}
@@ -44,9 +45,9 @@ export const LateralDoCard: React.FC = () => {
           </Typography>
         </Box>
 
-        <Box display="flex" alignItems="center" gap={1.5}>
+        <Box display="flex" alignItems="center" gap={1}>
           <CalendarMonthOutlinedIcon
-            fontSize="large"
+            fontSize="medium"
             color="info"
             sx={{ color: (Theme) => Theme.palette.primary.contrastText }}
           />
@@ -57,9 +58,24 @@ export const LateralDoCard: React.FC = () => {
             Data de criação
           </Typography>
         </Box>
+
+        <Box display="flex" alignItems="center" gap={1}>
+          <Grid3x3OutlinedIcon
+            fontSize="medium"
+            color="info"
+            sx={{ color: (Theme) => Theme.palette.primary.contrastText }}
+          />
+          <Typography
+            variant="body1"
+            color={theme.palette.primary.contrastText}
+          >
+            ID do Template
+          </Typography>
+        </Box>
       </Box>
 
       <Button
+        fullWidth
         aria-label="add to favorites"
         variant="contained"
         color="primary"
