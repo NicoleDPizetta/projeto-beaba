@@ -1,17 +1,10 @@
 import { ReactNode } from "react";
-import { Box } from "@mui/system";
-import {
-  Icon,
-  IconButton,
-  Theme,
-  Typography,
-  useMediaQuery,
-  useTheme,
-} from "@mui/material";
+import { Box, Typography, useTheme } from "@mui/material";
 
 interface ILayoutBaseProps {
   titulo: string;
   header: ReactNode;
+  children: ReactNode;
 }
 
 export const LayoutBase: React.FC<ILayoutBaseProps> = ({
@@ -20,6 +13,7 @@ export const LayoutBase: React.FC<ILayoutBaseProps> = ({
   header,
 }) => {
   const theme = useTheme();
+
   return (
     <Box height="100%" display="flex" flexDirection="column" gap={1}>
       <Box role="header">{header}</Box>

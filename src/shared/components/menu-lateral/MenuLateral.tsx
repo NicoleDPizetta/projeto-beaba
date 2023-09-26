@@ -1,12 +1,12 @@
 import { ReactNode } from "react";
 import {
+  Box,
   Drawer,
   List,
   ListItemButton,
   ListItemText,
   useTheme,
 } from "@mui/material";
-import { Box } from "@mui/system";
 import { useMatch, useNavigate, useResolvedPath } from "react-router-dom";
 
 interface IListItemLinkProps {
