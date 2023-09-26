@@ -8,6 +8,7 @@ import {
   useTheme,
   Avatar,
 } from "@mui/material";
+import { width } from "@mui/system";
 
 export const MenuContaUsuario: React.FC = () => {
   const theme = useTheme();
@@ -33,7 +34,7 @@ export const MenuContaUsuario: React.FC = () => {
       >
         <Box display='flex' alignItems='center' justifyContent='center' gap={1}>
           <Avatar
-            sx={{ height: theme.spacing(6), width: theme.spacing(6) }}
+            sx={{ height: theme.spacing(5), width: theme.spacing(5) }}
             src="https://avatars.githubusercontent.com/u/90155139?v=4"
             alt="Foto do usuário"
           />
@@ -52,8 +53,8 @@ export const MenuContaUsuario: React.FC = () => {
           "aria-labelledby": "basic-button",
         }}
       >
-        <MenuItem onClick={handleClose}>Meu Perfil</MenuItem>
-        <MenuItem onClick={handleClose}>Sair</MenuItem>
+        <MenuItem onClick={handleClose} sx={{width: '11rem', lineHeight: '150%' }}>Meu Perfil</MenuItem>
+        <MenuItem onClick={handleClose} sx={{width: '11rem', lineHeight: '150%' }}>Sair</MenuItem>
       </Menu>
     </Box>
   );

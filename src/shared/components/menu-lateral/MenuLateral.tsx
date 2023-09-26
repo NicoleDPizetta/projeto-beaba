@@ -54,7 +54,7 @@ export const MenuLateral: React.FC<{ children: ReactNode }> = ({
 
   return (
     <>
-      <Drawer variant="permanent">
+      <Drawer variant="permanent" role="aside">
         <Box
           width={theme.spacing(32)}
           height="100%"
@@ -111,7 +111,7 @@ export const MenuLateral: React.FC<{ children: ReactNode }> = ({
         </Box>
       </Drawer>
 
-      <Box height="100vh" marginLeft={theme.spacing(28)}>
+      <Box height="100vh" marginLeft={theme.spacing(32)}>
         {children}
       </Box>
     </>

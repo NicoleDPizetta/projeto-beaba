@@ -1,5 +1,6 @@
 import { ReactNode } from "react";
 import { Box, Typography, useTheme } from "@mui/material";
+import { Theme } from "../themes";
 
 interface ILayoutBaseProps {
   titulo: string;
@@ -15,7 +16,7 @@ export const LayoutBase: React.FC<ILayoutBaseProps> = ({
   const theme = useTheme();
 
   return (
-    <Box height="100%" display="flex" flexDirection="column" gap={1}>
+    <Box height="100%" display="flex" flexDirection="column" gap={1} bgcolor={Theme.palette.background.default}>
       <Box role="header">{header}</Box>
 
       <Box

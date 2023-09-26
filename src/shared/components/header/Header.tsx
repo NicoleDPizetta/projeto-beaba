@@ -16,17 +16,16 @@ export const Header: React.FC<IHeaderProps> = ({
   return (
     <Box
       component={Paper}
-      height={theme.spacing(5)}
-      marginX={1}
-      padding={1}
-      paddingX={2}
+      padding={2}
+      paddingX={4}
       display="flex"
       alignItems="center"
-      gap={1}
+      gap={16} 
     >
-      <Box display="flex" justifyContent="start">
+      <Box flex={2} display="flex" justifyContent="center">
           <TextField
             size="small"
+            fullWidth
             value={textoDaBusca}
             onChange={(e) => aoMudarTextoDeBusca?.(e.target.value)}
             placeholder="Pesquisar"
