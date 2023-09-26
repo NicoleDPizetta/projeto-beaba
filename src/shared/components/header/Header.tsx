@@ -1,5 +1,6 @@
 import { Box, Button, TextField, Paper, useTheme  } from "@mui/material";
 import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
+import { MenuContaUsuario } from "../menu-conta-usuario/MenuContaUsuario";
 
 export const Header: React.FC = () => {
   const theme = useTheme();
@@ -25,7 +26,7 @@ export const Header: React.FC = () => {
         </Box>
 
       <Box flex={1} display='flex' justifyContent='end'>
-        Meu Perfil
+        <MenuContaUsuario />
       </Box>
     </Box>
   );
