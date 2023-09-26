@@ -31,22 +31,22 @@ export const TabelaInfosArquivo: React.FC = () => {
   }, []);
 
   return (
-    <Paper elevation={1} style={{ width: "20rem", margin: "auto" }}>
+    <Paper elevation={0} style={{ width: "20rem", margin: "auto" }}>
       <Table size="medium">
         <TableBody>
           <TableRow>
-            <TableCell sx={{color:'primary.main', fontSize: '1rem'}}>
+            <TableCell sx={{ fontSize: '1rem'}}>
               Tipo de arquivo:
             </TableCell>
             <TableCell>{dados.extensao}</TableCell>
           </TableRow>
           <TableRow>
-            <TableCell sx={{color:'primary.main', fontSize: '1rem'}}>Colunas:</TableCell>
+            <TableCell sx={{ fontSize: '1rem'}}>Colunas:</TableCell>
             <TableCell>{dados.linhas}</TableCell>
           </TableRow>
           <TableRow>
             <TableCell
-              sx={{color:'primary.main', fontSize: '1rem'}}
+              sx={{ fontSize: '1rem'}}
             >
               Linhas:
             </TableCell>

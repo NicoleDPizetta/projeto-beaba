@@ -16,7 +16,7 @@ export const LateralDoCard: React.FC = () => {
       alignItems="center"
       justifyItems="space-between"
       padding="2rem"
-      borderRadius="0 0 1rem 0"
+      borderRadius="0 0 .3rem 0"
     >
       <Box
         display="flex"

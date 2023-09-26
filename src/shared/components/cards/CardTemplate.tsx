@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useTheme, Box, Typography, IconButton } from "@mui/material";
+import { useTheme, Box, Typography, IconButton, Paper } from "@mui/material";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import { LateralDoCard } from "./LateralDoCard";
 import { TabelaInfosArquivo } from "../tabela-infos-arquivo/TabelaInfosArquivo";
@@ -8,14 +8,7 @@ export const CardTemplate: React.FC = () => {
   const theme = useTheme();
 
   return (
-    <Box
-      sx={{ maxWidth: "46rem" }}
-      display={"flex"}
-      flexDirection={"column"}
-      justifyContent={"space-between"}
-      bgcolor={theme.palette.background.paper}
-      borderRadius="1rem"
-    >
+    <Paper elevation={1} sx={{ width: "46rem" }}>
       <Box
         flex={1}
         display={"flex"}
@@ -23,7 +16,7 @@ export const CardTemplate: React.FC = () => {
         justifyContent={"space-between"}
         padding={2}
         borderBottom="2px solid"
-        borderColor='primary.main'
+        borderColor="primary.main"
       >
         <Typography flex={1} variant={"h5"} color="primary">
           Template Nome
@@ -50,6 +43,6 @@ export const CardTemplate: React.FC = () => {
 
         <LateralDoCard />
       </Box>
-    </Box>
+    </Paper>
   );
 };
