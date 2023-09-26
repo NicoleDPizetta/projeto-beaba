@@ -23,4 +23,17 @@ export const Theme = createTheme({
       paper: "#FFF"
     },
   },
+  components: {
+    MuiButton: {
+      styleOverrides: {
+        root: ({ ownerState }) => ({
+          ...(ownerState.variant === 'contained' &&
+            ownerState.color === 'primary' && {
+              backgroundColor: "#39B549",
+              color: '#fff',
+            }),
+        }),
+      },
+    },
+  },
 });
