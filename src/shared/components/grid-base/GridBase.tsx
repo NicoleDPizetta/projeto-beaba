@@ -5,15 +5,20 @@ export const GridBase: React.FC<{ children: ReactNode }> = ({ children }) => {
   return (
     <Box
       display={"flex"}
-      flexWrap={"wrap"}
-      rowGap={"2rem"}
-      columnGap={"4rem"}
-      justifyContent={"flex-start"}
+      justifyContent={"center"}
       alignItems={"center"}
-      marginX={"auto"}
       padding={"0 .5rem"}
     >
-      {children}
+      <Box
+        display={"flex"}
+        flexWrap={"wrap"}
+        justifyContent={"flex-start"}
+        rowGap={4}
+        columnGap={6}
+        padding={"0 .5rem"}
+      >
+        {children}
+      </Box>
     </Box>
   );
 };
