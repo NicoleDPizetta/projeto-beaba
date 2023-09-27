@@ -5,12 +5,15 @@ export const PaginaGerenciarUsuarios = () => {
   return (
     <LayoutBase header={<Header />}>
       <GridBase>
-        <CardUsuario />
-        <CardUsuario />
-        <CardUsuario />
-        <CardUsuario />
-        <CardUsuario />
-        <CardUsuario />
+        <CardUsuario userName="Nome do Usuário" userID="ID-usuario" userCargo="Cargo" userSquad="Squad" avatarSrc="/broken-image.jpg" userMatricula="980980" userPermissao="Tipo de permissão" />
+        <CardUsuario userName="Nome do Usuário" userID="ID-usuario" userCargo="Cargo" userSquad="Squad" avatarSrc="/broken-image.jpg" userMatricula="980980" userPermissao="Tipo de permissão" />
+        <CardUsuario userName="Nome do Usuário" userID="ID-usuario" userCargo="Cargo" userSquad="Squad" avatarSrc="/broken-image.jpg" userMatricula="980980" userPermissao="Tipo de permissão" />
+        <CardUsuario userName="Nome do Usuário" userID="ID-usuario" userCargo="Cargo" userSquad="Squad" avatarSrc="/broken-image.jpg" userMatricula="980980" userPermissao="Tipo de permissão" />
+        <CardUsuario userName="Nome do Usuário" userID="ID-usuario" userCargo="Cargo" userSquad="Squad" avatarSrc="/broken-image.jpg" userMatricula="980980" userPermissao="Tipo de permissão" />
+        <CardUsuario userName="Nome do Usuário" userID="ID-usuario" userCargo="Cargo" userSquad="Squad" avatarSrc="/broken-image.jpg" userMatricula="980980" userPermissao="Tipo de permissão" />
+        <CardUsuario userName="Nome do Usuário" userID="ID-usuario" userCargo="Cargo" userSquad="Squad" avatarSrc="/broken-image.jpg" userMatricula="980980" userPermissao="Tipo de permissão" />
+        <CardUsuario userName="Nome do Usuário" userID="ID-usuario" userCargo="Cargo" userSquad="Squad" avatarSrc="/broken-image.jpg" userMatricula="980980" userPermissao="Tipo de permissão" />
+        <CardUsuario userName="Nome do Usuário" userID="ID-usuario" userCargo="Cargo" userSquad="Squad" avatarSrc="/broken-image.jpg" userMatricula="980980" userPermissao="Tipo de permissão" />
       </GridBase>
     </LayoutBase>
   );
