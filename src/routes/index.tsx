@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { Navigate, Route, Routes } from "react-router-dom";
-import { PaginaGerenciarUsuarios, PaginaInicial, PaginaTemplatesDisponiveis } from "../pages";
+import { PaginaGerenciarTemplates, PaginaGerenciarUsuarios, PaginaInicial, PaginaTemplatesDisponiveis } from "../pages";
 
  export const AppRoutes = () => {
 /*  useEffect(() => {
@@ -14,7 +14,7 @@ import { PaginaGerenciarUsuarios, PaginaInicial, PaginaTemplatesDisponiveis } fr
       <Route path="/pagina-inicial" element={<PaginaInicial/>} />
       <Route path="/templates-disponiveis" element={<PaginaTemplatesDisponiveis/>} />
       <Route path="*" element={<Navigate to="/criar-template" />} />
-      <Route path="*" element={<Navigate to="/gerenciar-templates" />} />
+      <Route path="/gerenciar-templates" element={<PaginaGerenciarTemplates/>} />
       <Route path="/gerenciar-usuarios" element={<PaginaGerenciarUsuarios />} />
       <Route path="*" element={<Navigate to="/relatios" />} />
     </Routes>
