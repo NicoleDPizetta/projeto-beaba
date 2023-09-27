@@ -37,7 +37,7 @@ export const Header: React.FC<IHeaderProps> = ({
       </Box>
 
       <Box flex={1} display="flex" justifyContent="end">
-        <MenuContaUsuario />
+        <MenuContaUsuario avatarSrc="/foto.jpg" avatarAlt="Usuário" userName="Usuário" />
       </Box>
     </Box>
   );
