@@ -1,12 +1,5 @@
 import * as React from "react";
-import {
-  useTheme,
-  Box,
-  Typography,
-  IconButton,
-  Paper,
-  Button,
-} from "@mui/material";
+import { useTheme, Box, Typography, IconButton, Paper, Button } from "@mui/material";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import { TabelaInfosArquivo } from "../tabela-infos-arquivo/TabelaInfosArquivo";
 import Avatar from "@mui/material/Avatar";
@@ -22,9 +15,7 @@ interface ICardTemplateProps {
   templateID: string;
 }
 
-export const CardTemplate: React.FC<ICardTemplateProps> = ({
-  templateStatus, templateNome, templateSquad, templateCriador, templateDataCricao, templateID
-}) => {
+export const CardTemplate: React.FC<ICardTemplateProps> = ({ templateStatus, templateNome, templateSquad, templateCriador, templateDataCricao, templateID }) => {
   const theme = useTheme();
 
   /* Definindo a cor do template de acordo com o status (ativo / inativo) */
@@ -43,9 +34,11 @@ export const CardTemplate: React.FC<ICardTemplateProps> = ({
         padding={2}
         borderBottom={`2px solid ${corBorda}`}
       >
+        
         <Typography flex={1} variant={"h5"} color={corTexto}>
           {templateNome}
         </Typography>
+
         <IconButton aria-label="settings" id="settings">
           <MoreHorizIcon />
         </IconButton>
