@@ -13,7 +13,7 @@ export const LayoutBase: React.FC<ILayoutBaseProps> = ({
   const theme = useTheme();
 
   return (
-    <Box height="100%" display="flex" flexDirection="column" gap={1} bgcolor={theme.palette.background.default}>
+    <Box height="auto" display="flex" flexDirection="column" gap={1} bgcolor={theme.palette.background.default}>
       <Box role="header">{header}</Box>
 
       <Box display='flex' flexWrap='wrap' padding='2rem 2rem'>
