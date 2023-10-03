@@ -35,5 +35,21 @@ export const Theme = createTheme({
         }),
       },
     },
+    MuiCheckbox: {
+      styleOverrides: {
+        root: {
+          color: "#FFF",
+          "&.Mui-checked": {
+            color: "#FFF",
+          },
+          "&.Mui-checked + .MuiTypography-root": {
+            color: "#FFF",
+          },
+        },
+      },
+      defaultProps: {
+        size: "small",
+      },
+    },
   },
 });
