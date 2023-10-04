@@ -16,7 +16,7 @@ export const AppRoutes = () => {
       <Route path="/criar-template" element={<PaginaCriarTemplate />} />
       <Route path="/gerenciar-templates" element={<PaginaGerenciarTemplates />} />
       <Route path="/gerenciar-usuarios" element={<PaginaGerenciarUsuarios />} />
-      <Route path="*" element={<Navigate to="/relatios" />} />
+      <Route path="/relatorios" element={<Navigate to="" />} />
     </Routes>
   );
 };
