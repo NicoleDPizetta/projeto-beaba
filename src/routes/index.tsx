@@ -5,6 +5,7 @@ import {
   PaginaGerenciarUsuarios,
   PaginaInicial,
   PaginaTemplatesDisponiveis,
+  PaginaPerfilDoUsuario,
 } from "../pages";
 
 export const AppRoutes = () => {
@@ -17,6 +18,8 @@ export const AppRoutes = () => {
       <Route path="/gerenciar-templates" element={<PaginaGerenciarTemplates />} />
       <Route path="/gerenciar-usuarios" element={<PaginaGerenciarUsuarios />} />
       <Route path="/relatorios" element={<Navigate to="" />} />
+      <Route path="/perfil" element={<PaginaPerfilDoUsuario />} />
+      <Route path="/login" element={<Navigate to="" />} />
     </Routes>
   );
 };
