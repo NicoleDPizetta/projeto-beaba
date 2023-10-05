@@ -24,7 +24,7 @@ export const InfosLaterais: React.FC = ({}) => {
   return (
     <Box
       flex={1}
-      height={"100%"}
+      minHeight={"100%"}
       display={"flex"}
       flexDirection={"column"}
       alignItems={"center"}
@@ -56,7 +56,7 @@ export const InfosLaterais: React.FC = ({}) => {
         </Typography>
       </Box>
 
-      <Button variant="contained">Criar template</Button>
+      <Button id="btn-criar-template" variant="contained">Criar template</Button>
     </Box>
   );
 };

@@ -37,11 +37,8 @@ export const CriarTemplateForm: React.FC = () => {
       elevation={3}
       component={Box}
       width={"95%"}
-      marginX={"auto"}
+      margin={"auto"}
       display={"flex"}
-      alignItems={"flex-start"}
-      justifyContent={"space-between"}
-      border={"1px solid red"}
       gap={2}
     >
       <Box
@@ -131,6 +128,7 @@ export const CriarTemplateForm: React.FC = () => {
             fontSize={"1.25rem"}
             borderBottom={"2px solid"}
             borderColor={theme.palette.primary.main}
+            marginBottom={2}
           >
             Campos do template
           </Typography>
@@ -139,7 +137,7 @@ export const CriarTemplateForm: React.FC = () => {
         </Box>
       </Box>
 
-      <InfosLaterais/>
+      <InfosLaterais />
     </Paper>
   );
 };
