@@ -2,24 +2,32 @@ import React, { useState } from "react";
 import {
   Box,
   Typography,
-  Select,
   MenuItem,
   TextField,
   useTheme,
-  SelectChangeEvent,
   Paper,
 } from "@mui/material";
 import { NovoCampo } from "./NovoCampo";
 import { InfosLaterais } from "./InfosLaterais";
 
+const extensions = [
+  {
+    value: 'csv',
+    label: '.csv',
+  },
+  {
+    value: 'xlsx',
+    label: '.xlsx',
+  },
+  {
+    value: 'xlx',
+    label: '.xlx',
+  },
+];
+
 export const CriarTemplateForm: React.FC = () => {
   const theme = useTheme();
-  const [extension, setExtension] = useState<string>("");
   const [qntCampos, setQntCampos] = useState<string>("");
-
-  const handleExtensionChoice = (event: SelectChangeEvent) => {
-    setExtension(event.target.value as string);
-  };
 
   const handleInputCamposChange = (
     event: React.ChangeEvent<HTMLInputElement>
@@ -105,19 +113,20 @@ export const CriarTemplateForm: React.FC = () => {
             />
           </Box>
 
-          <Select
+          <TextField
+            select
             required
-            sx={{ width: 200 }}
+            sx={{ width: 250 }}
             id="select-extensao"
             label="Formato do arquivo"
             placeholder="Extensão do arquivo"
-            value={extension}
-            onChange={handleExtensionChoice}
           >
-            <MenuItem value={".csv"}>.csv</MenuItem>
-            <MenuItem value={".xlsx"}>.xlsx</MenuItem>
-            <MenuItem value={".xlx"}>.xlx</MenuItem>
-          </Select>
+            {extensions.map((option) => (
+            <MenuItem key={option.value} value={option.value}>
+              {option.label}
+            </MenuItem>
+            ))}
+          </TextField>
         </Box>
 
         <Box width={"100%"} display={"flex"} flexDirection={"column"}>
