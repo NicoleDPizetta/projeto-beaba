@@ -1,19 +1,30 @@
 import React from "react";
-import {
-  Box,
-  Select,
-  MenuItem,
-  TextField,
-  SelectChangeEvent,
-} from "@mui/material";
+import { Box, MenuItem, TextField } from "@mui/material";
+
+const tipos = [
+  {
+    value: "VARCHAR",
+    label: "Texto",
+  },
+  {
+    value: "INTEGER",
+    label: "Número inteiro",
+  },
+  {
+    value: "DECIMAL",
+    label: "Número decimal / Moeda",
+  },
+  {
+    value: "DATE",
+    label: "Data apenas",
+  },
+  {
+    value: "TIMESTAMP",
+    label: "Data e Hora",
+  },
+];
 
 export const NovoCampo: React.FC = () => {
-  const [tipo, setType] = React.useState("");
-
-  const handleChange = (event: SelectChangeEvent) => {
-    setType(event.target.value as string);
-  };
-
   return (
     <Box
       flex={1}
@@ -34,21 +45,20 @@ export const NovoCampo: React.FC = () => {
         />
       </Box>
 
-      <Select
+      <TextField
+        select
         required
-        sx={{ width: 200 }}
+        sx={{ width: 250 }}
         id="tipo-de-dado"
-        value={tipo}
         label="Tipo de dado"
         placeholder="Tipo de dado esperado"
-        onChange={handleChange}
       >
-        <MenuItem value={"VARCHAR"}>Texto</MenuItem>
-        <MenuItem value={"INTEGER"}>Número inteiro</MenuItem>
-        <MenuItem value={"DECIMAL"}>Número decimal</MenuItem>
-        <MenuItem value={"DATE"}>Data apenas</MenuItem>
-        <MenuItem value={"TIMESTAMP"}>Data e Hora</MenuItem>
-      </Select>
+        {tipos.map((option) => (
+          <MenuItem key={option.value} value={option.value}>
+            {option.label}
+          </MenuItem>
+        ))}
+      </TextField>
     </Box>
   );
 };
