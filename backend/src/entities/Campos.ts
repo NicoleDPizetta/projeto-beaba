@@ -30,5 +30,5 @@ export class Campos {
   campos_tipo: TiposDeDados;
 
   @ManyToOne(() => Templates, (template) => template.campos)
-  template: Templates
+  template: Templates;
 }

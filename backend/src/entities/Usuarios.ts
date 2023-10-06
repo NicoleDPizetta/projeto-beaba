@@ -1,11 +1,20 @@
-import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, OneToMany, JoinColumn } from "typeorm";
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  ManyToOne,
+  OneToMany,
+  JoinColumn,
+} from "typeorm";
 import { Squads } from "./Squads";
 import { Templates } from "./Templates";
+import { TemplatesSalvosDoUsuario } from "./TemplatesSalvosDoUsuario";
+import { Uploads } from "./Uploads";
 
 export enum UsuarioPermissao {
-    ADMIN = "Administrador",
-    CRIADOR = "Criador",
-    PADRAO = "Padrao",
+  ADMIN = "Administrador",
+  CRIADOR = "Criador",
+  PADRAO = "Padrao",
 }
 
 @Entity("usuarios")
@@ -26,8 +35,8 @@ export class Usuarios {
     type: "enum",
     enum: UsuarioPermissao,
     default: UsuarioPermissao.PADRAO,
-    })
-    permissao: UsuarioPermissao
+  })
+  permissao: UsuarioPermissao;
 
   @Column()
   usuario_cargo: string;
@@ -39,9 +48,19 @@ export class Usuarios {
   usuario_senha: string;
 
   @ManyToOne(() => Squads, (squad) => squad.usuarios)
-  @JoinColumn({name: "fk_squad_usuario"})
-  squad: Squads
+  @JoinColumn({ name: "fk_squad_usuario" })
+  squad: Squads;
 
   @OneToMany(() => Templates, (templates) => templates.usuario)
-    templates: Templates[]
+  templates: Templates[];
+
+  @OneToMany(() => Uploads, (uploads) => uploads.usuario)
+  @JoinColumn({ name: "fk_uploads" })
+  uploads: Uploads[];
+
+  @OneToMany(
+    () => TemplatesSalvosDoUsuario,
+    (templatesSalvos) => templatesSalvos.usuario
+  )
+  templatesSalvos: TemplatesSalvosDoUsuario[];
 }
