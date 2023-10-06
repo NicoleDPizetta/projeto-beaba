@@ -1,5 +1,6 @@
-import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, JoinColumn } from "typeorm";
+import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, OneToMany, JoinColumn } from "typeorm";
 import { Squads } from "./Squads";
+import { Templates } from "./Templates";
 
 export enum UsuarioPermissao {
     ADMIN = "Administrador",
@@ -40,4 +41,7 @@ export class Usuarios {
   @ManyToOne(() => Squads, (squad) => squad.usuarios)
   @JoinColumn({name: "fk_squad_usuario"})
   squad: Squads
+
+  @OneToMany(() => Templates, (templates) => templates.usuario)
+    templates: Templates[]
 }
