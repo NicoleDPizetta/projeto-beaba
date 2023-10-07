@@ -10,6 +10,12 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum Permissoes {
+  PADRAO
+  CRIADOR
+  ADMINISTRADOR
+}
+
 model Squads {
   id   String @id @default(uuid())
   nome String @unique
@@ -24,7 +30,7 @@ model Usuarios {
   nome_completo String
   nome_exibicao String
   matricula     String @unique
-  permissao     String
+  permissao     Permissoes @default(PADRAO)
   squad         String
   cargo         String
   email         String @unique
