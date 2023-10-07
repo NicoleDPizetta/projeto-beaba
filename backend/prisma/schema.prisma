@@ -9,3 +9,83 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+model Squads {
+  id   String @id @default(uuid())
+  nome String @unique
+
+  usuarios  Usuarios[]
+  templates Templates[]
+  uploads   Uploads[]
+}
+
+model Usuarios {
+  id            String @id @default(uuid())
+  nome_completo String
+  nome_exibicao String
+  matricula     String @unique
+  permissao     String
+  squad         String
+  cargo         String
+  email         String @unique
+  senha         String
+
+  templates        Templates[]
+  uploads          Uploads[]
+  usario_templates Templates_salvos_do_Usuario[]
+
+  squads Squads @relation(fields: [squad], references: [nome])
+}
+
+model Campos {
+  id         String @id @default(uuid())
+  nome       String
+  tipo_dados String
+
+  template Templates @relation(fields: [id], references: [campos])
+}
+
+model Templates {
+  id           String   @id @default(uuid())
+  nome         String
+  extensao     String
+  colunas      Int
+  linhas       Int?
+  squad        String
+  criador      String
+  status       Boolean
+  campos       String   @unique
+  data_criacao DateTime @default(now())
+
+  camposList       Campos[]
+  uploads          Uploads[]
+  templates_salvos Templates_salvos_do_Usuario[]
+
+  usuarioCriador Usuarios @relation(fields: [criador], references: [id])
+  squads         Squads   @relation(fields: [squad], references: [nome])
+}
+
+model Uploads {
+  id              String   @id @default(uuid())
+  nome            String
+  extensao        String
+  colunas         Int
+  linhas          Int
+  squad           String
+  criador         String
+  template_origem String
+  data_upload     DateTime @default(now())
+
+  usuarioCriador Usuarios  @relation(fields: [criador], references: [id])
+  squads         Squads    @relation(fields: [squad], references: [nome])
+  templateOrigem Templates @relation(fields: [template_origem], references: [id])
+}
+
+model Templates_salvos_do_Usuario {
+  usario_templates Usuarios  @relation(fields: [usario_dono], references: [id])
+  usario_dono      String
+  templates_salvos Templates @relation(fields: [template_salvo], references: [id])
+  template_salvo   String
+
+  @@id([usario_dono, template_salvo])
+}
