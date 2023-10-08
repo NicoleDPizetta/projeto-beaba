@@ -1,18 +1,13 @@
 import { BrowserRouter } from "react-router-dom";
-import { AppRoutes } from "./routes";
 import { ThemeProvider } from "@mui/material";
 import { Theme } from "./shared/themes";
-import { MenuLateral } from './shared/components/menu-lateral/MenuLateral';
+import { PaginaInicial } from "./pages";
 
 export const App = () => {
   return (
     <ThemeProvider theme={Theme}>
       <BrowserRouter>
-
-        <MenuLateral>
-          <AppRoutes />
-        </MenuLateral>
-
+        <PaginaInicial />
       </BrowserRouter>
     </ThemeProvider>
   );

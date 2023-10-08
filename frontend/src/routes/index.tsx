@@ -9,17 +9,17 @@ import {
 } from "../pages";
 
 export const AppRoutes = () => {
-
   return (
     <Routes>
-      <Route path="/pagina-inicial" element={<PaginaInicial />} />
-      <Route path="/templates-disponiveis" element={<PaginaTemplatesDisponiveis />} />
+      <Route path="/login" element={<Navigate to="" />} />
+      <Route path="/cadastrar" element={<Navigate to="" />} />
+      <Route path="/home" element={<PaginaInicial />} />
+      <Route path="/templates" element={<PaginaTemplatesDisponiveis />} />
       <Route path="/criar-template" element={<PaginaCriarTemplate />} />
       <Route path="/gerenciar-templates" element={<PaginaGerenciarTemplates />} />
       <Route path="/gerenciar-usuarios" element={<PaginaGerenciarUsuarios />} />
-      <Route path="/relatorios" element={<Navigate to="" />} />
       <Route path="/perfil" element={<PaginaPerfilDoUsuario />} />
-      <Route path="/login" element={<Navigate to="" />} />
+      <Route path="/relatorios" element={<Navigate to="" />} />
     </Routes>
   );
 };

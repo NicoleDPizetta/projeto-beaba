@@ -51,5 +51,20 @@ export const Theme = createTheme({
         size: "small",
       },
     },
+    MuiToggleButton: {
+      styleOverrides: {
+        root: {
+          fontWeight: 500,
+          fontSize: "1rem",
+          letterSpacing: "0.13rem",
+          borderRadius: 0,
+          border: 0,
+          backgroundColor: "#FFF",
+          '&$selected': {
+            backgroundColor: "#FFF",
+          },
+        },
+      }
+    }
   },
 });

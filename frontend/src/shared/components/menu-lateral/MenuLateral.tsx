@@ -47,13 +47,10 @@ const ListItemLink: React.FC<IListItemLinkProps> = ({ to, text }) => {
   );
 };
 
-export const MenuLateral: React.FC<{ children: ReactNode }> = ({
-  children,
-}) => {
+export const MenuLateral: React.FC = () => {
   const theme = useTheme();
 
   return (
-    <>
       <Drawer variant="permanent" role="aside">
         <Box
           width={theme.spacing(32)}
@@ -86,10 +83,10 @@ export const MenuLateral: React.FC<{ children: ReactNode }> = ({
             justifyContent="center"
           >
             <List component="nav" sx={{ width: "100%" }}>
-              <ListItemLink to="/pagina-inicial" text="Página inicial" />
+              <ListItemLink to="/home" text="Página inicial" />
 
               <ListItemLink
-                to="/templates-disponiveis"
+                to="/templates"
                 text="Templates disponíveis"
               />
 
@@ -110,10 +107,5 @@ export const MenuLateral: React.FC<{ children: ReactNode }> = ({
           </Box>
         </Box>
       </Drawer>
-
-      <Box height="100vh" marginLeft={theme.spacing(32)}>
-        {children}
-      </Box>
-    </>
   );
 };
