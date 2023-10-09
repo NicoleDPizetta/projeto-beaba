@@ -1,10 +1,11 @@
-import * as React from "react";
-import { useTheme, Box, Typography, IconButton, Paper, Button } from "@mui/material";
-import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
+import React from "react";
+import { useTheme, Box, Typography, Paper, Button } from "@mui/material";
 import { TabelaInfosArquivo } from "../tabela-infos-arquivo/TabelaInfosArquivo";
 import Avatar from "@mui/material/Avatar";
 import CalendarMonthOutlinedIcon from "@mui/icons-material/CalendarMonthOutlined";
 import Grid3x3OutlinedIcon from "@mui/icons-material/Grid3x3Outlined";
+import { MoreOptionsButton } from "../modals/MoreOptionsButton";
+import { ModalTemplateOptions } from "../modals/ModalTemplateOptions";
 
 interface ICardTemplateProps {
   templateStatus: boolean;
@@ -39,9 +40,7 @@ export const CardTemplate: React.FC<ICardTemplateProps> = ({ templateStatus, tem
           {templateNome}
         </Typography>
 
-        <IconButton aria-label="settings" id="settings">
-          <MoreHorizIcon />
-        </IconButton>
+        <MoreOptionsButton children={<ModalTemplateOptions/>}/>
       </Box>
 
       <Box display={"flex"} justifyContent={"space-between"}>
