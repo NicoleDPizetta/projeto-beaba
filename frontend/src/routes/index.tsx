@@ -6,13 +6,15 @@ import {
   PaginaInicial,
   PaginaTemplatesDisponiveis,
   PaginaPerfilDoUsuario,
+  PaginaLogin,
+  PaginaCadastro,
 } from "../pages";
 
 export const AppRoutes = () => {
   return (
     <Routes>
-      <Route path="/login" element={<Navigate to="" />} />
-      <Route path="/cadastrar" element={<Navigate to="" />} />
+      <Route path="/login" element={<PaginaLogin />} />
+      <Route path="/cadastrar" element={<PaginaCadastro />} />
       <Route path="/home" element={<PaginaInicial />} />
       <Route path="/templates" element={<PaginaTemplatesDisponiveis />} />
       <Route path="/criar-template" element={<PaginaCriarTemplate />} />

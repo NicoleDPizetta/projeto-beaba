@@ -11,3 +11,4 @@ export * from "./criar-template-components/NovoCampo";
 export * from "./criar-template-components/InfosLaterais";
 export * from "./modals/MoreOptionsButton";
 export * from "./modals/ModalTemplateOptions";
+export * from "./logo-box/LogoBox";

@@ -8,6 +8,7 @@ import {
   useTheme,
 } from "@mui/material";
 import { useMatch, useNavigate, useResolvedPath } from "react-router-dom";
+import { LogoBox } from "../logo-box/LogoBox";
 
 interface IListItemLinkProps {
   to: string;
@@ -59,20 +60,7 @@ export const MenuLateral: React.FC = () => {
         flexDirection="column"
         sx={{ backgroundColor: (Theme) => Theme.palette.primary.main }}
       >
-        <Box
-          height={theme.spacing(20)}
-          display="flex"
-          flexDirection="column"
-          alignItems="center"
-          justifyContent="center"
-        >
-          <img
-            width="90%"
-            src="/logo.svg"
-            alt="Logotipo das Lojas Quero Quero"
-            loading="lazy"
-          />
-        </Box>
+        <LogoBox/>
 
         <Box
           width="100%"
