@@ -102,7 +102,7 @@ export const MenuLateral: React.FC = () => {
                 text="Gerenciar usuários"
               />
 
-              <ListItemLink to="/relatios" text="Relatórios" />
+              <ListItemLink to="/relatorios" text="Relatórios" />
             </List>
           </Box>
         </Box>
