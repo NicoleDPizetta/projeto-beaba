@@ -21,11 +21,11 @@ Esse projeto está sendo desenvolvido com as seguintes tecnologias:
 - Figma
 - Versionamento com Git e Github
 - React RoutesDOM
+- Prisma
+- PostgreSQL
 
 Ainda serão adicionadas
 - Python
-- TypeORM
-- PostgreSQL
 - Axios
 - CORS
 
