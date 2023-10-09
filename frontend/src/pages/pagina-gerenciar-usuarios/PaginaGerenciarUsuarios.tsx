@@ -1,4 +1,4 @@
-import { CardUsuario, GridBase, Header, MenuLateral } from "../../shared/components";
+import { CardUsuario, GridBase } from "../../shared/components";
 import { LayoutBase } from "../../shared/layouts";
 
 export const PaginaGerenciarUsuarios = () => {

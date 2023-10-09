@@ -1,4 +1,4 @@
-import { CardTemplate, GridBase, Header, MenuLateral } from "../../shared/components";
+import { CardTemplate, GridBase } from "../../shared/components";
 import { LayoutBase } from "../../shared/layouts";
 
 export const PaginaInicial = () => {

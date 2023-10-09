@@ -1,13 +1,13 @@
 import { BrowserRouter } from "react-router-dom";
 import { ThemeProvider } from "@mui/material";
 import { Theme } from "./shared/themes";
-import { PaginaInicial } from "./pages";
+import { AppRoutes } from "./routes";
 
 export const App = () => {
   return (
     <ThemeProvider theme={Theme}>
       <BrowserRouter>
-        <PaginaInicial />
+        <AppRoutes />
       </BrowserRouter>
     </ThemeProvider>
   );

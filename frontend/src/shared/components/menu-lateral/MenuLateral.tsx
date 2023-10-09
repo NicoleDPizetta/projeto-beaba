@@ -51,61 +51,55 @@ export const MenuLateral: React.FC = () => {
   const theme = useTheme();
 
   return (
-      <Drawer variant="permanent" role="aside">
+    <Drawer variant="permanent" role="aside">
+      <Box
+        width={theme.spacing(32)}
+        height="100%"
+        display="flex"
+        flexDirection="column"
+        sx={{ backgroundColor: (Theme) => Theme.palette.primary.main }}
+      >
         <Box
-          width={theme.spacing(32)}
-          height="100%"
+          height={theme.spacing(20)}
           display="flex"
           flexDirection="column"
-          sx={{ backgroundColor: (Theme) => Theme.palette.primary.main }}
+          alignItems="center"
+          justifyContent="center"
         >
-          <Box
+          <img
             width="90%"
-            height={theme.spacing(20)}
-            display="flex"
-            flexDirection="column"
-            alignItems="center"
-            justifyContent="center"
-          >
-            <img
-              src="/logo.svg"
-              alt="Logotipo das Lojas Quero Quero"
-              loading="lazy"
-            />
-          </Box>
-
-          <Box
-            width="100%"
-            flex={1}
-            display="flex"
-            flexDirection="column"
-            alignItems="center"
-            justifyContent="center"
-          >
-            <List component="nav" sx={{ width: "100%" }}>
-              <ListItemLink to="/home" text="Página inicial" />
-
-              <ListItemLink
-                to="/templates"
-                text="Templates disponíveis"
-              />
-
-              <ListItemLink to="/criar-template" text="Criar template" />
-
-              <ListItemLink
-                to="/gerenciar-templates"
-                text="Gerenciar templates"
-              />
-
-              <ListItemLink
-                to="/gerenciar-usuarios"
-                text="Gerenciar usuários"
-              />
-
-              <ListItemLink to="/relatorios" text="Relatórios" />
-            </List>
-          </Box>
+            src="/logo.svg"
+            alt="Logotipo das Lojas Quero Quero"
+            loading="lazy"
+          />
         </Box>
-      </Drawer>
+
+        <Box
+          width="100%"
+          flex={1}
+          display="flex"
+          flexDirection="column"
+          alignItems="center"
+          justifyContent="center"
+        >
+          <List component="nav" sx={{ width: "100%" }}>
+            <ListItemLink to="/home" text="Página inicial" />
+
+            <ListItemLink to="/templates" text="Templates disponíveis" />
+
+            <ListItemLink to="/criar-template" text="Criar template" />
+
+            <ListItemLink
+              to="/gerenciar-templates"
+              text="Gerenciar templates"
+            />
+
+            <ListItemLink to="/gerenciar-usuarios" text="Gerenciar usuários" />
+
+            <ListItemLink to="/relatorios" text="Relatórios" />
+          </List>
+        </Box>
+      </Box>
+    </Drawer>
   );
 };

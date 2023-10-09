@@ -1,5 +1,5 @@
 import React from "react";
-import { CardTemplate, GridBase, Header, MenuLateral } from "../../shared/components";
+import { CardTemplate, GridBase } from "../../shared/components";
 import { LayoutBase } from "../../shared/layouts";
 
 export const PaginaGerenciarTemplates: React.FC = () => {

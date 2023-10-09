@@ -1,6 +1,6 @@
 import React from "react";
 import { LayoutBase } from "../../shared/layouts";
-import { Header, MenuLateral, PerfilUsuario } from "../../shared/components";
+import { PerfilUsuario } from "../../shared/components";
 
 export const PaginaPerfilDoUsuario: React.FC = () => {
     return (
