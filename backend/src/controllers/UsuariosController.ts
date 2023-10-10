@@ -1,4 +1,5 @@
 import { PrismaClient } from "@prisma/client";
+import { hash } from "bcryptjs"
 import bodyParser from "body-parser";
 import express, { Request, Response } from "express";
 import { Usuarios } from "@prisma/client";
@@ -20,6 +21,7 @@ export class UsuariosController {
         permissao,
         squad,
       } = req.body;
+      const hash_senha = await hash(senha, 8)
       const novoUsuario = await prisma.usuarios.create({
         data: {
           nome_completo,
@@ -27,7 +29,7 @@ export class UsuariosController {
           email,
           matricula,
           cargo,
-          senha,
+          senha: hash_senha,
           permissao,
           squad,
         },
