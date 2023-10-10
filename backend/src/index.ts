@@ -34,6 +34,6 @@ app.delete("/templates/:id", new TemplatesController().excluirTemplate);
 
 app.put("/templates/:id", new TemplatesController().editarTemplate);
 
-app.listen(3000, () => {
-  console.log("Servidor está em execução na porta 3000");
+app.listen(5000, () => {
+  console.log("Servidor está em execução na porta 5000");
 });

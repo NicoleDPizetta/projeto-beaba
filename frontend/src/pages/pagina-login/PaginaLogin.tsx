@@ -18,12 +18,12 @@ export const PaginaLogin = () => {
       <Paper
         elevation={3}
         component={Box}
-        width={"30%"}
+        width={700}
         display={"flex"}
         flexDirection={"column"}
         alignItems={"center"}
         justifyContent={"center"}
-        padding={8}
+        padding={6}
         gap={4}
       >
         <TextField
