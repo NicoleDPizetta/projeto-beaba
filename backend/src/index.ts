@@ -16,7 +16,7 @@ app.post("/cadastrar", new UsuariosController().criarNovoUsuarios);
 
 app.post("/login", new AuthController().authenticate);
 
-app.post("/logout", new AuthController().authenticate);
+app.post("/logout", new AuthController().logout);
 
 app.get("/usuarios", new UsuariosController().consultarTodosUsuarios);
 
