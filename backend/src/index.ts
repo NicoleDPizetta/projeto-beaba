@@ -3,6 +3,7 @@ import cors from "cors"
 import bodyParser from "body-parser";
 import { UsuariosController } from "./controllers/UsuariosController";
 import { TemplatesController } from "./controllers/TemplatesController";
+import { AuthController } from "./controllers/AuthController";
 
 const app = express();
 
@@ -12,6 +13,10 @@ app.use(bodyParser.json());
 
 /* Rotas de manipulação de Usuários */
 app.post("/cadastrar", new UsuariosController().criarNovoUsuarios);
+
+app.post("/login", new AuthController().authenticate);
+
+app.post("/logout", new AuthController().authenticate);
 
 app.get("/usuarios", new UsuariosController().consultarTodosUsuarios);
 
