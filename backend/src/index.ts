@@ -4,7 +4,8 @@ import bodyParser from "body-parser";
 import { UsuariosController } from "./controllers/UsuariosController";
 import { TemplatesController } from "./controllers/TemplatesController";
 import { AuthController } from "./controllers/AuthController";
-import * as dotenv from "dotenv-safe";
+import * as auth from "./middlewares/auth";
+import * as dotenv from "dotenv";
 
 const app = express();
 dotenv.config();

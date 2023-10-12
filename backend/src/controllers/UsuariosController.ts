@@ -22,6 +22,15 @@ export class UsuariosController {
         squad,
       } = req.body;
       const hash_senha = await hash(senha, 8)
+
+      const usuarioJaExiste = await prisma.usuarios.findUnique({
+        where: { email },
+      });
+
+      if (usuarioJaExiste) {
+        return res.status(400).json({ error: "Usuário já cadastrado" });
+      }
+
       const novoUsuario = await prisma.usuarios.create({
         data: {
           nome_completo,

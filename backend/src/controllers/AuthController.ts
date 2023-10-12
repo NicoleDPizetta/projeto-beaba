@@ -39,9 +39,9 @@ export class AuthController {
         expiresIn: "1d",
       });
 
-      const { id } = usuario;
+      const { id, cargo, matricula, nome_completo, nome_exibicao, permissao, squad } = usuario;
 
-      res.json({ usuarioLogado: { id, email }, token });
+      res.json({ usuario: { id, cargo, matricula, nome_completo, nome_exibicao, permissao, squad }, token });
     } catch (error) {
       console.error("Erro ao fazer login", error);
       res.status(500).json({
