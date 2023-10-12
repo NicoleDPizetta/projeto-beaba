@@ -4,40 +4,45 @@ import bodyParser from "body-parser";
 import { UsuariosController } from "./controllers/UsuariosController";
 import { TemplatesController } from "./controllers/TemplatesController";
 import { AuthController } from "./controllers/AuthController";
+import * as dotenv from "dotenv-safe";
 
 const app = express();
-
+dotenv.config();
 app.use(cors())
 app.use(express.json());
 app.use(bodyParser.json());
 
+const userController = new UsuariosController();
+const templatesController = new TemplatesController();
+const authController = new AuthController();
+
 /* Rotas de manipulação de Usuários */
-app.post("/cadastrar", new UsuariosController().criarNovoUsuarios);
+app.post("/cadastrar", userController.criarNovoUsuario);
 
-app.post("/login", new AuthController().authenticate);
+app.post("/login", authController.authenticate);
 
-app.post("/logout", new AuthController().logout);
+app.post("/logout", authController.logout);
 
-app.get("/usuarios", new UsuariosController().consultarTodosUsuarios);
+app.get("/usuarios", userController.consultarTodosUsuarios);
 
-app.get("/usuarios/:id", new UsuariosController().consultarUsuarioPorID);
+app.get("/usuarios/:id", userController.consultarUsuarioPorID);
 
-app.delete("/usuarios/:id", new UsuariosController().excluirUsuario);
+app.delete("/usuarios/:id", userController.excluirUsuario);
 
-app.put("/usuarios/:id", new UsuariosController().editarUsuario);
+app.put("/usuarios/:id", userController.editarUsuario);
 
 /* Rotas de manipulação de Templates */
-app.post("/criar-template", new TemplatesController().criarNovoTemplate);
+app.post("/criar-template", templatesController.criarNovoTemplate);
 
-app.get("/templates/:id", new TemplatesController().consultarTemplatePorID);
+app.get("/templates/:id", templatesController.consultarTemplatePorID);
 
-app.get("/templates", new TemplatesController().consultarTemplatesAtivos);
+app.get("/templates", templatesController.consultarTemplatesAtivos);
 
-app.get("/gerenciar-templates", new TemplatesController().consultarTemplatesInativos);
+app.get("/gerenciar-templates", templatesController.consultarTemplatesInativos);
 
-app.delete("/templates/:id", new TemplatesController().excluirTemplate);
+app.delete("/templates/:id", templatesController.excluirTemplate);
 
-app.put("/templates/:id", new TemplatesController().editarTemplate);
+app.put("/templates/:id", templatesController.editarTemplate);
 
 app.listen(5000, () => {
   console.log("Servidor está em execução na porta 5000");

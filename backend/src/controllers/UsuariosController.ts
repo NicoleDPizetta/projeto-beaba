@@ -9,7 +9,7 @@ const app = express();
 app.use(bodyParser.json());
 
 export class UsuariosController {
-  async criarNovoUsuarios(req: Request, res: Response) {
+  async criarNovoUsuario(req: Request, res: Response) {
     try {
       const {
         nome_completo,
