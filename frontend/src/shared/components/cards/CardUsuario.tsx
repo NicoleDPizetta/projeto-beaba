@@ -4,13 +4,13 @@ import {
   Typography,
   Box,
   Paper,
-  IconButton,
   useTheme,
 } from "@mui/material";
-import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
+import { MoreOptionsButton } from "../modals/MoreOptionsButton";
 
 interface ICardUsuarioProps {
   userName: string;
+  userNickName: string;
   avatarSrc: string;
   userSquad: string;
   userCargo: string;
@@ -21,6 +21,7 @@ interface ICardUsuarioProps {
 
 export const CardUsuario: React.FC<ICardUsuarioProps> = ({
   userName,
+  userNickName,
   avatarSrc,
   userSquad,
   userCargo,
@@ -54,9 +55,7 @@ export const CardUsuario: React.FC<ICardUsuarioProps> = ({
           </Typography>
         </Box>
 
-        <IconButton aria-label="settings" id="settings">
-          <MoreHorizIcon />
-        </IconButton>
+        <MoreOptionsButton children={<h4>{userID}</h4>}/>
       </Box>
 
       <Box
@@ -88,7 +87,7 @@ export const CardUsuario: React.FC<ICardUsuarioProps> = ({
         >
           <Typography variant="body1">{userMatricula}</Typography>
 
-          <Typography variant="body1">{userID}</Typography>
+          <Typography variant="body1">{userNickName}</Typography>
         </Box>
       </Box>
 

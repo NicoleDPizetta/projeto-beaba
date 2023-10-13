@@ -19,7 +19,7 @@ export const AppRoutes = () => {
       <Route path="/templates" element={<PaginaTemplatesDisponiveis />} />
       <Route path="/criar-template" element={<PaginaCriarTemplate />} />
       <Route path="/gerenciar-templates" element={<PaginaGerenciarTemplates />} />
-      <Route path="/gerenciar-usuarios" element={<PaginaGerenciarUsuarios />} />
+      <Route path="/usuarios" element={<PaginaGerenciarUsuarios />} />
       <Route path="/perfil" element={<PaginaPerfilDoUsuario />} />
       <Route path="/relatorios" element={<Navigate to="" />} />
     </Routes>
