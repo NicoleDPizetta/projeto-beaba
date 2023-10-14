@@ -8,6 +8,7 @@ import {
   useTheme,
 } from "@mui/material";
 import { api } from "../../../server/api/api";
+import { ModalExcluirTemplate } from "./ModalExcluirTemplate";
 
 interface IModalTemplateOptionsProps {
   id: string;
@@ -97,6 +98,7 @@ export const ModalTemplateOptions: React.FC<IModalTemplateOptionsProps> = ({
         alignItems={"center"}
         justifyContent={"space-evenly"}
       >
+        <ModalExcluirTemplate key={id} id={id} nome={nome}/>
         <Button variant="contained" onClick={handleSave}>
           Salvar
         </Button>

@@ -10,14 +10,14 @@ import {
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 import { api } from "../../../server/api/api";
 
-interface IModalExcluirUsuarioProps {
+interface IModalExcluirTemplateProps {
   id: string;
-  userName: string;
+  nome: string;
 }
 
-export const ModalExcluirUsuario: React.FC<IModalExcluirUsuarioProps> = ({
+export const ModalExcluirTemplate: React.FC<IModalExcluirTemplateProps> = ({
   id,
-  userName,
+  nome,
 }) => {
   const theme = useTheme();
 
@@ -33,14 +33,14 @@ export const ModalExcluirUsuario: React.FC<IModalExcluirUsuarioProps> = ({
     e.preventDefault();
 
     try {
-      const response = await api.delete(`/usuarios/${id}`);
+      const response = await api.delete(`/templates/${id}`);
 
       if (response.status === 200) {
-        console.log("Usuário excluído com sucesso!");
+        console.log("Template excluído com sucesso!");
         window.location.reload();
       }
     } catch (error) {
-      console.error("Erro ao excluir o usuário:", error);
+      console.error("Erro ao excluir template:", error);
     }
   };
 
@@ -62,7 +62,7 @@ export const ModalExcluirUsuario: React.FC<IModalExcluirUsuarioProps> = ({
               borderColor={theme.palette.primary.main}
               padding={2}
             >
-              Excluir {userName}?
+              Excluir template {nome}?
             </Typography>
 
             <Typography
