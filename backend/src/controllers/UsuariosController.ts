@@ -88,12 +88,9 @@ export class UsuariosController {
   async excluirUsuario(req: Request, res: Response) {
     try {
       const usuarioID = req.params.id;
-      console.log(usuarioID);
       const usuarios: Usuarios | null = await prisma.usuarios.findUnique({
         where: { id: usuarioID },
       });
-
-      console.log(usuarios?.id);
 
       if (!usuarios) {
         return res.status(404).json({

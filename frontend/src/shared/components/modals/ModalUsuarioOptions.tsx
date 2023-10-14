@@ -45,10 +45,7 @@ export const ModalUsuarioOptions: React.FC<IModalUsuarioOptionsProps> = ({
 
     try {
       const novaPermissao = { id: id, permissao: selectedPermissao };
-      console.log(novaPermissao);
-
       const response = await api.put(`/usuarios/:id`, novaPermissao);
-      console.log(response);
 
       if (response.status === 200) {
         console.log("Usuário atualizado com sucesso");

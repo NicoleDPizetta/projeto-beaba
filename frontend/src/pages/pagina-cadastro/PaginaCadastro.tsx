@@ -1,12 +1,10 @@
-import React, { useState, ChangeEvent } from "react";
+import React, { useState } from "react";
 import {
   Box,
   Paper,
   TextField,
   Button,
   MenuItem,
-  ToggleButtonGroup,
-  ToggleButton,
   useTheme,
 } from "@mui/material";
 import { LogoBox } from "../../shared/components";
@@ -54,25 +52,25 @@ export const PaginaCadastro = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
-      try {
-        const response = await fetch('http://localhost:5000/cadastrar', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(formData),
-        });
 
-        if (response.ok) {
-          console.log("Sucesso!")
-        } else {
-          console.log("Errado")
-        }
-      } catch (error) {
-        console.error('Erro ao enviar dados:', error);
+    try {
+      const response = await fetch("http://localhost:5000/cadastrar", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+
+      if (response.ok) {
+        console.log("Sucesso!");
+      } else {
+        console.log("Errado");
       }
-    };
+    } catch (error) {
+      console.error("Erro ao enviar dados:", error);
+    }
+  };
 
   return (
     <Box
