@@ -8,6 +8,7 @@ import {
   useTheme,
 } from "@mui/material";
 import { api } from "../../../server/api/api";
+import { ModalExcluirUsuario } from "./ModalExcluirUsuario";
 
 interface IModalUsuarioOptionsProps {
   userName: string;
@@ -52,21 +53,6 @@ export const ModalUsuarioOptions: React.FC<IModalUsuarioOptionsProps> = ({
       }
     } catch (error) {
       console.error("Erro ao atualizar o usuário:", error);
-    }
-  };
-
-  const handleDelete = async (e: React.FormEvent) => {
-    e.preventDefault();
-
-    try {
-      const response = await api.delete(`/usuarios/${id}`);
-
-      if (response.status === 200) {
-        console.log("Usuário excluído com sucesso!");
-        window.location.reload();
-      }
-    } catch (error) {
-      console.error("Erro ao excluir o usuário:", error);
     }
   };
 
@@ -127,9 +113,7 @@ export const ModalUsuarioOptions: React.FC<IModalUsuarioOptionsProps> = ({
         alignItems={"center"}
         justifyContent={"space-evenly"}
       >
-        <Button variant="outlined" color="error" onClick={handleDelete}>
-          Deletar
-        </Button>
+        <ModalExcluirUsuario id={id} userName={userName} />
         <Button variant="contained" onClick={handleSave}>
           Salvar
         </Button>

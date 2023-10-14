@@ -12,4 +12,5 @@ export * from "./criar-template-components/InfosLaterais";
 export * from "./modals/MoreOptionsButton";
 export * from "./modals/ModalTemplateOptions";
 export * from "./modals/ModalUsuarioOptions";
+export * from "./modals/ModalExcluirUsuario";
 export * from "./logo-box/LogoBox";
