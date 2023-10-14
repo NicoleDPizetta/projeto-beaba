@@ -1,5 +1,5 @@
 import { PrismaClient } from "@prisma/client";
-import { hash } from "bcryptjs"
+import { hash } from "bcryptjs";
 import bodyParser from "body-parser";
 import express, { Request, Response } from "express";
 import { Usuarios } from "@prisma/client";
@@ -21,7 +21,7 @@ export class UsuariosController {
         permissao,
         squad,
       } = req.body;
-      const hash_senha = await hash(senha, 8)
+      const hash_senha = await hash(senha, 8);
 
       const usuarioJaExiste = await prisma.usuarios.findUnique({
         where: { email },
@@ -87,20 +87,23 @@ export class UsuariosController {
 
   async excluirUsuario(req: Request, res: Response) {
     try {
-      const usuarioID = req.body.id;
+      const usuarioID = req.params.id;
+      console.log(usuarioID);
       const usuarios: Usuarios | null = await prisma.usuarios.findUnique({
         where: { id: usuarioID },
       });
+
+      console.log(usuarios?.id);
+
       if (!usuarios) {
-        res.status(404).json({
+        return res.status(404).json({
           error: "ID de usuário não encontrado",
         });
-      } else {
-        await prisma.usuarios.delete({
-          where: { id: usuarios.id },
-        });
-        res.json("Usuário deletado com sucesso");
       }
+      await prisma.usuarios.delete({
+        where: { id: usuarios.id },
+      });
+      res.json("Usuário deletado com sucesso");
     } catch (error) {
       console.error("Erro ao excluir usuário", error);
       res.status(500).json({
@@ -145,7 +148,7 @@ export class UsuariosController {
         },
       });
 
-      res.json(atualizarUsuario)
+      res.json(atualizarUsuario);
     } catch (error) {
       console.error("Erro ao editar usuário", error);
       res.status(500).json({

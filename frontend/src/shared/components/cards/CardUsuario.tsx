@@ -7,6 +7,7 @@ import {
   useTheme,
 } from "@mui/material";
 import { MoreOptionsButton } from "../modals/MoreOptionsButton";
+import { ModalUsuarioOptions } from "../modals/ModalUsuarioOptions";
 
 interface ICardUsuarioProps {
   userName: string;
@@ -55,7 +56,7 @@ export const CardUsuario: React.FC<ICardUsuarioProps> = ({
           </Typography>
         </Box>
 
-        <MoreOptionsButton children={<h4>{userID}</h4>}/>
+        <MoreOptionsButton children={<ModalUsuarioOptions id={userID} userName={userName} permissao={userPermissao}/>}/>
       </Box>
 
       <Box
