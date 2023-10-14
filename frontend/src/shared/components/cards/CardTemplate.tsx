@@ -8,22 +8,25 @@ import { MoreOptionsButton } from "../modals/MoreOptionsButton";
 import { ModalTemplateOptions } from "../modals/ModalTemplateOptions";
 
 interface ICardTemplateProps {
-  templateStatus: boolean;
-  templateNome: string;
-  templateSquad: string;
-  templateCriador: string;
-  templateDataCricao: string;
-  templateID: string;
+  id: string;
+  nome: string;
+  extensao: string;
+  colunas: number;
+  linhas: number | null;
+  squad: string;
+  criador: string;
+  status: boolean;
+  data_criacao: string;
 }
 
-export const CardTemplate: React.FC<ICardTemplateProps> = ({ templateStatus, templateNome, templateSquad, templateCriador, templateDataCricao, templateID }) => {
+export const CardTemplate: React.FC<ICardTemplateProps> = ({ status, nome, squad, criador, data_criacao, id, extensao, colunas, linhas }) => {
   const theme = useTheme();
 
   /* Definindo a cor do template de acordo com o status (ativo / inativo) */
-  const corTexto = templateStatus ? theme.palette.primary.light : theme.palette.info.main;
-  const corBorda = templateStatus ? theme.palette.primary.main : theme.palette.info.light;
-  const corLateral = templateStatus ? theme.palette.primary.main : theme.palette.info.main;
-  const btnText = templateStatus ? "Salvar" : "Ativar";
+  const corTexto = status ? theme.palette.primary.light : theme.palette.info.main;
+  const corBorda = status ? theme.palette.primary.main : theme.palette.info.light;
+  const corLateral = status ? theme.palette.primary.main : theme.palette.info.main;
+  const btnText = status ? "Salvar" : "Ativar";
 
   return (
     <Paper elevation={1} sx={{ width: "46rem" }}>
@@ -37,7 +40,7 @@ export const CardTemplate: React.FC<ICardTemplateProps> = ({ templateStatus, tem
       >
         
         <Typography flex={1} variant={"h5"} color={corTexto}>
-          {templateNome}
+          {nome}
         </Typography>
 
         <MoreOptionsButton children={<ModalTemplateOptions/>}/>
@@ -52,10 +55,10 @@ export const CardTemplate: React.FC<ICardTemplateProps> = ({ templateStatus, tem
           gap={1}
         >
           <Typography variant="body1" color={corLateral}>
-            {templateSquad}
+            {squad}
           </Typography>
 
-          <TabelaInfosArquivo />
+          <TabelaInfosArquivo key={id} extensao={extensao} colunas={colunas} linhas={linhas} />
         </Box>
 
         <Box
@@ -92,7 +95,7 @@ export const CardTemplate: React.FC<ICardTemplateProps> = ({ templateStatus, tem
                 variant="body1"
                 color={theme.palette.primary.contrastText}
               >
-                {templateCriador}
+                {criador}
               </Typography>
             </Box>
 
@@ -106,7 +109,7 @@ export const CardTemplate: React.FC<ICardTemplateProps> = ({ templateStatus, tem
                 variant="body1"
                 color={theme.palette.primary.contrastText}
               >
-                {templateDataCricao}
+                {data_criacao}
               </Typography>
             </Box>
 
@@ -120,7 +123,7 @@ export const CardTemplate: React.FC<ICardTemplateProps> = ({ templateStatus, tem
                 variant="body1"
                 color={theme.palette.primary.contrastText}
               >
-                {templateID}
+                {id}
               </Typography>
             </Box>
           </Box>

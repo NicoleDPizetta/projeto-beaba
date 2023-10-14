@@ -1,56 +1,35 @@
-import React, { useState, useEffect } from "react";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableRow,
-  Paper,
-  useTheme,
-  Typography,
-} from "@mui/material";
+import React, { useState } from "react";
+import { Table, TableBody, TableCell, TableRow, Paper } from "@mui/material";
 
-export const TabelaInfosArquivo: React.FC = () => {
-  const theme = useTheme();
+interface TemplateInfos {
+  extensao: string;
+  colunas: number;
+  linhas: number | null;
+}
 
-  const [dados, setDados] = useState({
-    extensao: "",
-    colunas: 0,
-    linhas: 0,
-  });
-
-  useEffect(() => {
-    // Simulando dados do backend, substituir depois
-    setTimeout(() => {
-      const dadosDoBackend = {
-        extensao: ".csv",
-        colunas: 10,
-        linhas: 12,
-      };
-      setDados(dadosDoBackend);
-    });
-  }, []);
+export const TabelaInfosArquivo: React.FC<TemplateInfos> = ({
+  extensao,
+  colunas,
+  linhas,
+}) => {
+  useState<TemplateInfos[]>([]);
+  const linhasExibicao = linhas === null ? "Ilimitadas" : linhas;
 
   return (
     <Paper elevation={0} style={{ width: "20rem", margin: "auto" }}>
       <Table size="medium">
         <TableBody>
           <TableRow>
-            <TableCell sx={{ fontSize: '1rem'}}>
-              Tipo de arquivo:
-            </TableCell>
-            <TableCell>{dados.extensao}</TableCell>
+            <TableCell sx={{ fontSize: "1rem" }}>Tipo de arquivo:</TableCell>
+            <TableCell>{extensao}</TableCell>
           </TableRow>
           <TableRow>
-            <TableCell sx={{ fontSize: '1rem'}}>Colunas:</TableCell>
-            <TableCell>{dados.linhas}</TableCell>
+            <TableCell sx={{ fontSize: "1rem" }}>Colunas:</TableCell>
+            <TableCell>{colunas}</TableCell>
           </TableRow>
           <TableRow>
-            <TableCell
-              sx={{ fontSize: '1rem'}}
-            >
-              Linhas:
-            </TableCell>
-            <TableCell>{dados.linhas}</TableCell>
+            <TableCell sx={{ fontSize: "1rem" }}>Linhas:</TableCell>
+            <TableCell>{linhasExibicao}</TableCell>
           </TableRow>
         </TableBody>
       </Table>

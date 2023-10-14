@@ -1,21 +1,54 @@
-import React from "react";
+import { useEffect, useState } from "react";
 import { CardTemplate, GridBase } from "../../shared/components";
 import { LayoutBase } from "../../shared/layouts";
+import { api } from "../../server/api/api";
 
-export const PaginaGerenciarTemplates: React.FC = () => {
+interface TemplateInfos {
+  id: string;
+  nome: string;
+  extensao: string;
+  colunas: number;
+  linhas: number | null;
+  squad: string;
+  criador: string;
+  status: boolean;
+  data_criacao: string;
+}
+
+export const PaginaGerenciarTemplates = () => {
+  const [templates, setTemplates] = useState<TemplateInfos[]>([]);
+
+  const getTemplates = async () => {
+    try {
+      const response = await api.get("/gerenciar-templates");
+      const data = response.data;
+
+      setTemplates(data);
+    } catch (error) {
+      console.error("Erro ao receber dados:", error);
+    }
+  };
+
+  useEffect(() => {
+    getTemplates();
+  }, []);
   return (
     <LayoutBase>
       <GridBase>
-        <CardTemplate templateStatus={false} templateNome="Nome do Template" templateID="00000" templateSquad="Squad" templateCriador="Nome do criador" templateDataCricao="Data da criação" />
-        <CardTemplate templateStatus={false} templateNome="Nome do Template" templateID="00000" templateSquad="Squad" templateCriador="Nome do criador" templateDataCricao="Data da criação" />
-        <CardTemplate templateStatus={false} templateNome="Nome do Template" templateID="00000" templateSquad="Squad" templateCriador="Nome do criador" templateDataCricao="Data da criação" />
-        <CardTemplate templateStatus={false} templateNome="Nome do Template" templateID="00000" templateSquad="Squad" templateCriador="Nome do criador" templateDataCricao="Data da criação" />
-        <CardTemplate templateStatus={false} templateNome="Nome do Template" templateID="00000" templateSquad="Squad" templateCriador="Nome do criador" templateDataCricao="Data da criação" />
-        <CardTemplate templateStatus={false} templateNome="Nome do Template" templateID="00000" templateSquad="Squad" templateCriador="Nome do criador" templateDataCricao="Data da criação" />
-        <CardTemplate templateStatus={false} templateNome="Nome do Template" templateID="00000" templateSquad="Squad" templateCriador="Nome do criador" templateDataCricao="Data da criação" />
-        <CardTemplate templateStatus={false} templateNome="Nome do Template" templateID="00000" templateSquad="Squad" templateCriador="Nome do criador" templateDataCricao="Data da criação" />
-        <CardTemplate templateStatus={false} templateNome="Nome do Template" templateID="00000" templateSquad="Squad" templateCriador="Nome do criador" templateDataCricao="Data da criação" />
-        <CardTemplate templateStatus={false} templateNome="Nome do Template" templateID="00000" templateSquad="Squad" templateCriador="Nome do criador" templateDataCricao="Data da criação" />
+        {templates.map((template) => (
+          <CardTemplate
+            key={template.id}
+            id={template.id}
+            nome={template.nome}
+            criador={template.criador}
+            data_criacao={template.data_criacao}
+            status={template.status}
+            squad={template.squad}
+            extensao={template.extensao}
+            colunas={template.colunas}
+            linhas={template.linhas}
+          />
+        ))}
       </GridBase>
     </LayoutBase>
   );
