@@ -98,9 +98,9 @@ export const ModalUsuarioOptions: React.FC<IModalUsuarioOptionsProps> = ({
             value={selectedPermissao}
             onChange={handleChange}
           >
-            {permissoes.map((option) => (
-              <MenuItem key={option.value} value={option.value}>
-                {option.value}
+            {permissoes.map((permissao) => (
+              <MenuItem key={permissao.value} value={permissao.value}>
+                {permissao.value}
               </MenuItem>
             ))}
           </TextField>

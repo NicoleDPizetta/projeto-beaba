@@ -3,7 +3,6 @@ import { useTheme, Box, Typography, Paper, Button } from "@mui/material";
 import { TabelaInfosArquivo } from "../tabela-infos-arquivo/TabelaInfosArquivo";
 import Avatar from "@mui/material/Avatar";
 import CalendarMonthOutlinedIcon from "@mui/icons-material/CalendarMonthOutlined";
-import Grid3x3OutlinedIcon from "@mui/icons-material/Grid3x3Outlined";
 import { MoreOptionsButton } from "../modals/MoreOptionsButton";
 import { ModalTemplateOptions } from "../modals/ModalTemplateOptions";
 
@@ -19,14 +18,23 @@ interface ICardTemplateProps {
   data_criacao: string;
 }
 
-export const CardTemplate: React.FC<ICardTemplateProps> = ({ status, nome, squad, criador, data_criacao, id, extensao, colunas, linhas }) => {
+export const CardTemplate: React.FC<ICardTemplateProps> = ({
+  status,
+  nome,
+  squad,
+  criador,
+  data_criacao,
+  id,
+  extensao,
+  colunas,
+  linhas,
+}) => {
   const theme = useTheme();
 
   /* Definindo a cor do template de acordo com o status (ativo / inativo) */
   const corTexto = status ? theme.palette.primary.light : theme.palette.info.main;
   const corBorda = status ? theme.palette.primary.main : theme.palette.info.light;
   const corLateral = status ? theme.palette.primary.main : theme.palette.info.main;
-  const btnText = status ? "Salvar" : "Ativar";
 
   return (
     <Paper elevation={1} sx={{ width: "46rem" }}>
@@ -38,12 +46,20 @@ export const CardTemplate: React.FC<ICardTemplateProps> = ({ status, nome, squad
         padding={2}
         borderBottom={`2px solid ${corBorda}`}
       >
-        
         <Typography flex={1} variant={"h5"} color={corTexto}>
           {nome}
         </Typography>
 
-        <MoreOptionsButton children={<ModalTemplateOptions/>}/>
+        <MoreOptionsButton
+          children={
+            <ModalTemplateOptions
+              key={id}
+              id={id}
+              nome={nome}
+              status={status}
+            />
+          }
+        />
       </Box>
 
       <Box display={"flex"} justifyContent={"space-between"}>
@@ -54,11 +70,19 @@ export const CardTemplate: React.FC<ICardTemplateProps> = ({ status, nome, squad
           flexDirection={"column"}
           gap={1}
         >
-          <Typography variant="body1" color={corLateral}>
-            {squad}
-          </Typography>
+          <Box display={"flex"} gap={1} alignItems={"center"}>
+            <Typography variant="body2">Squad:</Typography>
+            <Typography variant="body1" color={corLateral}>
+              {squad}
+            </Typography>
+          </Box>
 
-          <TabelaInfosArquivo key={id} extensao={extensao} colunas={colunas} linhas={linhas} />
+          <TabelaInfosArquivo
+            key={id}
+            extensao={extensao}
+            colunas={colunas}
+            linhas={linhas}
+          />
         </Box>
 
         <Box
@@ -112,30 +136,13 @@ export const CardTemplate: React.FC<ICardTemplateProps> = ({ status, nome, squad
                 {data_criacao}
               </Typography>
             </Box>
-
-            <Box display="flex" alignItems="center" gap={1}>
-              <Grid3x3OutlinedIcon
-                fontSize="medium"
-                color="info"
-                sx={{ color: (Theme) => Theme.palette.primary.contrastText }}
-              />
-              <Typography
-                variant="body1"
-                color={theme.palette.primary.contrastText}
-              >
-                {id}
-              </Typography>
-            </Box>
           </Box>
 
-          <Button
-            fullWidth
-            aria-label="add to favorites"
-            variant="contained"
-            id="btn-salvar-template"
-          >
-            {btnText}
-          </Button>
+          {status && (
+            <Button fullWidth variant="contained" id="btn-salvar-template">
+              Salvar
+            </Button>
+          )}
         </Box>
       </Box>
     </Paper>
