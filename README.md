@@ -17,17 +17,20 @@ Esse projeto está sendo desenvolvido com as seguintes tecnologias:
 
 - React
 - Typescript
+- Express
 - Material UI
-- Figma
-- Versionamento com Git e Github
 - React RoutesDOM
 - Prisma
 - PostgreSQL
+- Axios
+- CORS
+- Nodemon
+- Figma
+- Versionamento com Git e Github
 
 Ainda serão adicionadas
 - Python
-- Axios
-- CORS
+- Flask
 
 ## 💚 Preview site
 
