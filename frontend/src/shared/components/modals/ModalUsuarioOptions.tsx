@@ -50,6 +50,7 @@ export const ModalUsuarioOptions: React.FC<IModalUsuarioOptionsProps> = ({
 
       if (response.status === 200) {
         console.log("Usuário atualizado com sucesso");
+        window.location.reload();
       }
     } catch (error) {
       console.error("Erro ao atualizar o usuário:", error);
