@@ -22,8 +22,6 @@ app.post("/cadastrar", userController.criarNovoUsuario);
 
 app.post("/login", authController.authenticate);
 
-app.post("/logout", authController.logout);
-
 app.get("/usuarios", userController.consultarTodosUsuarios);
 
 app.get("/usuarios/:id", userController.consultarUsuarioPorID);

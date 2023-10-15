@@ -49,8 +49,4 @@ export class AuthController {
       });
     }
   }
-
-  async logout(req: Request, res: Response) {
-    res.json({ auth: false, token: null });
-  }
 }

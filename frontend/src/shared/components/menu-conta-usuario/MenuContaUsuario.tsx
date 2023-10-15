@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import {
   Box,
   MenuItem,
@@ -28,6 +29,11 @@ export const MenuContaUsuario: React.FC<IMenuContaUsuarioProps> = ({
   };
   const handleClose = () => {
     setAnchorEl(null);
+  };
+
+  const HandleLogout = () => {
+    localStorage.removeItem("token");
+    window.location.href = "http://localhost:3000/login";
   };
 
   return (
@@ -73,7 +79,7 @@ export const MenuContaUsuario: React.FC<IMenuContaUsuarioProps> = ({
           Meu Perfil
         </MenuItem>
         <MenuItem
-          onClick={handleClose}
+          onClick={HandleLogout}
           sx={{ width: "11rem", lineHeight: "150%" }}
         >
           Sair

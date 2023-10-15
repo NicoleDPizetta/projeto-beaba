@@ -1,6 +1,7 @@
 import { Box, Paper, TextField, Button, useTheme } from "@mui/material";
 import { LogoBox } from "../../shared/components";
 import { useState } from "react";
+import { api } from "../../server/api/api";
 
 export const PaginaLogin = () => {
   const theme = useTheme();
@@ -19,21 +20,18 @@ export const PaginaLogin = () => {
     e.preventDefault();
 
     try {
-      await fetch("http://localhost:5000/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
-      }).then((response) => response.json()).then((data) => {
-        console.log(data)
-        if(data.token) {
-          console.log("Logado com sucesso!")
-          localStorage.setItem('token', data.token);
-        } else {
-          console.log("Falha ao receber Token")
-        }
-      })
+      const response = await api.post("/login", formData) 
+      const data = response.data
+      console.log(data)
+
+      if(data.token) {
+        console.log("Logado com sucesso!")
+        localStorage.setItem('token', data.token);
+        window.location.href = "http://localhost:3000/home";
+      } else {
+        console.log("Falha ao receber Token")
+      }
+
     } catch (error) {
       console.error("Erro ao enviar dados:", error);
     }
