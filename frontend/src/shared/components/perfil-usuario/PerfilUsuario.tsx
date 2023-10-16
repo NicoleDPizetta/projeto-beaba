@@ -10,9 +10,10 @@ import {
 } from "@mui/material";
 
 interface IPerfilUsuarioProps {
-  nome: string;
-  nomeExibicao: string;
+  nome_completo: string;
+  nome_exibicao: string;
   matricula: string;
+  email: string;
   cargo: string;
   squad: string;
   avatarSrc: string;
@@ -20,8 +21,8 @@ interface IPerfilUsuarioProps {
 }
 
 export const PerfilUsuario: React.FC<IPerfilUsuarioProps> = ({
-  nome,
-  nomeExibicao,
+  nome_completo,
+  nome_exibicao,
   matricula,
   cargo,
   squad,
@@ -58,7 +59,7 @@ export const PerfilUsuario: React.FC<IPerfilUsuarioProps> = ({
             fontWeight={700}
             color={theme.palette.primary.main}
           >
-            {nome}
+            {nome_completo}
           </Typography>
         </Box>
 
@@ -79,36 +80,31 @@ export const PerfilUsuario: React.FC<IPerfilUsuarioProps> = ({
             <TextField
               fullWidth
               type="text"
-              name="usuario-nome"
-              id="usuario-nome"
+              name="nome_completo"
               placeholder="Seu nome completo"
-              className="input-base"
               label="Nome completo"
-              variant="filled"
-              value={nome}
+              variant="standard"
+              value={nome_completo}
             />
 
             <TextField
               fullWidth
               type="text"
-              name="usuario-nome-exibicao"
-              id="usuario-nome-exibicao"
+              name="nome_exibicao"
               placeholder="Nome de exibição na plataforma"
-              className="input-base"
               label="Nome de exibição"
-              variant="filled"
-              value={nomeExibicao}
+              variant="standard"
+              value={nome_exibicao}
             />
 
             <TextField
               fullWidth
+              disabled
               type="text"
-              name="usuario-matricula"
-              id="usuario-matricula"
+              name="-matricula"
               placeholder="Matricula"
-              className="input-base"
               label="Matricula"
-              variant="filled"
+              variant="standard"
               value={matricula}
             />
           </Box>
@@ -123,24 +119,22 @@ export const PerfilUsuario: React.FC<IPerfilUsuarioProps> = ({
             <TextField
               fullWidth
               type="text"
-              name="usuario-squad"
-              id="usuario-squad"
+              name="squad"
               placeholder="Informe a squad a qual o usuario pertencerá"
               className="input-base"
               label="Squad"
-              variant="filled"
+              variant="standard"
               value={squad}
             />
 
             <TextField
               fullWidth
               type="text"
-              name="usuario-cargo"
-              id="usuario-cargo"
+              name="cargo"
               placeholder="Seu cargo"
               className="input-base"
               label="Cargo"
-              variant="filled"
+              variant="standard"
               value={cargo}
             />
           </Box>
@@ -175,6 +169,7 @@ export const PerfilUsuario: React.FC<IPerfilUsuarioProps> = ({
             <Box flex={1}>
               <TextField
                 fullWidth
+                name="email"
                 id="novo-email"
                 label="Digite seu novo email"
                 type="email"
@@ -222,6 +217,7 @@ export const PerfilUsuario: React.FC<IPerfilUsuarioProps> = ({
             <Box flex={1}>
               <TextField
                 fullWidth
+                name="senha"
                 id="nova-senha"
                 label="Digite sua nova senha"
                 type="password"
@@ -285,7 +281,7 @@ export const PerfilUsuario: React.FC<IPerfilUsuarioProps> = ({
           gap={2}
           color={theme.palette.primary.contrastText}
         >
-          <Typography variant="body1">{nomeExibicao}</Typography>
+          <Typography variant="body1">{nome_exibicao}</Typography>
           <Typography variant="body1"> {matricula}</Typography>
           <Typography variant="body1">{squad}</Typography>
           <Typography variant="body1">{cargo}</Typography>
