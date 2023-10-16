@@ -14,7 +14,7 @@ app.use(bodyParser.json());
 export class AuthController {
   async authenticate(req: Request, res: Response) {
     const { email, senha } = req.body;
-
+    
     try {
       const usuario = await prisma.usuarios.findUnique({
         where: { email },
@@ -23,7 +23,12 @@ export class AuthController {
       if (!usuario) {
         return res.status(400).json({ error: "Usuário não existe" });
       }
-
+      
+      const payload = {
+        id: usuario.id,
+        permissao: usuario.permissao
+      }
+      
       const senhaValida = await compare(senha, usuario.senha);
 
       if (!senhaValida) {
@@ -35,8 +40,8 @@ export class AuthController {
         return res.status(500).json({ error: "Chave secreta não definida" });
       }
 
-      const token = sign({ id: usuario.id }, secretKey, {
-        expiresIn: "1d",
+      const token = sign(payload, secretKey, {
+        expiresIn: "24h",
       });
 
       const { id, cargo, matricula, nome_completo, nome_exibicao, permissao, squad } = usuario;

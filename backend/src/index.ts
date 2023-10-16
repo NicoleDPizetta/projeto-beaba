@@ -17,10 +17,11 @@ const userController = new UsuariosController();
 const templatesController = new TemplatesController();
 const authController = new AuthController();
 
-/* Rotas de manipulação de Usuários */
 app.post("/cadastrar", userController.criarNovoUsuario);
 
 app.post("/login", authController.authenticate);
+
+app.get('/auth', auth.authMiddleware, userController.consultarPorToken);
 
 app.get("/usuarios", userController.consultarTodosUsuarios);
 
@@ -30,12 +31,11 @@ app.delete("/usuarios/:id", userController.excluirUsuario);
 
 app.put("/usuarios/:id", userController.editarUsuario);
 
-/* Rotas de manipulação de Templates */
 app.post("/criar-template", templatesController.criarNovoTemplate);
 
 app.get("/templates/:id", templatesController.consultarTemplatePorID);
 
-app.get("/templates", templatesController.consultarTemplatesAtivos);
+app.get("/templates", auth.authMiddleware, templatesController.consultarTemplatesAtivos);
 
 app.get("/gerenciar-templates", templatesController.consultarTemplatesInativos);
 

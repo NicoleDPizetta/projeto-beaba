@@ -10,20 +10,25 @@ export function authMiddleware(
   res: Response,
   next: NextFunction
 ) {
-  const token = req.headers.authorization;
-  console.log(token)
-  
+  const token = req.headers.authorization?.split(" ")[1];
+
   if (!token) {
     return res.status(401).json({ auth: false, error: "Token não fornecido" });
   }
 
-  if(!secretKey) {
-    return res.status(401).json({error: "Secret não encontrado" })
+  if (!secretKey) {
+    return res.status(401).json({ error: "Secret não encontrado" });
   }
 
   try {
-    verify(token, secretKey);
-    res.json({ auth: true, token: token });
+    verify(token, secretKey, (err, decoded) => {
+      if(err) {
+        return res.status(401).json({ error: "Token inválido" });
+      } else {
+        res.locals.user = decoded;
+      }
+    });
+    res.locals.token = token;
     next();
   } catch (error) {
     return res

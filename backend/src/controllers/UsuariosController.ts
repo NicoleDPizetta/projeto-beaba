@@ -18,19 +18,23 @@ export class UsuariosController {
         matricula,
         cargo,
         senha,
-        permissao,
         squad,
       } = req.body;
+      if (!email || !senha) {
+        return res.status(400).json({ error: "Campos obrigatórios não preenchidos" });
+      }
+      
       const hash_senha = await hash(senha, 8);
-
+      
       const usuarioJaExiste = await prisma.usuarios.findUnique({
         where: { email },
       });
-
+      
       if (usuarioJaExiste) {
-        return res.status(400).json({ error: "Usuário já cadastrado" });
+        return res.status(400).json("Email já existente");
       }
-
+      
+      console.log(req.body)
       const novoUsuario = await prisma.usuarios.create({
         data: {
           nome_completo,
@@ -39,7 +43,6 @@ export class UsuariosController {
           matricula,
           cargo,
           senha: hash_senha,
-          permissao,
           squad,
         },
       });
@@ -66,7 +69,7 @@ export class UsuariosController {
 
   async consultarUsuarioPorID(req: Request, res: Response) {
     try {
-      const usuarioID = req.body.id;
+      const usuarioID = req.params.id;
       const usuarios: Usuarios | null = await prisma.usuarios.findUnique({
         where: { id: usuarioID },
       });
@@ -150,6 +153,27 @@ export class UsuariosController {
       console.error("Erro ao editar usuário", error);
       res.status(500).json({
         error: "Não foi possível editar este usuário",
+      });
+    }
+  }
+
+  async consultarPorToken(req: Request, res: Response) {
+    try {
+      const usuarioID = res.locals.user;
+      const usuarios: Usuarios | null = await prisma.usuarios.findUnique({
+        where: { id: usuarioID.id },
+      });
+      if (usuarios) {
+        res.json(usuarios)
+      } else {
+        res.status(404).json({
+          error: "ID de usuário não encontrado",
+        });
+      }
+    } catch (error) {
+      console.error("Erro ao consultar usuário por ID", error);
+      res.status(500).json({
+        error: "Não foi possível consultar este ID de usuário",
       });
     }
   }

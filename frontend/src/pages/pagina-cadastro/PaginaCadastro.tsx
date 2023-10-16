@@ -8,6 +8,7 @@ import {
   useTheme,
 } from "@mui/material";
 import { LogoBox } from "../../shared/components";
+import { api } from "../../server/api/api";
 
 const squads = [
   {
@@ -54,21 +55,19 @@ export const PaginaCadastro = () => {
     e.preventDefault();
 
     try {
-      const response = await fetch("http://localhost:5000/cadastrar", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
-      });
+      const response = await api.post("/cadastrar", formData);
+      const data = response.data;
+      console.log(data);
 
-      if (response.ok) {
+      if (data) {
         console.log("Sucesso!");
+        window.location.href = "http://localhost:3000/login";
       } else {
-        console.log("Errado");
+        console.log("Falha ao criar usuário");
       }
     } catch (error) {
-      console.error("Erro ao enviar dados:", error);
+      alert("Email já cadastrado");
+      console.log("Erro ao enviar dados:", error);
     }
   };
 
@@ -96,6 +95,7 @@ export const PaginaCadastro = () => {
       >
         <Box width={"100%"} display={"flex"} flexDirection={"column"} gap={4}>
           <TextField
+            required
             fullWidth
             label="Nome completo"
             name="nome_completo"
@@ -106,6 +106,7 @@ export const PaginaCadastro = () => {
           />
 
           <TextField
+            required
             fullWidth
             label="Nome de exibição"
             name="nome_exibicao"
@@ -117,6 +118,7 @@ export const PaginaCadastro = () => {
           />
 
           <TextField
+            required
             fullWidth
             label="Cargo"
             name="cargo"
@@ -133,6 +135,7 @@ export const PaginaCadastro = () => {
             justifyContent={"space-between"}
           >
             <TextField
+              required
               fullWidth
               label="Matricula"
               name="matricula"
@@ -143,6 +146,7 @@ export const PaginaCadastro = () => {
             />
 
             <TextField
+              required
               fullWidth
               select
               label="Squad"
@@ -167,6 +171,7 @@ export const PaginaCadastro = () => {
             justifyContent={"space-between"}
           >
             <TextField
+              required
               fullWidth
               label="Email"
               name="email"
@@ -177,6 +182,7 @@ export const PaginaCadastro = () => {
             />
 
             <TextField
+              required
               fullWidth
               label="Confirme seu email"
               type="email"
@@ -191,6 +197,7 @@ export const PaginaCadastro = () => {
             justifyContent={"space-between"}
           >
             <TextField
+              required
               fullWidth
               label="Senha"
               name="senha"
@@ -201,6 +208,7 @@ export const PaginaCadastro = () => {
             />
 
             <TextField
+              required
               fullWidth
               label="Confirme sua senha"
               type="password"

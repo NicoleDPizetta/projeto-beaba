@@ -25,7 +25,6 @@ export const PaginaLogin = () => {
       console.log(data)
 
       if(data.token) {
-        console.log("Logado com sucesso!")
         localStorage.setItem('token', data.token);
         window.location.href = "http://localhost:3000/home";
       } else {
