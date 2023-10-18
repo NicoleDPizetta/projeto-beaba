@@ -5,7 +5,7 @@ import CalendarMonthOutlinedIcon from "@mui/icons-material/CalendarMonthOutlined
 export const InfosLaterais: React.FC = ({}) => {
   const theme = useTheme();
   const [dataAtual, setDataAtual] = useState(new Date());
-  const [isChecked, setChecked] = React.useState(true);
+  const [isChecked, setChecked] = React.useState(false);
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setChecked(event.target.checked);

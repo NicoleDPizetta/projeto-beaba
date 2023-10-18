@@ -1,30 +1,27 @@
-import React from "react";
-import { Box, MenuItem, TextField } from "@mui/material";
+import React, { useState } from "react";
+import { Box, TextField } from "@mui/material";
+import { SelectTiposDados } from "../selects-e-valores/SelectTiposDados";
 
-const tipos = [
-  {
-    value: "VARCHAR",
-    label: "Texto",
-  },
-  {
-    value: "INTEGER",
-    label: "Número inteiro",
-  },
-  {
-    value: "DECIMAL",
-    label: "Número decimal / Moeda",
-  },
-  {
-    value: "DATE",
-    label: "Data apenas",
-  },
-  {
-    value: "TIMESTAMP",
-    label: "Data e Hora",
-  },
-];
+export const NovoCampo: React.FC<{
+  onCampoChange: (campo: any, index: number) => void;
+  index: number;
+}> = ({ onCampoChange, index }) => {
+  const [campo, setCampo] = useState("");
 
-export const NovoCampo: React.FC = () => {
+  const handleCampoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setCampo(e.target.value);
+    onCampoChange(campo, index);
+  };
+
+  /* Pegando valor do SelectTipoDados */
+  const [selectedTipoDados, setSelectedTipoDados] = useState<string>("");
+
+  const handleSelectedTipoDados = (
+    event: React.ChangeEvent<{ value: unknown }>
+  ) => {
+    setSelectedTipoDados(event.target.value as string);
+  };
+
   return (
     <Box
       flex={1}
@@ -42,23 +39,12 @@ export const NovoCampo: React.FC = () => {
           label="Nome da coluna"
           placeholder="Digite um nome para a coluna"
           variant="outlined"
+          name="nome"
+          onChange={handleCampoChange}
         />
       </Box>
 
-      <TextField
-        select
-        required
-        sx={{ width: 250 }}
-        id="tipo-de-dado"
-        label="Tipo de dado"
-        placeholder="Tipo de dado esperado"
-      >
-        {tipos.map((option) => (
-          <MenuItem key={option.value} value={option.value}>
-            {option.label}
-          </MenuItem>
-        ))}
-      </TextField>
+      <SelectTiposDados value={selectedTipoDados} onChange={handleSelectedTipoDados} />
     </Box>
   );
 };

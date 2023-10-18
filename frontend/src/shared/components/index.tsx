@@ -14,4 +14,7 @@ export * from "./modals/ModalTemplateOptions";
 export * from "./modals/ModalUsuarioOptions";
 export * from "./modals/ModalExcluirUsuario";
 export * from "./modals/ModalExcluirTemplate";
+export * from "./selects-e-valores/SelectSquads";
+export * from "./selects-e-valores/SelectExtensoes";
+export * from "./selects-e-valores/SelectTiposDados";
 export * from "./logo-box/LogoBox";
