@@ -1,11 +1,5 @@
 import React, { useEffect, useState } from "react";
-import {
-  Box,
-  Typography,
-  TextField,
-  useTheme,
-  Paper,
-} from "@mui/material";
+import { Box, Typography, TextField, useTheme, Paper } from "@mui/material";
 import { NovoCampo } from "./NovoCampo";
 import { InfosLaterais } from "./InfosLaterais";
 import { api } from "../../../server/api/api";
@@ -23,33 +17,18 @@ interface UsuarioLogadoInfos {
 const initialState = {
   nome: "",
   extensao: "",
-  colunas: "",
-  linhas: "",
+  colunas: 0,
+  linhas: 0,
   campos: [],
-  status: true,
   squad: "",
+  status: false,
+  criador: "",
 };
 
 export const CriarTemplateForm: React.FC = () => {
   const theme = useTheme();
 
-  /* Pegando valor do SelectExtensao */
-  const [selectedExtensao, setselectedExtensao] = useState<string>("");
-
-  const handleExtensaoChange = (
-    event: React.ChangeEvent<{ value: unknown }>
-  ) => {
-    setselectedExtensao(event.target.value as string);
-  };
-
-  /* Pegando valor do select Squad */
-  const [selectedSquad, setSelectedSquad] = useState<string>("");
-
-  const handleSquadChange = (event: React.ChangeEvent<{ value: unknown }>) => {
-    setSelectedSquad(event.target.value as string);
-  };
-
-  /* Pegar Usuário Logado */
+  // Função para pegar dados do usuário logado
   const [usuarioLogado, setUsuarioLogado] = useState<UsuarioLogadoInfos>();
 
   useEffect(() => {
@@ -59,66 +38,85 @@ export const CriarTemplateForm: React.FC = () => {
         setUsuarioLogado(usuario);
       } else {
         console.error("AuthUsuarioLogado returned undefined.");
+        window.location.href = "http://localhost:3000/login";
       }
     };
     getUsuarioLogado();
   }, []);
 
-  /* Alterando quantidade de campos renderizados */
-  const [qntCampos, setQntCampos] = useState<string>("");
-
-  const handleQuantidadeCamposChange = (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    setQntCampos(event.target.value);
-  };
-
-  /* Interagindo com o componente NovoCampo */
-  const [campos, setCampos] = useState<string[]>([]);
-
-  const handleCampoChange = (campo: string, index: number) => {
-    const newCampos = [...campos];
-    newCampos[index] = campo;
-    setCampos(newCampos);
-  };
-
-  const camposRenderizados = Array.from(
-    { length: parseInt(qntCampos) || 0 },
-    (_, index) => (
-      <NovoCampo key={index} onCampoChange={handleCampoChange} index={index} />
-    )
-  );
-
-  /* Criar Template */
+  // Estado para os campos do formulário
   const [formData, setFormData] = useState(initialState);
+  let [campos, setCampos] = useState<{}>({});
+  const [isChecked, setIsChecked] = useState(false);
+  
+  // Estados para selects do formulário
+  const [qntCampos, setQntCampos] = useState<string>("");
+  const [selectedSquad, setSelectedSquad] = useState<string>("");
+  const [selectedExtensao, setselectedExtensao] = useState<string>("");
 
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
-  ) => {
+  // Funções para atualizar os estados dos selects do formulário
+  const handleQuantidadeCamposChange = (event: React.ChangeEvent<HTMLInputElement>) => {setQntCampos(event.target.value)};
+  const handleSquadChange = (event: React.ChangeEvent<{ value: unknown }>) => {setSelectedSquad(event.target.value as string)};
+  const handleExtensaoChange = (event: React.ChangeEvent<{ value: unknown }>) => {setselectedExtensao(event.target.value as string)};
+
+  // Função para atualizar o estado do checkbox
+  const handleCheckboxChange = (newChecked: boolean) => {setIsChecked(newChecked)};
+  
+  // Função para atualizar o estado dos campos do template
+  const handleCampoChange = (campo: string, tipo: string) => {
+    /* const newCampos = {...campos, tipo}; */
+    campos = {campo, tipo}
+    /* newCampos[index] = campo; */
+    console.log(campos)
+    setCampos(campos);
+  };
+
+  // Função para atualizar o estado dos campos do formulário
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  // Função para ENVIAR DADOS DO TEMPLATE
+  const handleButtonClick = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    try {
-      const criador = usuarioLogado?.nome_completo;
-      const templateData = { ...formData, campos, criador: criador };
+    const { nome, colunas, linhas } = formData;
 
-      const response = await api.post("/templates", templateData);
-      const data = response.data;
-      console.log(data);
+    const dataToSend = {
+      nome,
+      extensao: selectedExtensao,
+      colunas,
+      linhas,
+      campos,
+      status: isChecked,
+      squad: selectedSquad,
+      criador: usuarioLogado?.id || "",
+    };
 
-      if (data.token) {
+    console.log(dataToSend)
+
+    /* try {
+      const response = await api.post("/criar-template", dataToSend);
+
+      if (response.status === 200) {
+        console.log("Resposta do servidor:", response.data);
         window.location.href = "http://localhost:3000/templates";
       } else {
         console.log("Falha ao criar template");
       }
     } catch (error) {
       console.error("Erro ao enviar dados do template:", error);
-    }
+    } */
   };
+
+  // Renderização dos campos
+  const camposRenderizados = Array.from(
+    { length: parseInt(qntCampos) || 0 },
+    (_, index) => (
+      <NovoCampo key={index} onCampoChange={handleCampoChange}  /*index={index} */ />
+    )
+  );
 
   return (
     <Paper
@@ -147,11 +145,12 @@ export const CriarTemplateForm: React.FC = () => {
             required
             fullWidth
             type="text"
-            name="template-name"
             id="template-name"
             placeholder="Digite um nome para o template"
             className="input-base"
             label="Nome do template"
+            name="nome"
+            onChange={handleInputChange}
           />
         </Box>
 
@@ -180,6 +179,8 @@ export const CriarTemplateForm: React.FC = () => {
               label="Quantidade de linhas"
               type="number"
               placeholder="Zero (0) para não limitar"
+              name="linhas"
+              onChange={handleInputChange}
             />
           </Box>
 
@@ -189,9 +190,7 @@ export const CriarTemplateForm: React.FC = () => {
             alignItems={"flex-end"}
             gap={4}
           >
-            <SelectExtensoes
-              value={selectedExtensao}
-              onChange={handleExtensaoChange}
+            <SelectExtensoes value={selectedExtensao} onChange={handleExtensaoChange}
             />
             <SelectSquads value={selectedSquad} onChange={handleSquadChange} />
           </Box>
@@ -214,7 +213,7 @@ export const CriarTemplateForm: React.FC = () => {
         </Box>
       </Box>
 
-      <InfosLaterais />
+      <InfosLaterais isChecked={isChecked} onCheckboxChange={handleCheckboxChange} onButtonClick={handleButtonClick} />
     </Paper>
   );
 };

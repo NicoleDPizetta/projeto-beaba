@@ -2,14 +2,19 @@ import React, { useState, useEffect } from "react";
 import { Box, Typography, Button, Checkbox, useTheme } from "@mui/material";
 import CalendarMonthOutlinedIcon from "@mui/icons-material/CalendarMonthOutlined";
 
-export const InfosLaterais: React.FC = ({}) => {
+interface IInfosLateraisProps {
+  isChecked: boolean;
+  onCheckboxChange: (isChecked: boolean) => void;
+  onButtonClick: (e: React.FormEvent) => Promise<void>;
+}
+
+export const InfosLaterais: React.FC<IInfosLateraisProps> = ({
+  isChecked,
+  onCheckboxChange,
+  onButtonClick,
+}) => {
   const theme = useTheme();
   const [dataAtual, setDataAtual] = useState(new Date());
-  const [isChecked, setChecked] = React.useState(false);
-
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setChecked(event.target.checked);
-  };
 
   useEffect(() => {
     const intervalId = setInterval(() => {
@@ -46,18 +51,33 @@ export const InfosLaterais: React.FC = ({}) => {
         </Typography>
       </Box>
 
-      <Box display="flex" flexDirection={"column"} alignItems="center" justifyContent="center" gap={3}>
+      <Box
+        display="flex"
+        flexDirection={"column"}
+        alignItems="center"
+        justifyContent="center"
+        gap={3}
+      >
         <Box display="flex" alignItems="center" justifyContent="center">
           <Checkbox
-              onChange={handleChange}
-              value={isChecked}
+            checked={isChecked}
+            onChange={() => onCheckboxChange(!isChecked)}
           />
-          <Typography variant="body1" color={theme.palette.primary.contrastText}>
-              Gerar template inativo
+          <Typography
+            variant="body1"
+            color={theme.palette.primary.contrastText}
+          >
+            Gerar template inativo
           </Typography>
         </Box>
 
-        <Button id="btn-criar-template" variant="contained">Criar template</Button>
+        <Button
+          id="btn-criar-template"
+          variant="contained"
+          onClick={onButtonClick}
+        >
+          Criar template
+        </Button>
       </Box>
     </Box>
   );
