@@ -26,14 +26,14 @@ model Squads {
 }
 
 model Usuarios {
-  id            String @id @default(uuid())
+  id            String     @id @default(uuid())
   nome_completo String
   nome_exibicao String
-  matricula     String @unique
+  matricula     String     @unique
   permissao     Permissoes @default(PADRAO)
   squad         String
   cargo         String
-  email         String @unique
+  email         String     @unique
   senha         String
 
   templates        Templates[]
@@ -44,11 +44,11 @@ model Usuarios {
 }
 
 model Campos {
-  id         String @id @default(uuid())
   nome       String
   tipo_dados String
+  templateId String @unique
 
-  template Templates @relation(fields: [id], references: [campos])
+  template Templates @relation(fields: [templateId], references: [id])
 }
 
 model Templates {
@@ -60,7 +60,7 @@ model Templates {
   squad        String
   criador      String
   status       Boolean
-  campos       String   @unique
+  campos       Json
   data_criacao DateTime @default(now())
 
   camposList       Campos[]
