@@ -3,18 +3,15 @@ import { Box, TextField } from "@mui/material";
 import { SelectTiposDados } from "../selects-e-valores/SelectTiposDados";
 
 export const NovoCampo: React.FC<{
-  onCampoChange: (campo: string) => void;
-  onTipoChange: (tipo: string) => void;
+  onCampoChange: (campo: string, tipoDado: string) => void;
 }> = ({ onCampoChange }) => {
-  let campo = "";
+  const [campo, setCampo] = useState("");
+  const [tipoDado, setTipoDado] = useState("");
 
   const handleCampoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    campo = e.target.value;
-    onCampoChange(campo);
+    const campoValue = e.target.value;
+    setCampo(campoValue);
   };
-
-  /* Pegando valor do SelectTipoDados */
-  const [tipoDado, setTipoDado] = useState<string>("");
 
   const handleSelectedTipoDados = (
     event: React.ChangeEvent<{ value: unknown }>
@@ -22,6 +19,7 @@ export const NovoCampo: React.FC<{
     const selectedTipoDados = event.target.value as string;
     console.log(selectedTipoDados);
     setTipoDado(selectedTipoDados);
+    onCampoChange(campo, selectedTipoDados);
   };
 
   return (

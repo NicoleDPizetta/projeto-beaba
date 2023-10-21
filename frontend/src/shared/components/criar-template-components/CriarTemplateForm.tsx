@@ -28,7 +28,7 @@ const initialState = {
 export const CriarTemplateForm: React.FC = () => {
   const theme = useTheme();
 
-  // Função para pegar dados do usuário logado
+  // Função para pegar os dados do usuário logado
   const [usuarioLogado, setUsuarioLogado] = useState<UsuarioLogadoInfos>();
 
   useEffect(() => {
@@ -44,46 +44,38 @@ export const CriarTemplateForm: React.FC = () => {
     getUsuarioLogado();
   }, []);
 
-  // Estado para os campos do formulário
+  // Estados para os campos do formulário
   const [formData, setFormData] = useState(initialState);
-  const [nomeColuna, setNomeColuna] = useState("");
-  const [tipoDado, setTipoDado] = useState<string>("");
   const [isChecked, setIsChecked] = useState(false);
 
-  const jsonObj = { [nomeColuna]: tipoDado };
-
   // Estados para selects do formulário
-  const [qntCampos, setQntCampos] = useState<string>("");
+  const [qntCampos, setQntCampos] = useState<number>(0);
+  const [camposInfo, setCamposInfo] = useState<{ [key: string]: string }>({});
   const [selectedSquad, setSelectedSquad] = useState<string>("");
   const [selectedExtensao, setselectedExtensao] = useState<string>("");
 
-  // Funções para atualizar os estados dos selects do formulário
-  const handleQuantidadeCamposChange = (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    setQntCampos(event.target.value);
+  const handleQuantidadeCamposChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setQntCampos(parseInt(event.target.value, 10))
   };
-  const handleSquadChange = (event: React.ChangeEvent<{ value: unknown }>) => {setSelectedSquad(event.target.value as string)};
-  
+
+  const handleCampoChange = (campo: string, tipoDado: string) => {
+    setCamposInfo((prevCamposInfo) => ({ ...prevCamposInfo, [campo]: tipoDado }));
+  };
+
+  // Funções para atualizar o estado dos selects do formulário
   const handleExtensaoChange = (
     event: React.ChangeEvent<{ value: unknown }>
   ) => {
     setselectedExtensao(event.target.value as string);
   };
 
-  // Função para atualizar o estado do checkbox
-  const handleCheckboxChange = (newChecked: boolean) => {setIsChecked(newChecked)};
-
-  // Função para atualizar o estado dos campos do template
-  const handleNomeColunaChange = (campo: string) => {
-    const valorNomeColuna = campo;
-    setNomeColuna(valorNomeColuna);
+  const handleSquadChange = (event: React.ChangeEvent<{ value: unknown }>) => {
+    setSelectedSquad(event.target.value as string);
   };
 
-  // Função para atualizar o estado do select de Tipo de Dados
-  const handleTipoDadoChange = (tipo: string) => {
-    const valorTipoDado = tipo;
-    setTipoDado(valorTipoDado);
+  // Função para atualizar o estado do checkbox
+  const handleCheckboxChange = (newChecked: boolean) => {
+    setIsChecked(newChecked);
   };
 
   // Função para atualizar o estado dos campos do formulário
@@ -103,7 +95,7 @@ export const CriarTemplateForm: React.FC = () => {
       extensao: selectedExtensao,
       colunas,
       linhas,
-      campos: jsonObj,
+      campos: camposInfo,
       status: isChecked,
       squad: selectedSquad,
       criador: usuarioLogado?.id || "",
@@ -124,18 +116,6 @@ export const CriarTemplateForm: React.FC = () => {
       console.error("Erro ao enviar dados do template:", error);
     } */
   };
-
-  // Renderização dos campos
-  const camposRenderizados = Array.from(
-    { length: parseInt(qntCampos) || 0 },
-    (_, index) => (
-      <NovoCampo
-        key={index}
-        onCampoChange={handleNomeColunaChange}
-        onTipoChange={handleTipoDadoChange}
-      />
-    )
-  );
 
   return (
     <Paper
@@ -209,7 +189,10 @@ export const CriarTemplateForm: React.FC = () => {
             alignItems={"flex-end"}
             gap={4}
           >
-            <SelectExtensoes value={selectedExtensao} onChange={handleExtensaoChange} />
+            <SelectExtensoes
+              value={selectedExtensao}
+              onChange={handleExtensaoChange}
+            />
             <SelectSquads value={selectedSquad} onChange={handleSquadChange} />
           </Box>
         </Box>
@@ -227,11 +210,22 @@ export const CriarTemplateForm: React.FC = () => {
             Campos do template
           </Typography>
 
-          {camposRenderizados}
+          {Array.from({ length: qntCampos }).map((campo, index) => (
+            <NovoCampo
+              key={index}
+              onCampoChange={(nomeCampo, tipoDado) =>
+                handleCampoChange(nomeCampo, tipoDado)
+              }
+            />
+          ))}
         </Box>
       </Box>
 
-      <InfosLaterais isChecked={isChecked} onCheckboxChange={handleCheckboxChange} onButtonClick={handleButtonClick} />
+      <InfosLaterais
+        isChecked={isChecked}
+        onCheckboxChange={handleCheckboxChange}
+        onButtonClick={handleButtonClick}
+      />
     </Paper>
   );
 };
