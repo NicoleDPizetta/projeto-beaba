@@ -63,7 +63,6 @@ export class TemplatesController {
   }
 
   async consultarTemplatesAtivos(req: Request, res: Response) {
-    console.log(res.locals.token)
     try {
       const templatesAtivos: Templates[] = await prisma.templates.findMany({
         where: { status: true },

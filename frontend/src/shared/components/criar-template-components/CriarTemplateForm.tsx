@@ -54,12 +54,10 @@ export const CriarTemplateForm: React.FC = () => {
   const [selectedSquad, setSelectedSquad] = useState<string>("");
   const [selectedExtensao, setselectedExtensao] = useState<string>("");
 
-  const handleQuantidadeCamposChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setQntCampos(parseInt(event.target.value, 10))
-  };
+  const handleQuantidadeCamposChange = (event: React.ChangeEvent<HTMLInputElement>) => {setQntCampos(parseInt(event.target.value, 10))};
 
   const handleCampoChange = (campo: string, tipoDado: string) => {
-    setCamposInfo((prevCamposInfo) => ({ ...prevCamposInfo, [campo]: tipoDado }));
+    setCamposInfo((prevCamposInfo) => ({...prevCamposInfo, [campo]: tipoDado,}));
   };
 
   // Funções para atualizar o estado dos selects do formulário

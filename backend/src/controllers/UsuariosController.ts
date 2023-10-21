@@ -33,8 +33,7 @@ export class UsuariosController {
       if (usuarioJaExiste) {
         return res.status(400).json("Email já existente");
       }
-      
-      console.log(req.body)
+
       const novoUsuario = await prisma.usuarios.create({
         data: {
           nome_completo,

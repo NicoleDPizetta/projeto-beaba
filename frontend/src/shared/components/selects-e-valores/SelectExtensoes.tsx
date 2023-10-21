@@ -8,16 +8,16 @@ interface ISelectExtensoesProps {
 
 const extensions = [
   {
-    value: ".csv",
-    label: ".csv",
-  },
-  {
     value: ".xlsx",
     label: ".xlsx",
   },
   {
     value: ".xlx",
     label: ".xlx",
+  },
+  {
+    value: ".csv",
+    label: ".csv",
   },
 ];
 

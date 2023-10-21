@@ -17,21 +17,19 @@ export const NovoCampo: React.FC<{
     event: React.ChangeEvent<{ value: unknown }>
   ) => {
     const selectedTipoDados = event.target.value as string;
-    console.log(selectedTipoDados);
     setTipoDado(selectedTipoDados);
     onCampoChange(campo, selectedTipoDados);
   };
 
   return (
     <Box
-      flex={1}
+      width={"100%"}
       display={"flex"}
       alignItems={"center"}
       justifyContent={"space-between"}
       paddingY={2}
-      gap={26}
     >
-      <Box flex={1}>
+      <Box width={"70%"}>
         <TextField
           fullWidth
           required
