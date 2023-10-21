@@ -4,26 +4,24 @@ import { SelectTiposDados } from "../selects-e-valores/SelectTiposDados";
 
 export const NovoCampo: React.FC<{
   onCampoChange: (campo: string) => void;
+  onTipoChange: (tipo: string) => void;
 }> = ({ onCampoChange }) => {
   let campo = "";
 
   const handleCampoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     campo = e.target.value;
-    console.log(campo);
     onCampoChange(campo);
   };
 
   /* Pegando valor do SelectTipoDados */
-  const [selectedTipoDados, setSelectedTipoDados] = useState<string>("");
-
-  /* let selectTipoDados = ""; */
+  const [tipoDado, setTipoDado] = useState<string>("");
 
   const handleSelectedTipoDados = (
     event: React.ChangeEvent<{ value: unknown }>
   ) => {
-    setSelectedTipoDados(event.target.value as string);
-    /* selectTipoDados = event.target.value as string; */
+    const selectedTipoDados = event.target.value as string;
     console.log(selectedTipoDados);
+    setTipoDado(selectedTipoDados);
   };
 
   return (
@@ -48,10 +46,7 @@ export const NovoCampo: React.FC<{
         />
       </Box>
 
-      <SelectTiposDados
-        value={selectedTipoDados}
-        onChange={handleSelectedTipoDados}
-      />
+      <SelectTiposDados value={tipoDado} onChange={handleSelectedTipoDados} />
     </Box>
   );
 };
