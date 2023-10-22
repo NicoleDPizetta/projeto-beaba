@@ -21,7 +21,7 @@ const initialState = {
   linhas: 0,
   campos: {},
   squad: "",
-  status: false,
+  status: true,
   criador: "",
 };
 
@@ -46,18 +46,26 @@ export const CriarTemplateForm: React.FC = () => {
 
   // Estados para os campos do formulário
   const [formData, setFormData] = useState(initialState);
-  const [isChecked, setIsChecked] = useState(false);
+  const [isChecked, setIsChecked] = useState(true);
 
   // Estados para selects do formulário
   const [qntCampos, setQntCampos] = useState<number>(0);
+  const [qntLinhas, setQntLinhas] = useState<number>(0);
   const [camposInfo, setCamposInfo] = useState<{ [key: string]: string }>({});
   const [selectedSquad, setSelectedSquad] = useState<string>("");
   const [selectedExtensao, setselectedExtensao] = useState<string>("");
 
+  // Funções para atualizar o estado dos inputs do formulário
   const handleQuantidadeCamposChange = (event: React.ChangeEvent<HTMLInputElement>) => {setQntCampos(parseInt(event.target.value, 10))};
+  const handleLinhasChange = (event: React.ChangeEvent<HTMLInputElement>) => {setQntLinhas(parseInt(event.target.value, 10))};
 
   const handleCampoChange = (campo: string, tipoDado: string) => {
     setCamposInfo((prevCamposInfo) => ({...prevCamposInfo, [campo]: tipoDado,}));
+  };
+  
+  const handleNomeTemplateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
   };
 
   // Funções para atualizar o estado dos selects do formulário
@@ -76,23 +84,17 @@ export const CriarTemplateForm: React.FC = () => {
     setIsChecked(newChecked);
   };
 
-  // Função para atualizar o estado dos campos do formulário
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
-  };
-
   // Função para ENVIAR DADOS DO TEMPLATE
   const handleButtonClick = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    const { nome, colunas, linhas } = formData;
+    const { nome } = formData;
 
     const dataToSend = {
       nome,
       extensao: selectedExtensao,
-      colunas,
-      linhas,
+      colunas: qntCampos,
+      linhas: qntLinhas,
       campos: camposInfo,
       status: isChecked,
       squad: selectedSquad,
@@ -101,7 +103,7 @@ export const CriarTemplateForm: React.FC = () => {
 
     console.log(dataToSend);
 
-    /* try {
+    try {
       const response = await api.post("/criar-template", dataToSend);
 
       if (response.status === 200) {
@@ -112,7 +114,7 @@ export const CriarTemplateForm: React.FC = () => {
       }
     } catch (error) {
       console.error("Erro ao enviar dados do template:", error);
-    } */
+    }
   };
 
   return (
@@ -147,7 +149,7 @@ export const CriarTemplateForm: React.FC = () => {
             className="input-base"
             label="Nome do template"
             name="nome"
-            onChange={handleInputChange}
+            onChange={handleNomeTemplateChange}
           />
         </Box>
 
@@ -166,6 +168,7 @@ export const CriarTemplateForm: React.FC = () => {
               type="number"
               label="Quantidade de colunas"
               placeholder="Digite apenas números"
+              name="colunas"
               value={qntCampos}
               onChange={handleQuantidadeCamposChange}
             />
@@ -177,7 +180,7 @@ export const CriarTemplateForm: React.FC = () => {
               type="number"
               placeholder="Zero (0) para não limitar"
               name="linhas"
-              onChange={handleInputChange}
+              onChange={handleLinhasChange}
             />
           </Box>
 
