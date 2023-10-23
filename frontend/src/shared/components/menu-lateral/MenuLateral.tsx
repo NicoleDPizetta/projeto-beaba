@@ -1,3 +1,4 @@
+import React, { useState, useEffect } from "react";
 import {
   Box,
   Drawer,
@@ -8,10 +9,16 @@ import {
 } from "@mui/material";
 import { useMatch, useNavigate, useResolvedPath } from "react-router-dom";
 import { LogoBox } from "../logo-box/LogoBox";
+import { AuthUsuarioLogado } from "../../../middleware";
 
 interface IListItemLinkProps {
   to: string;
   text: string;
+}
+
+interface UsuarioLogadoInfos {
+  id: string;
+  permissao: string;
 }
 
 const ListItemLink: React.FC<IListItemLinkProps> = ({ to, text }) => {
@@ -50,6 +57,23 @@ const ListItemLink: React.FC<IListItemLinkProps> = ({ to, text }) => {
 export const MenuLateral: React.FC = () => {
   const theme = useTheme();
 
+  const [usuarioLogado, setUsuarioLogado] = useState<UsuarioLogadoInfos>();
+
+  const getUsuarioLogado = async () => {
+    const usuario = await AuthUsuarioLogado();
+    if (usuario) {
+      setUsuarioLogado(usuario);
+    } else {
+      console.error("AuthUsuarioLogado returned undefined.");
+    }
+  };
+
+  useEffect(() => {
+    getUsuarioLogado();
+  }, []);
+
+  const permissaoAtual = usuarioLogado?.permissao;
+
   return (
     <Drawer variant="permanent" role="aside">
       <Box
@@ -59,7 +83,7 @@ export const MenuLateral: React.FC = () => {
         flexDirection="column"
         sx={{ backgroundColor: (Theme) => Theme.palette.primary.main }}
       >
-        <LogoBox/>
+        <LogoBox />
 
         <Box
           width="100%"
@@ -74,16 +98,17 @@ export const MenuLateral: React.FC = () => {
 
             <ListItemLink to="/templates" text="Templates disponíveis" />
 
-            <ListItemLink to="/criar-template" text="Criar template" />
+            {permissaoAtual === "CRIADOR" || permissaoAtual === "ADMINISTRADOR" ? (
+              <ListItemLink to="/criar-template" text="Criar template" /> ) : null}
 
-            <ListItemLink
-              to="/gerenciar-templates"
-              text="Gerenciar templates"
-            />
+            {permissaoAtual === "CRIADOR" || permissaoAtual === "ADMINISTRADOR" ? (
+              <ListItemLink to="/gerenciar-templates" text="Gerenciar templates" /> ) : null}
 
-            <ListItemLink to="/usuarios" text="Gerenciar usuários" />
+            {permissaoAtual === "ADMINISTRADOR" ? (
+              <ListItemLink to="/usuarios" text="Gerenciar usuários" /> ) : null}
 
-            <ListItemLink to="/relatorios" text="Relatórios" />
+            {permissaoAtual === "ADMINISTRADOR" ? (
+              <ListItemLink to="/relatorios" text="Relatórios" /> ) : null}
           </List>
         </Box>
       </Box>
