@@ -46,7 +46,7 @@ export const CriarTemplateForm: React.FC = () => {
 
   // Estados para os campos do formulário
   const [formData, setFormData] = useState(initialState);
-  const [isChecked, setIsChecked] = useState(true);
+  const [isChecked, setIsChecked] = useState(false);
 
   // Estados para selects do formulário
   const [qntCampos, setQntCampos] = useState<number>(0);

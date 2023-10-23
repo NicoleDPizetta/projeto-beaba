@@ -1,4 +1,4 @@
-import { Routes, Route, Navigate } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import {
   PaginaCriarTemplate,
   PaginaGerenciarTemplates,
@@ -10,29 +10,34 @@ import {
   PaginaCadastro,
 } from "../pages";
 
+const isAuthenticated = localStorage.getItem("token") !== null;
+
+export const PrivateRoute = ({ children, redirectTo }: { children: React.ReactElement; redirectTo: string }) => {
+  return isAuthenticated ? children : <Navigate to={redirectTo} replace />;
+};
+
 export const AppRoutes = () => {
-  const token = localStorage.getItem("token");
-  if (!token) {
-    return (
+  return (
+    <BrowserRouter>
       <Routes>
-        <Route path="/login" element={<PaginaLogin />} />
-        <Route path="/cadastrar" element={<PaginaCadastro />} />
+        <Route path="/login" element={isAuthenticated ? <Navigate to="/home" replace /> : <PaginaLogin />} />
+
+        <Route path="/cadastrar" element={isAuthenticated ? <Navigate to="/home" replace /> : <PaginaCadastro />} />
+
+        <Route path="/home" element={<PrivateRoute children={<PaginaInicial />} redirectTo={"/login"} /> } />
+
+        <Route path="/templates" element={<PrivateRoute children={<PaginaTemplatesDisponiveis />} redirectTo={"/login"} /> } />
+
+        <Route path="/criar-template" element={<PrivateRoute children={<PaginaCriarTemplate />} redirectTo={"/login"} /> } />
+
+        <Route path="/gerenciar-templates" element={<PrivateRoute children={<PaginaGerenciarTemplates />} redirectTo={"/login"} /> } />
+
+        <Route path="/usuarios" element={<PrivateRoute children={<PaginaGerenciarUsuarios />} redirectTo={"/login"} /> } />
+
+        <Route path="/perfil" element={<PrivateRoute children={<PaginaPerfilDoUsuario />} redirectTo={"/login"} /> } />
+
+        <Route path="/relatorios" element={<PrivateRoute children={<PaginaInicial />} redirectTo={"/login"} /> } />
       </Routes>
-    );
-  } else {
-    return (
-      <Routes>
-        <Route path="/home" element={<PaginaInicial />} />
-        <Route path="/templates" element={<PaginaTemplatesDisponiveis />} />
-        <Route path="/criar-template" element={<PaginaCriarTemplate />} />
-        <Route
-          path="/gerenciar-templates"
-          element={<PaginaGerenciarTemplates />}
-        />
-        <Route path="/usuarios" element={<PaginaGerenciarUsuarios />} />
-        <Route path="/perfil" element={<PaginaPerfilDoUsuario />} />
-        <Route path="/relatorios" element={<Navigate to="" />} />
-      </Routes>
-    );
-  }
+    </BrowserRouter>
+  );
 };
