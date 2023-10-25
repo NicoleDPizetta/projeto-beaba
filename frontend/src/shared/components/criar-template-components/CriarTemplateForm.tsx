@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Box, Typography, TextField, useTheme, Paper } from "@mui/material";
 import { NovoCampo } from "./NovoCampo";
 import { InfosLaterais } from "./InfosLaterais";
@@ -27,6 +28,7 @@ const initialState = {
 
 export const CriarTemplateForm: React.FC = () => {
   const theme = useTheme();
+  const navigate = useNavigate();
 
   // Função para pegar os dados do usuário logado
   const [usuarioLogado, setUsuarioLogado] = useState<UsuarioLogadoInfos>();
@@ -46,7 +48,7 @@ export const CriarTemplateForm: React.FC = () => {
 
   // Estados para os campos do formulário
   const [formData, setFormData] = useState(initialState);
-  const [isChecked, setIsChecked] = useState(true);
+  const [isChecked, setIsChecked] = useState(false);
 
   // Estados para selects do formulário
   const [qntCampos, setQntCampos] = useState<number>(0);
@@ -110,7 +112,7 @@ export const CriarTemplateForm: React.FC = () => {
 
       if (response.status === 200) {
         console.log("Resposta do servidor:", response.data);
-        window.location.href = "http://localhost:3000/templates";
+        navigate("/templates");
       } else {
         console.log("Falha ao criar template");
       }

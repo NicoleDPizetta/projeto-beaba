@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate, useNavigate } from "react-router-dom";
 import { UsuarioLogadoPermissao } from "./UsuarioLogadoPermissao";
 import {
   PaginaCriarTemplate,
@@ -28,6 +28,13 @@ const acessoNaoPermitido = (userPermission: string | undefined, allowedPermissio
 
 export const PrivateRoute = ({ children, redirectTo, allowedPermissions }: { children: React.ReactElement; redirectTo: string; allowedPermissions: string[] }) => {
   const userPermission = UsuarioLogadoPermissao();
+  const navigate = useNavigate();
+
+  if (!userPermission || !temPermissao(userPermission, allowedPermissions)) {
+    navigate(redirectTo);
+    return null;
+  }
+
   return isAuthenticated ? (acessoNaoPermitido(userPermission, allowedPermissions) || children) : <Navigate to={redirectTo} replace />;
 };
 
