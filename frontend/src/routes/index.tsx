@@ -39,11 +39,11 @@ export const AppRoutes = () => {
 
         <Route path="/cadastrar" element={isAuthenticated ? <Navigate to="/home" replace /> : <PaginaCadastro />} />
         
+        <Route path="/perfil" element={isAuthenticated ? <PaginaPerfilDoUsuario /> : <Navigate to="/login" replace />} />
+        
         <Route path="/home" element={<PrivateRoute children={<PaginaInicial />} redirectTo={"/login"} allowedPermissions={["PADRAO", "CRIADOR", "ADMINISTRADOR"]} /> } />
         
         <Route path="/templates" element={<PrivateRoute children={<PaginaTemplatesDisponiveis />} redirectTo={"/login"} allowedPermissions={["PADRAO", "CRIADOR", "ADMINISTRADOR"]} /> } />
-        
-        <Route path="/perfil" element={<PrivateRoute children={<PaginaPerfilDoUsuario />} redirectTo={"/login"} allowedPermissions={["PADRAO", "CRIADOR", "ADMINISTRADOR"]} /> } />
          
         <Route path="/criar-template" element={<PrivateRoute children={<PaginaCriarTemplate />} redirectTo="/login" allowedPermissions={["CRIADOR", "ADMINISTRADOR"]} />} />
         
