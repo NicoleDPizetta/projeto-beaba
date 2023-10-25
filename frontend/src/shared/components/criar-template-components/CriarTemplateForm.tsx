@@ -46,7 +46,7 @@ export const CriarTemplateForm: React.FC = () => {
 
   // Estados para os campos do formulário
   const [formData, setFormData] = useState(initialState);
-  const [isChecked, setIsChecked] = useState(false);
+  const [isChecked, setIsChecked] = useState(true);
 
   // Estados para selects do formulário
   const [qntCampos, setQntCampos] = useState<number>(0);
@@ -90,13 +90,15 @@ export const CriarTemplateForm: React.FC = () => {
 
     const { nome } = formData;
 
+    const status = !isChecked
+
     const dataToSend = {
       nome,
       extensao: selectedExtensao,
       colunas: qntCampos,
       linhas: qntLinhas,
       campos: camposInfo,
-      status: isChecked,
+      status,
       squad: selectedSquad,
       criador: usuarioLogado?.id || "",
     };
