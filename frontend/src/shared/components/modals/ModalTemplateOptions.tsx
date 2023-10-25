@@ -1,14 +1,8 @@
 import React, { useState } from "react";
-import {
-  Box,
-  Typography,
-  Grid,
-  Switch,
-  Button,
-  useTheme,
-} from "@mui/material";
+import { Box, Typography, Grid, Switch, Button, useTheme } from "@mui/material";
 import { api } from "../../../server/api/api";
 import { ModalExcluirTemplate } from "./ModalExcluirTemplate";
+import { UsuarioLogadoPermissao } from "../../../routes/UsuarioLogadoPermissao";
 
 interface IModalTemplateOptionsProps {
   id: string;
@@ -22,6 +16,8 @@ export const ModalTemplateOptions: React.FC<IModalTemplateOptionsProps> = ({
   status,
 }) => {
   const theme = useTheme();
+  const permissoaAtual = UsuarioLogadoPermissao();
+  const allowedPermissions = ["CRIADOR", "ADMINISTRADOR"];
 
   const [statusSwitch, setStatusSwitch] = useState(status);
 
@@ -43,6 +39,10 @@ export const ModalTemplateOptions: React.FC<IModalTemplateOptionsProps> = ({
       console.error("Erro ao atualizar status:", error);
     }
   };
+
+  if (permissoaAtual && !allowedPermissions.includes(permissoaAtual)) {
+    return <ModalNaoAutorizado />;
+  }
 
   return (
     <Box
@@ -102,6 +102,47 @@ export const ModalTemplateOptions: React.FC<IModalTemplateOptionsProps> = ({
         <Button variant="contained" onClick={handleSave}>
           Salvar
         </Button>
+      </Box>
+    </Box>
+  );
+};
+
+export const ModalNaoAutorizado = () => {
+  const theme = useTheme();
+
+  return (
+    <Box
+      width={400}
+      display={"flex"}
+      alignItems={"center"}
+      justifyContent={"center"}
+      flexDirection={"column"}
+      gap={4}
+    >
+      <Typography
+        width={"100%"}
+        variant="h6"
+        textAlign={"center"}
+        fontWeight={700}
+        fontSize={"1.8rem"}
+        color={theme.palette.secondary.main}
+        borderBottom={"2px solid"}
+        borderColor={theme.palette.secondary.main}
+        padding={2}
+      >
+        Algo deu errado!
+      </Typography>
+
+      <Box
+        width={"98%"}
+        display={"flex"}
+        flexDirection={"column"}
+        alignItems={"center"}
+        justifyContent={"center"}
+      >
+        <Typography variant="body1" fontWeight={400}>
+          Ops! Você não tem o tipo de permissão autorizada!
+        </Typography>
       </Box>
     </Box>
   );
