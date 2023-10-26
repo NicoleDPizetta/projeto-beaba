@@ -43,7 +43,7 @@ export class TemplatesController {
 
   async consultarTemplatePorID(req: Request, res: Response) {
     try {
-      const templateID = req.body.id;
+      const templateID = req.params.id;
       const template: Templates | null = await prisma.templates.findUnique({
         where: { id: templateID },
       });

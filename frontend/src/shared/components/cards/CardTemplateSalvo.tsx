@@ -3,8 +3,6 @@ import { Box, Typography, Paper, Button, useTheme } from "@mui/material";
 import { TabelaInfosArquivo } from "../tabela-infos-arquivo/TabelaInfosArquivo";
 import Avatar from "@mui/material/Avatar";
 import CalendarMonthOutlinedIcon from "@mui/icons-material/CalendarMonthOutlined";
-import { MoreOptionsButton } from "../modals/MoreOptionsButton";
-import { ModalTemplateOptions } from "../modals/ModalTemplateOptions";
 
 interface ICardTemplateProps {
   id: string;
@@ -18,7 +16,7 @@ interface ICardTemplateProps {
   data_criacao: string;
 }
 
-export const CardTemplate: React.FC<ICardTemplateProps> = ({
+export const CardTemplateSalvo: React.FC<ICardTemplateProps> = ({
   status,
   nome,
   squad,
@@ -49,17 +47,6 @@ export const CardTemplate: React.FC<ICardTemplateProps> = ({
         <Typography flex={1} variant={"h5"} color={corTexto}>
           {nome}
         </Typography>
-
-        <MoreOptionsButton
-          children={
-            <ModalTemplateOptions
-              key={id}
-              id={id}
-              nome={nome}
-              status={status}
-            />
-          }
-        />
       </Box>
 
       <Box display={"flex"} justifyContent={"space-between"}>
@@ -138,9 +125,15 @@ export const CardTemplate: React.FC<ICardTemplateProps> = ({
           </Box>
 
           {status && (
-            <Button fullWidth variant="contained" id="btn-salvar-template">
-              Salvar
-            </Button>
+            <Box display={"flex"} gap={4}>
+                <Button fullWidth variant="contained">
+                Baixar
+                </Button>
+
+                <Button fullWidth variant="contained">
+                Upload
+                </Button>
+            </Box>
           )}
         </Box>
       </Box>
