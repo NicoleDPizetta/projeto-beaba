@@ -1,27 +1,33 @@
 import express from "express";
-import cors from "cors"
+import cors from "cors";
 import bodyParser from "body-parser";
 import { UsuariosController } from "./controllers/UsuariosController";
 import { TemplatesController } from "./controllers/TemplatesController";
 import { AuthController } from "./controllers/AuthController";
 import * as auth from "./middlewares/auth";
 import * as dotenv from "dotenv";
+import { TemplatesSalvosController } from "./controllers/TemplatesSalvosController";
 
 const app = express();
 dotenv.config();
-app.use(cors())
+app.use(cors());
 app.use(express.json());
 app.use(bodyParser.json());
 
 const userController = new UsuariosController();
 const templatesController = new TemplatesController();
+const templatesSalvosController = new TemplatesSalvosController();
 const authController = new AuthController();
 
 app.post("/cadastrar", userController.criarNovoUsuario);
 
 app.post("/login", authController.authenticate);
 
-app.get('/auth', auth.authMiddleware, userController.consultarPorToken);
+app.get("/home", templatesSalvosController.consultarTemplatesSalvos);
+
+app.post("/salvar-template", templatesSalvosController.salvarTemplate);
+
+app.get("/auth", auth.authMiddleware, userController.consultarPorToken);
 
 app.get("/usuarios", userController.consultarTodosUsuarios);
 
@@ -31,11 +37,11 @@ app.delete("/usuarios/:id", userController.excluirUsuario);
 
 app.put("/usuarios/:id", userController.editarUsuario);
 
-app.post("/criar-template", templatesController.criarNovoTemplate);
+app.post("/criar-template", auth.authMiddleware, templatesController.criarNovoTemplate);
 
 app.get("/templates/:id", templatesController.consultarTemplatePorID);
 
-app.get("/templates", auth.authMiddleware, templatesController.consultarTemplatesAtivos);
+app.get( "/templates", auth.authMiddleware, templatesController.consultarTemplatesAtivos);
 
 app.get("/gerenciar-templates", templatesController.consultarTemplatesInativos);
 
