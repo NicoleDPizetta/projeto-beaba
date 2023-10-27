@@ -8,23 +8,23 @@ interface ISelectTiposDadosProps {
 
 const tipos = [
   {
-    value: "VARCHAR",
+    value: "str",
     label: "Texto",
   },
   {
-    value: "INTEGER",
+    value: "int",
     label: "Número inteiro",
   },
   {
-    value: "DECIMAL",
+    value: "float",
     label: "Número decimal / Moeda",
   },
   {
-    value: "DATE",
+    value: "date",
     label: "Data apenas",
   },
   {
-    value: "TIMESTAMP",
+    value: "datetime",
     label: "Data e Hora",
   },
 ];
