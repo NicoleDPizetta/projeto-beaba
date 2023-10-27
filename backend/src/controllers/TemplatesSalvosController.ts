@@ -12,9 +12,6 @@ export class TemplatesSalvosController {
     try {
       const { usuarioId, templateId } = req.body;
 
-      console.log(usuarioId)
-      console.log(templateId)
-      
       const usuario = await prisma.usuarios.findUnique({
         where: { id: usuarioId },
       });
@@ -45,13 +42,21 @@ export class TemplatesSalvosController {
 
   async consultarTemplatesSalvos(req: Request, res: Response) {
     try {
-      const { usuarioId } = req.body;
-      
-      const templatesSalvos: Templates_salvos_do_Usuario[] = await prisma.templates_salvos_do_Usuario.findMany({
-        where: {usario_dono: usuarioId}
-      })
+      const { id } = req.params;
 
-      res.json(templatesSalvos)
+      const usuario = await prisma.usuarios.findUnique({
+        where: { id: id },
+      });
+
+      if (!usuario) {
+        return res.status(404).json({ error: "Usuário não encontrado." });
+      }
+
+      const templatesSalvos: Templates_salvos_do_Usuario[] = await prisma.templates_salvos_do_Usuario.findMany({
+          where: { usario_dono: usuario.id },
+        });
+
+      res.json(templatesSalvos);
     } catch (error) {
       console.error(error);
       res.status(500).json({ error: "Erro ao consultar templates salvos." });

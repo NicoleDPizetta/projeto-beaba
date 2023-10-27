@@ -23,7 +23,7 @@ app.post("/cadastrar", userController.criarNovoUsuario);
 
 app.post("/login", authController.authenticate);
 
-app.get("/home", templatesSalvosController.consultarTemplatesSalvos);
+app.get("/home/:id", templatesSalvosController.consultarTemplatesSalvos);
 
 app.post("/salvar-template", templatesSalvosController.salvarTemplate);
 
