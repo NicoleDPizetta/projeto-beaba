@@ -42,28 +42,17 @@ export const PaginaInicial = () => {
     }
   };
 
-  const getTemplatePorID = async (id: string) => {
-    try {
-      const response = await api.get(`/templates/${id}`);
-      const data = response.data
-      setTemplateInfos((prevData) => [...prevData, data])
-      console.log(templateInfos)
-    } catch (error) {
-      console.error("Erro ao receber template por ID:", error);
-      return null;
-    }
-  };
-
-  const getTemplatesSalvos = async () => {
+  const getTemplatesInfos = async () => {
     try {
       const usuarioLogadoID = usuarioLogado?.id;
-      const response = await api.get("/home", {data: { usuarioId: usuarioLogadoID }});
+      const response = await api.get("/home", { data: { usuarioId: usuarioLogadoID } });
       const data = response.data;
       setTemplatesSalvos(data);
-      templatesSalvos.map((template) => {
-        const id = template.template_salvo
-        getTemplatePorID(id);
-      });
+
+      const templateIds = templatesSalvos.map((template) => template.template_salvo);
+      const templateDetailsResponse = await api.get(`/templates?ids=${templateIds.join(",")}`);
+      const templateDetailsData = templateDetailsResponse.data;
+      setTemplateInfos(templateDetailsData);
     } catch (error) {
       console.error("Erro ao receber templates salvos:", error);
     }
@@ -71,7 +60,7 @@ export const PaginaInicial = () => {
 
   useEffect(() => {
     getUsuarioLogado();
-    getTemplatesSalvos();
+    getTemplatesInfos();
   }, []);
 
   return (
