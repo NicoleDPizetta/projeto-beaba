@@ -27,6 +27,8 @@ app.get("/home/:id", templatesSalvosController.consultarTemplatesSalvos);
 
 app.post("/salvar-template", templatesSalvosController.salvarTemplate);
 
+app.delete("/home/:usuarioId/:templateId", templatesSalvosController.removerDeTemplatesSalvos);
+
 app.get("/auth", auth.authMiddleware, userController.consultarPorToken);
 
 app.get("/usuarios", userController.consultarTodosUsuarios);

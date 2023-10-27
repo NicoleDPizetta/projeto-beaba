@@ -62,4 +62,38 @@ export class TemplatesSalvosController {
       res.status(500).json({ error: "Erro ao consultar templates salvos." });
     }
   }
+
+  async removerDeTemplatesSalvos(req: Request, res: Response) {
+    try {
+      const usuarioId = req.params.usuarioId;
+      const templateId = req.params.templateId;
+
+      const templateSalvo: Templates_salvos_do_Usuario | null = await prisma.templates_salvos_do_Usuario.findUnique({
+        where: {
+          usario_dono_template_salvo: {
+            usario_dono: usuarioId,
+            template_salvo: templateId,
+          },
+        },
+      });
+
+      if (!templateSalvo) {
+        return res.status(404).json({ error: 'Template salvo não encontrado.' });
+      }
+
+      await prisma.templates_salvos_do_Usuario.delete({
+        where: {
+          usario_dono_template_salvo: {
+            usario_dono: usuarioId,
+            template_salvo: templateId,
+          },
+        },
+      });
+
+      res.status(200).json({ message: 'Template salvo removido com sucesso.' });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: 'Ocorreu um erro ao excluir o template salvo.' });
+    }
+  }
 }

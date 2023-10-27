@@ -1,8 +1,15 @@
-import React from "react";
-import { Box, Typography, Paper, Button, useTheme } from "@mui/material";
+import React, { useState, useEffect } from "react";
+import { Box, Typography, Paper, Button, IconButton, useTheme } from "@mui/material";
 import { TabelaInfosArquivo } from "../tabela-infos-arquivo/TabelaInfosArquivo";
 import Avatar from "@mui/material/Avatar";
 import CalendarMonthOutlinedIcon from "@mui/icons-material/CalendarMonthOutlined";
+import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
+import { api } from "../../../server/api/api";
+import { AuthUsuarioLogado } from "../../../middleware";
+
+interface UsuarioLogadoInfos {
+  id: string;
+}
 
 interface ICardTemplateProps {
   id: string;
@@ -28,6 +35,35 @@ export const CardTemplateSalvo: React.FC<ICardTemplateProps> = ({
   linhas,
 }) => {
   const theme = useTheme();
+  const [usuarioLogado, setUsuarioLogado] = useState<UsuarioLogadoInfos>();
+
+  const getUsuarioLogado = async () => {
+    const usuario = await AuthUsuarioLogado();
+    if (usuario) {
+      setUsuarioLogado(usuario);
+    } else {
+      console.error("AuthUsuarioLogado returned undefined.");
+    }
+  };
+
+  useEffect(() => {
+    getUsuarioLogado();
+  }, []);
+
+  const removerTemplate = async () => {
+    const usuarioId = usuarioLogado?.id;
+    const templateId = id;
+
+    try {
+      const response = await api.delete(`/home/${usuarioId}/${templateId}`)
+
+      if(response.status = 200) {
+        window.location.reload();
+      }
+    } catch (error) {
+      console.error('Erro ao excluir template salvo:', error);
+    }
+  };
 
   /* Definindo a cor do template de acordo com o status (ativo / inativo) */
   const corTexto = status ? theme.palette.primary.light : theme.palette.info.main;
@@ -47,6 +83,10 @@ export const CardTemplateSalvo: React.FC<ICardTemplateProps> = ({
         <Typography flex={1} variant={"h5"} color={corTexto}>
           {nome}
         </Typography>
+
+        <IconButton onClick={removerTemplate}>
+          <DeleteOutlinedIcon />
+        </IconButton>
       </Box>
 
       <Box display={"flex"} justifyContent={"space-between"}>
@@ -126,13 +166,13 @@ export const CardTemplateSalvo: React.FC<ICardTemplateProps> = ({
 
           {status && (
             <Box display={"flex"} gap={4}>
-                <Button fullWidth variant="contained">
+              <Button fullWidth variant="contained">
                 Baixar
-                </Button>
+              </Button>
 
-                <Button fullWidth variant="contained">
+              <Button fullWidth variant="contained">
                 Upload
-                </Button>
+              </Button>
             </Box>
           )}
         </Box>
