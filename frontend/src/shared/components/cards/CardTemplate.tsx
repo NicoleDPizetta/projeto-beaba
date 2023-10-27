@@ -1,10 +1,16 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Box, Typography, Paper, Button, useTheme } from "@mui/material";
 import { TabelaInfosArquivo } from "../tabela-infos-arquivo/TabelaInfosArquivo";
 import Avatar from "@mui/material/Avatar";
 import CalendarMonthOutlinedIcon from "@mui/icons-material/CalendarMonthOutlined";
 import { MoreOptionsButton } from "../modals/MoreOptionsButton";
 import { ModalTemplateOptions } from "../modals/ModalTemplateOptions";
+import { api } from "../../../server/api/api";
+import { AuthUsuarioLogado } from "../../../middleware";
+
+interface UsuarioLogadoInfos {
+  id: string;
+}
 
 interface ICardTemplateProps {
   id: string;
@@ -30,6 +36,42 @@ export const CardTemplate: React.FC<ICardTemplateProps> = ({
   linhas,
 }) => {
   const theme = useTheme();
+  const [usuarioLogado, setUsuarioLogado] = useState<UsuarioLogadoInfos>();
+
+  const getUsuarioLogado = async () => {
+    const usuario = await AuthUsuarioLogado();
+    if (usuario) {
+      setUsuarioLogado(usuario);
+    } else {
+      console.error("AuthUsuarioLogado returned undefined.");
+    }
+  };
+
+  useEffect(() => {
+    getUsuarioLogado();
+  }, []);
+
+  const salvarTemplate = async () => {
+    if (usuarioLogado && id) {
+      try {
+        const usuarioId = usuarioLogado.id;
+        const templateId = id;
+
+        const response = await api.post("/salvar-template", {
+          usuarioId,
+          templateId,
+        });
+
+        if (response.status === 200) {
+          console.log("Template salvo com sucesso!");
+        } else {
+          console.error("Erro ao salvar o template:", response.data.error);
+        }
+      } catch (error) {
+        console.error("Erro ao salvar o template:", error);
+      }
+    }
+  };
 
   /* Definindo a cor do template de acordo com o status (ativo / inativo) */
   const corTexto = status ? theme.palette.primary.light : theme.palette.info.main;
@@ -138,7 +180,12 @@ export const CardTemplate: React.FC<ICardTemplateProps> = ({
           </Box>
 
           {status && (
-            <Button fullWidth variant="contained" id="btn-salvar-template">
+            <Button
+              fullWidth
+              variant="contained"
+              id="btn-salvar-template"
+              onClick={salvarTemplate}
+            >
               Salvar
             </Button>
           )}
