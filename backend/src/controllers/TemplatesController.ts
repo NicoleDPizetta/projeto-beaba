@@ -1,4 +1,4 @@
-import { PrismaClient } from "@prisma/client";
+import { PrismaClient, Templates_salvos_do_Usuario } from "@prisma/client";
 import bodyParser from "body-parser";
 import express, { Request, Response } from "express";
 import { Templates } from "@prisma/client";
@@ -96,16 +96,21 @@ export class TemplatesController {
       const template: Templates | null = await prisma.templates.findUnique({
         where: { id: templateID },
       });
+
       if (!template) {
-        res.status(404).json({
-          error: "ID do template não encontrado",
-        });
+        res.status(404).json({error: "ID do template não encontrado"});
       } else {
+        await prisma.templates_salvos_do_Usuario.deleteMany({
+          where: {
+            template_salvo: template.id,
+          },
+        });
         await prisma.templates.delete({
           where: { id: template.id },
         });
         res.json("Template deletado com sucesso");
       }
+      await prisma.$disconnect();
     } catch (error) {
       console.error("Erro ao excluir template", error);
       res.status(500).json({
