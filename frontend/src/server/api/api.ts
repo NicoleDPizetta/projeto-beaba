@@ -8,3 +8,10 @@ export const api = axios.create({
     Authorization: `Bearer ${token}`,
   },
 });
+
+export const pyApi = axios.create({
+  baseURL: "http://localhost:4000",
+  headers: {
+    Authorization: `Bearer ${token}`,
+  },
+});
