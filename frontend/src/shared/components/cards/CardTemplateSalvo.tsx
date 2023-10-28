@@ -6,6 +6,8 @@ import CalendarMonthOutlinedIcon from "@mui/icons-material/CalendarMonthOutlined
 import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
 import { api } from "../../../server/api/api";
 import { AuthUsuarioLogado } from "../../../middleware";
+import { styled } from "@mui/material/styles";
+import axios from "axios";
 
 interface UsuarioLogadoInfos {
   id: string;
@@ -17,11 +19,24 @@ interface ICardTemplateProps {
   extensao: string;
   colunas: number;
   linhas: number | null;
+  campos: JSON;
   squad: string;
   criador: string;
   status: boolean;
   data_criacao: string;
 }
+
+const VisualInputEscondido = styled("input")({
+  clip: "rect(0 0 0 0)",
+  clipPath: "inset(50%)",
+  height: 1,
+  overflow: "hidden",
+  position: "absolute",
+  bottom: 0,
+  left: 0,
+  whiteSpace: "nowrap",
+  width: 1,
+});
 
 export const CardTemplateSalvo: React.FC<ICardTemplateProps> = ({
   status,
@@ -30,6 +45,7 @@ export const CardTemplateSalvo: React.FC<ICardTemplateProps> = ({
   criador,
   data_criacao,
   id,
+  campos,
   extensao,
   colunas,
   linhas,
@@ -64,6 +80,40 @@ export const CardTemplateSalvo: React.FC<ICardTemplateProps> = ({
       console.error('Erro ao excluir template salvo:', error);
     }
   };
+
+  const fazerUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    event.preventDefault();
+
+    const arquivo = event.target.files?.[0] || null;
+    const templateInfos = {
+      id,
+      nome,
+      status,
+      squad,
+      criador,
+      data_criacao,
+      campos,
+      extensao,
+      colunas,
+      linhas,
+    }
+
+    const formData = new FormData();
+    formData.append('arquivo', arquivo as File);
+    formData.append('template', JSON.stringify(templateInfos));
+
+    try{
+      const response = await axios.post('http://localhost:4000/validar', formData, {
+        headers: { 'Content-Type': 'multipart/form-data' },
+      });
+      
+      if(response.status = 200) {
+        console.log(response);
+      }
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  }
 
   /* Definindo a cor do template de acordo com o status (ativo / inativo) */
   const corTexto = status ? theme.palette.primary.light : theme.palette.info.main;
@@ -170,8 +220,13 @@ export const CardTemplateSalvo: React.FC<ICardTemplateProps> = ({
                 Baixar
               </Button>
 
-              <Button fullWidth variant="contained">
+              <Button
+                fullWidth
+                component="label"
+                variant="contained"
+              >
                 Upload
+                <VisualInputEscondido type="file" accept=".xlsx, .xlx, .csv" onChange={fazerUpload} />
               </Button>
             </Box>
           )}

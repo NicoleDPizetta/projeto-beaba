@@ -16,6 +16,7 @@ interface TemplateInfos {
   extensao: string;
   colunas: number;
   linhas: number | null;
+  campos: JSON;
   squad: string;
   criador: string;
   status: boolean;
@@ -81,6 +82,7 @@ export const TemplatesSalvosDoUsuario = ({ id }: UsuarioLogado) => {
             extensao={template.extensao}
             colunas={template.colunas}
             linhas={template.linhas}
+            campos={template.campos}
           />
         ))
       ) : (

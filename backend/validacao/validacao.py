@@ -1,54 +1,56 @@
+from flask import Flask, request, jsonify
+from flask_cors import CORS
 import pandas as pd
+import json 
 
-template = {
-    "id": "b61754bb-68ed-4f86-8995-8bc365e3c97c",
-    "nome": "Clientes",
-    "extensao": ".xlsx",
-    "colunas": 5,
-    "linhas": 2,
-    "squad": "Mercantil",
-    "criador": "6b824325-ca69-4c6c-997f-bc82eaf76d40",
-    "status": True,
-    "campos": {
-        "Nome": "string",
-        "Idade": "int",
-        "Cidade": "string",
-        "Data de nascimento": "date",
-        "Total de pedidos feitos": "int"
-    },
-    "data_criacao": "2023-10-22T00:05:00.262Z"
-}
+app = Flask(__name__)
+CORS(app)
 
-arquivo_excel = pd.read_excel("D:\\Códigos\\Projetos\\QQTech\\backend\\validacao\\arquivo_valido.xlsx")
-numero_colunas = len(arquivo_excel.columns)
-numero_linhas = len(arquivo_excel)
+@app.route('/validar', methods=['POST'])
 
-if numero_colunas != template["colunas"]:
-    print("O numero de colunas está incorreto")
+def validar_arquivo():
+    try:
+        arquivo = request.files['arquivo']
+        template = json.loads(request.form['template'])
 
-if numero_linhas != template["linhas"]:
-    print("O numero de linhas está incorreto")
-else:
-    print("O numero de linhas está correto")
+        arquivo_excel = pd.read_excel(arquivo)
+        numero_colunas = len(arquivo_excel.columns)
+        numero_linhas = len(arquivo_excel)
 
-colunas_arquivo = arquivo_excel.columns
-for coluna, tipo_esperado in template["campos"].items():
-    if coluna not in colunas_arquivo:
-        print(f'A coluna {coluna} não está presente')
-    else:
-        tipo_dado = str(arquivo_excel[coluna].dtype)
-    
-    if tipo_esperado == "string" and tipo_dado != "object":
-        print(f"A coluna {coluna} deve conter strings, mas o tipo real é {tipo_dado}")
+        if numero_colunas != template["colunas"]:
+            return jsonify({"result": "O numero de colunas está incorreto"})
 
-    if tipo_esperado == "int" and tipo_dado != "int64":
-        print(f"A coluna {coluna} deve conter inteiros, mas o tipo real é {tipo_dado}")
+        if template["linhas"] != 0:
+            if numero_linhas != template["linhas"]:
+                return jsonify({"result": "O número de linhas está incorreto"})
+            else:
+                return jsonify({"result": "O número de linhas está correto"})
 
-    if tipo_esperado == "date" and tipo_dado != "datetime64[ns]":
-        print(f"A coluna {coluna} deve conter datas, mas o tipo real é {tipo_dado}")
-    
-    if tipo_esperado == "float" and tipo_dado != "float64":
-        print(f"A coluna {coluna} deve conter numeros decimais, mas o tipo real é {tipo_dado}")
+        colunas_arquivo = arquivo_excel.columns
+        for coluna, tipo_esperado in template["campos"].items():
+            if coluna not in colunas_arquivo:
+                return jsonify({"result": f'A coluna {coluna} não está presente'})
+            else:
+                tipo_dado = str(arquivo_excel[coluna].dtype)
+            
+            if tipo_esperado == "string" and tipo_dado != "object":
+                return jsonify({"result": f"A coluna {coluna} deve conter strings, mas o tipo real é {tipo_dado}"})
 
-if not "arquivo_valido.xlsx".endswith(template["extensao"]):
-    print("A extensão do arquivo não corresponde ao template")
+            if tipo_esperado == "int" and tipo_dado != "int64":
+                return jsonify({"result": f"A coluna {coluna} deve conter inteiros, mas o tipo real é {tipo_dado}"})
+
+            if tipo_esperado == "date" and tipo_dado != "datetime64[ns]":
+                return jsonify({"result": f"A coluna {coluna} deve conter datas, mas o tipo real é {tipo_dado}"})
+            
+            if tipo_esperado == "float" and tipo_dado != "float64":
+                return jsonify({"result": f"A coluna {coluna} deve conter numeros decimais, mas o tipo real é {tipo_dado}"})
+        
+        if not "arquivo_valido.xlsx".endswith(template["extensao"]):
+            return jsonify({"result": "A extensão do arquivo não corresponde ao template"})
+        
+        return jsonify({'result': "Deu certo!"})
+    except Exception as e:
+        return jsonify({'error': str(e)})
+
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=4000)
