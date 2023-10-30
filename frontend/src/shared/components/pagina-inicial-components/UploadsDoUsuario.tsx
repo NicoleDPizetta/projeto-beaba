@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { Typography } from "@mui/material";
 import { api } from "../../../server/api/api";
+import { Box } from "@mui/system";
+import { CardUpload } from "../cards/CardUpload";
 
 interface UsuarioLogado {
   id: string;
@@ -19,7 +21,6 @@ interface UploadInfos {
   campos: JSON;
   squad: string;
   criador: string;
-  status: boolean;
   data_upload: string;
   template_origem: string;
 }
@@ -46,7 +47,20 @@ export const UploadsDoUsuario = ({ id }: UsuarioLogado) => {
   }, [id]); */
 
   return (
-    <Typography> Usuário: {id}
-    </Typography>
+    <Box>
+        <CardUpload
+            key={"index"}
+            id={"id"}
+            nome={"nome"}
+            criador={"criador"}
+            data_upload={"data_upload"}
+            squad={"squad"}
+            extensao={"extensao"}
+            colunas={0}
+            linhas={0}
+            campos={JSON}
+            template_origem={"template_origem"}
+          />
+    </Box>
   )
 };

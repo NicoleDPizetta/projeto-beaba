@@ -4,6 +4,7 @@ export * from "./menu-conta-usuario/MenuContaUsuario";
 export * from "./perfil-usuario/PerfilUsuario";
 export * from "./cards/CardTemplate";
 export * from "./cards/CardUsuario";
+export * from "./cards/CardUpload";
 export * from "./tabela-infos-arquivo/TabelaInfosArquivo";
 export * from "./grid-base/GridBase";
 export * from "./criar-template-components/CriarTemplateForm";

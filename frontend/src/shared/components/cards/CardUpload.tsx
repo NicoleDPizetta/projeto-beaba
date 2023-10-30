@@ -3,80 +3,42 @@ import { Box, Typography, Paper, Button, useTheme } from "@mui/material";
 import { TabelaInfosArquivo } from "../tabela-infos-arquivo/TabelaInfosArquivo";
 import Avatar from "@mui/material/Avatar";
 import CalendarMonthOutlinedIcon from "@mui/icons-material/CalendarMonthOutlined";
+import { api, pyApi } from "../../../server/api/api";
 import { MoreOptionsButton } from "../modals/MoreOptionsButton";
-import { ModalTemplateOptions } from "../modals/ModalTemplateOptions";
-import { api } from "../../../server/api/api";
-import { AuthUsuarioLogado } from "../../../middleware";
 
 interface UsuarioLogadoInfos {
   id: string;
 }
 
-interface ICardTemplateProps {
+interface ICardUploadProps {
   id: string;
   nome: string;
   extensao: string;
   colunas: number;
   linhas: number | null;
+  campos: JSON;
   squad: string;
   criador: string;
-  status: boolean;
-  data_criacao: string;
+  data_upload: string;
+  template_origem: string;
 }
 
-export const CardTemplate: React.FC<ICardTemplateProps> = ({
-  status,
-  nome,
-  squad,
-  criador,
-  data_criacao,
+export const CardUpload: React.FC<ICardUploadProps> = ({
   id,
+  nome,
+  criador,
+  data_upload,
   extensao,
   colunas,
   linhas,
+  squad,
+  template_origem,
 }) => {
   const theme = useTheme();
-  const [usuarioLogado, setUsuarioLogado] = useState<UsuarioLogadoInfos>();
 
-  const getUsuarioLogado = async () => {
-    const usuario = await AuthUsuarioLogado();
-    if (usuario) {
-      setUsuarioLogado(usuario);
-    } else {
-      console.error("AuthUsuarioLogado returned undefined.");
-    }
+  const handleBaixar = () => {
+    console.log("Baixei!");
   };
-
-  useEffect(() => {
-    getUsuarioLogado();
-  }, []);
-
-  const salvarTemplate = async () => {
-    if (usuarioLogado && id) {
-      try {
-        const usuarioId = usuarioLogado.id;
-        const templateId = id;
-
-        const response = await api.post("/salvar-template", {
-          usuarioId,
-          templateId,
-        });
-
-        if (response.status === 200) {
-          console.log("Template salvo com sucesso!");
-        } else {
-          console.error("Erro ao salvar o template:", response.data.error);
-        }
-      } catch (error) {
-        console.error("Erro ao salvar o template:", error);
-      }
-    }
-  };
-
-  /* Definindo a cor do template de acordo com o status (ativo / inativo) */
-  const corTexto = status ? theme.palette.primary.light : theme.palette.info.main;
-  const corBorda = status ? theme.palette.primary.main : theme.palette.info.light;
-  const corLateral = status ? theme.palette.primary.main : theme.palette.info.main;
 
   return (
     <Paper elevation={1} sx={{ width: "46rem" }}>
@@ -86,22 +48,14 @@ export const CardTemplate: React.FC<ICardTemplateProps> = ({
         alignItems={"center"}
         justifyContent={"space-between"}
         padding={2}
-        borderBottom={`2px solid ${corBorda}`}
+        borderBottom={`2px solid`}
+        borderColor={theme.palette.primary.light}
       >
-        <Typography flex={1} variant={"h5"} color={corTexto}>
+        <Typography flex={1} variant={"h5"} color={theme.palette.info.dark}>
           {nome}
         </Typography>
 
-        <MoreOptionsButton
-          children={
-            <ModalTemplateOptions
-              key={id}
-              id={id}
-              nome={nome}
-              status={status}
-            />
-          }
-        />
+        <MoreOptionsButton children={<></>} />
       </Box>
 
       <Box display={"flex"} justifyContent={"space-between"}>
@@ -113,8 +67,8 @@ export const CardTemplate: React.FC<ICardTemplateProps> = ({
           gap={1}
         >
           <Box display={"flex"} gap={1} alignItems={"center"}>
-            <Typography variant="body2">Squad:</Typography>
-            <Typography variant="body1" color={corLateral}>
+            <Typography variant="body1">Squad:</Typography>
+            <Typography variant="body1" color={theme.palette.info.dark}>
               {squad}
             </Typography>
           </Box>
@@ -125,11 +79,23 @@ export const CardTemplate: React.FC<ICardTemplateProps> = ({
             colunas={colunas}
             linhas={linhas}
           />
+
+          <Box
+            display={"flex"}
+            padding={2}
+            gap={1}
+            alignItems={"center"}
+            justifyContent={"center"}
+          >
+            <Typography variant="body1">
+              Template origem: {template_origem}
+            </Typography>
+          </Box>
         </Box>
 
         <Box
           flex={1}
-          bgcolor={corLateral}
+          bgcolor={theme.palette.info.dark}
           display="flex"
           flexDirection="column"
           alignItems="center"
@@ -150,9 +116,8 @@ export const CardTemplate: React.FC<ICardTemplateProps> = ({
                   width: "1.5rem",
                   height: "1.5rem",
                   backgroundColor: theme.palette.primary.contrastText,
-                  color: { corLateral },
+                  color: theme.palette.primary.main,
                 }}
-                aria-label="avatar-user"
                 alt={criador}
                 src="/broken-image.jpg"
               />
@@ -174,21 +139,19 @@ export const CardTemplate: React.FC<ICardTemplateProps> = ({
                 variant="body1"
                 color={theme.palette.primary.contrastText}
               >
-                {data_criacao}
+                {data_upload}
               </Typography>
             </Box>
           </Box>
 
-          {status && (
-            <Button
-              fullWidth
-              variant="contained"
-              id="btn-salvar-template"
-              onClick={salvarTemplate}
-            >
-              Salvar
-            </Button>
-          )}
+          <Button
+            fullWidth
+            variant="contained"
+            id="btn-salvar-template"
+            onClick={handleBaixar}
+          >
+            Baixar
+          </Button>
         </Box>
       </Box>
     </Paper>
