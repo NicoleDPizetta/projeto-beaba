@@ -1,5 +1,5 @@
 import { Box, Paper, TextField, Button, useTheme } from "@mui/material";
-import { LogoBox } from "../../shared/components";
+import { AbasLoginCadastro, LogoBox } from "../../shared/components";
 import { useState } from "react";
 import { api } from "../../server/api/api";
 
@@ -58,6 +58,7 @@ export const PaginaLogin = () => {
         padding={6}
         gap={4}
       >
+        <AbasLoginCadastro />
         <TextField
           fullWidth
           label="Email"

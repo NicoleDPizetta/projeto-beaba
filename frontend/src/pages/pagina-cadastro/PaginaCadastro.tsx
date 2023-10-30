@@ -7,7 +7,7 @@ import {
   MenuItem,
   useTheme,
 } from "@mui/material";
-import { LogoBox } from "../../shared/components";
+import { AbasLoginCadastro, LogoBox } from "../../shared/components";
 import { api } from "../../server/api/api";
 
 const squads = [
@@ -93,6 +93,7 @@ export const PaginaCadastro = () => {
         padding={6}
         gap={4}
       >
+        <AbasLoginCadastro />
         <Box width={"100%"} display={"flex"} flexDirection={"column"} gap={4}>
           <TextField
             required
