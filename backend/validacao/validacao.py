@@ -1,7 +1,13 @@
+import os
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 import pandas as pd
 import json 
+from googleapiclient.discovery import build
+from google.oauth2 import service_account
+from dotenv import load_dotenv
+from googleapiclient.http import MediaIoBaseUpload
+#from io import BytesIO
 
 app = Flask(__name__)
 CORS(app)
@@ -9,6 +15,7 @@ CORS(app)
 @app.route('/validar', methods=['POST'])
 
 def validar_arquivo():
+    """ Validando Upload de acordo com o Template """
     try:
         arquivo = request.files['arquivo']
         template = json.loads(request.form['template'])
@@ -48,6 +55,27 @@ def validar_arquivo():
         if not arquivo.filename.endswith(template['extensao']):
             return jsonify({'error': 'A extensão do arquivo não corresponde ao template'})
         
+        """ Enviando para o Google Drive """
+        credentials_path = 'backend\\validacao\\projeto-beaba-chave.json'
+
+        load_dotenv()
+
+        credentials = service_account.Credentials.from_service_account_file(
+            credentials_path, scopes=['https://www.googleapis.com/auth/drive']
+        )
+
+        drive_service = build('drive', 'v3', credentials=credentials)
+
+        file_metadata = {
+            'name': arquivo.filename,
+            'parents': [os.getenv('DRIVE_FOLDER')]
+        }
+
+        media = MediaIoBaseUpload(arquivo, mimetype='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', resumable=True)
+
+        file = drive_service.files().create(body=file_metadata, media_body=media, fields='id').execute()
+        print(f'Arquivo {arquivo.filename} enviado com sucesso. ID: {file["id"]}')
+
         return jsonify({'sucesso': 'Seu arquivo foi validado e enviado com sucesso!'})
     except Exception as e:
         return jsonify({'error': str(e)})
