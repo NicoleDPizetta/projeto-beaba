@@ -43,14 +43,6 @@ model Usuarios {
   squads Squads @relation(fields: [squad], references: [nome])
 }
 
-model Campos {
-  nome       String
-  tipo_dados String
-  templateId String @unique
-
-  template Templates @relation(fields: [templateId], references: [id])
-}
-
 model Templates {
   id           String   @id @default(uuid())
   nome         String
@@ -63,7 +55,6 @@ model Templates {
   campos       Json
   data_criacao DateTime @default(now())
 
-  camposList       Campos[]
   uploads          Uploads[]
   templates_salvos Templates_salvos_do_Usuario[]
 
@@ -73,6 +64,7 @@ model Templates {
 
 model Uploads {
   id              String   @id @default(uuid())
+  id_gdrive       String   @unique
   nome            String
   extensao        String
   colunas         Int
