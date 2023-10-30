@@ -1,9 +1,13 @@
 import { useEffect, useState } from "react";
-import { AbasDaHome, GridBase, TemplatesSalvosDoUsuario } from "../../shared/components";
+import {
+  AbasDaHome,
+  GridBase,
+  UploadsDoUsuario,
+} from "../../shared/components";
 import { LayoutBase } from "../../shared/layouts";
 import { AuthUsuarioLogado } from "../../middleware";
 
-export const PaginaInicial = () => {
+export const PaginaUploads = () => {
   const [usuarioLogadoID, setUsuarioLogado] = useState();
 
   const getUsuarioLogado = async () => {
@@ -24,7 +28,7 @@ export const PaginaInicial = () => {
     <LayoutBase>
       <GridBase>
         <AbasDaHome />
-        {usuarioLogadoID && <TemplatesSalvosDoUsuario id={usuarioLogadoID} />}
+        {usuarioLogadoID && <UploadsDoUsuario id={usuarioLogadoID} />}
       </GridBase>
     </LayoutBase>
   );

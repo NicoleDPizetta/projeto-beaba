@@ -9,6 +9,7 @@ import {
   PaginaPerfilDoUsuario,
   PaginaLogin,
   PaginaCadastro,
+  PaginaUploads,
 } from "../pages";
 
 const isAuthenticated = localStorage.getItem("token") !== null;
@@ -49,6 +50,8 @@ export const AppRoutes = () => {
         <Route path="/perfil" element={isAuthenticated ? <PaginaPerfilDoUsuario /> : <Navigate to="/login" replace />} />
         
         <Route path="/home" element={<PrivateRoute children={<PaginaInicial />} redirectTo={"/login"} allowedPermissions={["PADRAO", "CRIADOR", "ADMINISTRADOR"]} /> } />
+
+        <Route path="/uploads" element={<PrivateRoute children={<PaginaUploads />} redirectTo={"/login"} allowedPermissions={["PADRAO", "CRIADOR", "ADMINISTRADOR"]} /> } />
         
         <Route path="/templates" element={<PrivateRoute children={<PaginaTemplatesDisponiveis />} redirectTo={"/login"} allowedPermissions={["PADRAO", "CRIADOR", "ADMINISTRADOR"]} /> } />
          

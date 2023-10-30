@@ -19,3 +19,5 @@ export * from "./selects-e-valores/SelectExtensoes";
 export * from "./selects-e-valores/SelectTiposDados";
 export * from "./logo-box/LogoBox";
 export * from "./pagina-inicial-components/TemplatesSalvosDoUsuario";
+export * from "./pagina-inicial-components/UploadsDoUsuario";
+export * from "./pagina-inicial-components/AbasDaHome";
