@@ -26,7 +26,6 @@ export class GDriveController {
 
       const novoArquivo = await prisma.uploads.create({
         data: {
-          id,
           id_gdrive,
           nome,
           extensao,
