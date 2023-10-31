@@ -8,10 +8,6 @@ interface UsuarioLogado {
   id: string;
 }
 
-interface UploadsID {
-    template_salvo: string;
-}
-
 interface UploadInfos {
   id: string;
   nome: string;
@@ -26,41 +22,45 @@ interface UploadInfos {
 }
 
 export const UploadsDoUsuario = ({ id }: UsuarioLogado) => {
-  /* const [uploadsInfos, setUploadsInfos] = useState<UploadInfos[]>([]);
+  const usuarioId = id;
+  console.log(usuarioId);
+  const [uploadsInfos, setUploadsInfos] = useState<UploadInfos[]>([]);
 
-  const [upload, setUpload] = useState<UploadsID[]>([]);
-
-  const getUploadsDoUsuario = async () => {
+  const getUploads = async () => {
     try {
-      const response = await api.get(`/home/${id}`);
+      const response = await api.get<UploadInfos[]>(`/uploads/${usuarioId}`);
       const data = response.data;
-      setUpload(data);
+      setUploadsInfos(data);
     } catch (error) {
-      console.error("Erro ao receber uploadss salvos:", error);
+      console.error("Erro ao receber uploads do usuário logado:", error);
     }
   };
 
   useEffect(() => {
-    if (id) {
-      getUploadsDoUsuario();
-    }
-  }, [id]); */
+    getUploads();
+  }, [usuarioId]);
 
   return (
     <Box>
-        <CardUpload
-            key={"index"}
-            id={"id"}
-            nome={"nome"}
-            criador={"criador"}
-            data_upload={"data_upload"}
-            squad={"squad"}
-            extensao={"extensao"}
-            colunas={0}
-            linhas={0}
-            campos={JSON}
-            template_origem={"template_origem"}
+      {uploadsInfos.length > 0 ? (
+        uploadsInfos.map((upload, index) => (
+          <CardUpload
+            key={index}
+            id={upload.id}
+            nome={upload.nome}
+            criador={upload.criador}
+            data_upload={upload.data_upload}
+            squad={upload.squad}
+            extensao={upload.extensao}
+            colunas={upload.colunas}
+            linhas={upload.linhas}
+            campos={upload.campos}
+            template_origem={upload.template_origem}
           />
+        ))
+      ) : (
+        <Typography variant="body1">Nenhum arquivo enviado ainda</Typography>
+      )}
     </Box>
-  )
+  );
 };

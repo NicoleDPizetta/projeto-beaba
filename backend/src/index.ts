@@ -31,6 +31,8 @@ app.post("/salvar-template", templatesSalvosController.salvarTemplate);
 
 app.post("/salvar-upload", gDriveController.salvarArquivoNoPrisma);
 
+app.get("/uploads/:id", gDriveController.consultarUploads);
+
 app.delete("/home/:usuarioId/:templateId", templatesSalvosController.removerDeTemplatesSalvos);
 
 app.get("/auth", auth.authMiddleware, userController.consultarPorToken);

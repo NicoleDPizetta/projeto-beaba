@@ -6,10 +6,6 @@ import CalendarMonthOutlinedIcon from "@mui/icons-material/CalendarMonthOutlined
 import { api, pyApi } from "../../../server/api/api";
 import { MoreOptionsButton } from "../modals/MoreOptionsButton";
 
-interface UsuarioLogadoInfos {
-  id: string;
-}
-
 interface ICardUploadProps {
   id: string;
   nome: string;
