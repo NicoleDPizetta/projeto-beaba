@@ -107,7 +107,7 @@ export const CardTemplateSalvo: React.FC<ICardTemplateProps> = ({
 
   const fazerUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
     event.preventDefault();
-    console.log("Upload clicado")
+    const usuarioLogadoId = usuarioLogado?.id;
 
     const arquivo = event.target.files?.[0] || null;
     const templateInfos = {
@@ -121,6 +121,7 @@ export const CardTemplateSalvo: React.FC<ICardTemplateProps> = ({
       extensao,
       colunas,
       linhas,
+      usuarioLogadoId,
     };
 
     const formData = new FormData();

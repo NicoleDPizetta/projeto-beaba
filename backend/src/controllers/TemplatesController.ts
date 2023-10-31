@@ -1,4 +1,4 @@
-import { PrismaClient, Templates_salvos_do_Usuario } from "@prisma/client";
+import { PrismaClient } from "@prisma/client";
 import bodyParser from "body-parser";
 import express, { Request, Response } from "express";
 import { Templates } from "@prisma/client";

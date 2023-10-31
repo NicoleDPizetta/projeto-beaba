@@ -7,6 +7,7 @@ import { AuthController } from "./controllers/AuthController";
 import * as auth from "./middlewares/auth";
 import * as dotenv from "dotenv";
 import { TemplatesSalvosController } from "./controllers/TemplatesSalvosController";
+import { GDriveController } from "./controllers/GDriveController";
 
 const app = express();
 dotenv.config();
@@ -18,6 +19,7 @@ const userController = new UsuariosController();
 const templatesController = new TemplatesController();
 const templatesSalvosController = new TemplatesSalvosController();
 const authController = new AuthController();
+const gDriveController = new GDriveController();
 
 app.post("/cadastrar", userController.criarNovoUsuario);
 
@@ -26,6 +28,8 @@ app.post("/login", authController.authenticate);
 app.get("/home/:id", templatesSalvosController.consultarTemplatesSalvos);
 
 app.post("/salvar-template", templatesSalvosController.salvarTemplate);
+
+app.post("/salvar-upload", gDriveController.salvarArquivoNoPrisma);
 
 app.delete("/home/:usuarioId/:templateId", templatesSalvosController.removerDeTemplatesSalvos);
 
