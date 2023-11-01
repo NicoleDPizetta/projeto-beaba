@@ -10,6 +10,7 @@ interface UsuarioLogado {
 
 interface UploadInfos {
   id: string;
+  id_gdrive: string;
   nome: string;
   extensao: string;
   colunas: number;
@@ -23,7 +24,6 @@ interface UploadInfos {
 
 export const UploadsDoUsuario = ({ id }: UsuarioLogado) => {
   const usuarioId = id;
-  console.log(usuarioId);
   const [uploadsInfos, setUploadsInfos] = useState<UploadInfos[]>([]);
 
   const getUploads = async () => {
@@ -43,10 +43,11 @@ export const UploadsDoUsuario = ({ id }: UsuarioLogado) => {
   return (
     <Box>
       {uploadsInfos.length > 0 ? (
-        uploadsInfos.map((upload, index) => (
+        uploadsInfos.map((upload) => (
           <CardUpload
-            key={index}
+            key={upload.id}
             id={upload.id}
+            id_gdrive={upload.id_gdrive}
             nome={upload.nome}
             criador={upload.criador}
             data_upload={upload.data_upload}

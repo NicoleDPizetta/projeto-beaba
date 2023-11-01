@@ -1,5 +1,5 @@
 import os
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, Response
 from flask_cors import CORS
 import pandas as pd
 import json 
@@ -8,6 +8,8 @@ from googleapiclient.discovery import build
 from google.oauth2 import service_account
 from dotenv import load_dotenv
 from googleapiclient.http import MediaIoBaseUpload
+from googleapiclient.http import MediaIoBaseDownload
+from io import BytesIO
 
 app = Flask(__name__)
 CORS(app)
@@ -89,6 +91,38 @@ def validar_arquivo():
             return jsonify({'sucesso': 'Seu arquivo foi validado e enviado com sucesso!'})
         else:
             return jsonify({'error': 'Seu arquivo foi validado com sucesso e enviado, porém houve uma falha ao persisti-lo no banco de dados'})
+
+    except Exception as e:
+        return jsonify({'error': str(e)})
+
+@app.route('/download/<string:id>/<string:nome>', methods=['GET'])
+def download_arquivo(id, nome):
+    try:
+        # Credenciais do Google Drive
+        credentials_path = 'backend\\validacao\\projeto-beaba-chave.json'
+
+        load_dotenv()
+
+        credentials = service_account.Credentials.from_service_account_file(
+            credentials_path, scopes=['https://www.googleapis.com/auth/drive']
+        )
+
+        drive_service = build('drive', 'v3', credentials=credentials)
+
+        request = drive_service.files().get_media(fileId=id)
+        file_data = BytesIO()
+        downloader = MediaIoBaseDownload(file_data, request)
+
+        done = False
+        while done is False:
+            status, done = downloader.next_chunk()
+
+        # Configurar cabeçalhos para download do arquivo
+        response = Response(file_data.getvalue())
+        response.headers['Content-Type'] = 'application/octet-stream'
+        response.headers['Content-Disposition'] = f'attachment; filename={nome}'
+
+        return response
 
     except Exception as e:
         return jsonify({'error': str(e)})

@@ -1,13 +1,14 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { Box, Typography, Paper, Button, useTheme } from "@mui/material";
 import { TabelaInfosArquivo } from "../tabela-infos-arquivo/TabelaInfosArquivo";
 import Avatar from "@mui/material/Avatar";
 import CalendarMonthOutlinedIcon from "@mui/icons-material/CalendarMonthOutlined";
-import { api, pyApi } from "../../../server/api/api";
+import { pyApi } from "../../../server/api/api";
 import { MoreOptionsButton } from "../modals/MoreOptionsButton";
 
 interface ICardUploadProps {
   id: string;
+  id_gdrive: string;
   nome: string;
   extensao: string;
   colunas: number;
@@ -21,6 +22,7 @@ interface ICardUploadProps {
 
 export const CardUpload: React.FC<ICardUploadProps> = ({
   id,
+  id_gdrive,
   nome,
   criador,
   data_upload,
@@ -32,8 +34,28 @@ export const CardUpload: React.FC<ICardUploadProps> = ({
 }) => {
   const theme = useTheme();
 
-  const handleBaixar = () => {
-    console.log("Baixei!");
+  const handleBaixar = async () => {
+    try {
+      console.log(`idGDrive: ${id_gdrive}`);
+      console.log("Cliquei em baixar");
+      const response = await pyApi.get(`/download/${id_gdrive}/${nome}`, {
+        responseType: "blob",
+      });
+
+      const blob = new Blob([response.data], {
+        type: "application/octet-stream",
+      });
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = nome;
+      a.style.display = "none";
+      document.body.appendChild(a);
+      a.click();
+      window.URL.revokeObjectURL(url);
+    } catch (error) {
+      console.error(`Erro ao baixar arquivo: ${nome}`, error);
+    }
   };
 
   return (
