@@ -1,5 +1,5 @@
 import os
-from flask import Flask, request, jsonify, Response
+from flask import Flask, request, jsonify, Response, send_file
 from flask_cors import CORS
 import pandas as pd
 import json 
@@ -15,7 +15,6 @@ app = Flask(__name__)
 CORS(app)
 
 @app.route('/validar', methods=['POST'])
-
 def validar_arquivo():
     # Validando Upload de acordo com o Template
     try:
@@ -126,6 +125,39 @@ def download_arquivo(id, nome):
 
     except Exception as e:
         return jsonify({'error': str(e)})
+
+
+@app.route('/template-download', methods=['GET', 'POST'])
+def download_template():
+    if request.method == 'POST':
+        template_data = request.json
+        extensao = template_data.get('extensao')
+        nome = template_data.get('nome')
+        campos = template_data.get('campos')
+
+        df = pd.DataFrame(columns=campos.keys())
+
+        if extensao == '.xlsx':
+            excel_data = BytesIO()
+            df.to_excel(excel_data, index=False, header=True)
+            mimetype = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+            download_nome = f'{nome}.xlsx'
+        elif extensao == '.xls':
+            excel_data = BytesIO()
+            df.to_excel(excel_data, index=False, header=True, engine='xlwt')
+            mimetype = 'application/vnd.ms-excel'
+            download_nome = f'{nome}.xls'
+        elif extensao == '.csv':
+            excel_data = BytesIO()
+            df.to_csv(excel_data, index=False)
+            mimetype = 'text/csv'
+            download_nome = f'{nome}.csv'
+
+        excel_data.seek(0)
+
+        return send_file(excel_data, mimetype=mimetype, as_attachment=True, download_name=download_nome)
+    
+    return 'Envie um arquivo JSON com os dados do template via POST.'
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=4000)

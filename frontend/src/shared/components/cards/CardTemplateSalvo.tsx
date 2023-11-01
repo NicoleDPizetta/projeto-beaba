@@ -151,6 +151,48 @@ export const CardTemplateSalvo: React.FC<ICardTemplateProps> = ({
     }
   };
 
+  const handleBaixarTemplate = async () => {
+    try {
+      /* Consultar template por ID Typescript */
+      const templateID = id;
+      const responseTS = await api.get(`/templates/${templateID}`);
+      const templateData = responseTS.data;
+
+      if (templateData) {
+        const responsePY = await pyApi.post(`/template-download`, templateData, {
+          responseType: "blob",
+        });
+
+        const { extensao, nome } = templateData;
+        let mimeType;
+  
+        if (extensao === ".xlsx") {
+          mimeType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+        } else if (extensao === ".xls") {
+          mimeType = "application/vnd.ms-excel";
+        } else if (extensao === ".csv") {
+          mimeType = "text/csv";
+        } else {
+          console.error("Extensão de arquivo desconhecida");
+          return;
+        }
+        
+        const blob = new Blob([responsePY.data], { type: mimeType });
+        const url = window.URL.createObjectURL(blob);
+  
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = nome + extensao;
+        a.style.display = "none";
+        document.body.appendChild(a);
+        a.click();
+        window.URL.revokeObjectURL(url);
+      };
+    } catch (error) {
+      console.error(`Erro ao baixar template: ${nome}`, error);
+    }
+}
+
   /* Definindo a cor do template de acordo com o status (ativo / inativo) */
   const corTexto = status ? theme.palette.primary.light : theme.palette.info.main;
   const corBorda = status ? theme.palette.primary.main : theme.palette.info.light;
@@ -252,7 +294,7 @@ export const CardTemplateSalvo: React.FC<ICardTemplateProps> = ({
 
           {status && (
             <Box display={"flex"} gap={4}>
-              <Button fullWidth variant="contained">
+              <Button fullWidth variant="contained" onClick={handleBaixarTemplate}>
                 Baixar
               </Button>
 

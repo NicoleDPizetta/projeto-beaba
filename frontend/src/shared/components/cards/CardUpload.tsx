@@ -36,8 +36,6 @@ export const CardUpload: React.FC<ICardUploadProps> = ({
 
   const handleBaixar = async () => {
     try {
-      console.log(`idGDrive: ${id_gdrive}`);
-      console.log("Cliquei em baixar");
       const response = await pyApi.get(`/download/${id_gdrive}/${nome}`, {
         responseType: "blob",
       });
