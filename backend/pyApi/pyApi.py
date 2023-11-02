@@ -15,48 +15,83 @@ app = Flask(__name__)
 CORS(app)
 
 
+# Rota de validação
 @app.route('/validar', methods=['POST'])
 def validar_arquivo():
     # Validando Upload de acordo com o Template
     try:
-        arquivo = request.files['arquivo']
+        arquivo_recebido = request.files['arquivo']
         template = json.loads(request.form['template'])
 
-        arquivo_excel = pd.read_excel(arquivo)
-        numero_colunas = len(arquivo_excel.columns)
-        numero_linhas = len(arquivo_excel)
+        if arquivo_recebido.filename.endswith('.csv'):
+            arquivo = pd.read_csv(arquivo_recebido, sep=';', decimal=',', parse_dates=True, dayfirst=True, encoding='latin-1')
 
-        if numero_colunas != template['colunas']:
-            return jsonify({'error': 'O número de colunas está incorreto'}), 400
+            if not arquivo_recebido.filename.endswith(template['extensao']):
+                return jsonify({'error': 'A extensão do arquivo não corresponde ao template'})
 
-        if template['linhas'] != 0:
-            if numero_linhas != template['linhas']:
-                return jsonify({'error': 'O número de linhas está incorreto'})
-            else:
-                return jsonify({'result': 'O número de linhas está correto'})
+            if len(arquivo.columns) != template["colunas"]:
+                return jsonify({'error': 'O número de colunas está incorreto'})
 
-        colunas_arquivo = arquivo_excel.columns
-        for coluna, tipo_esperado in template['campos'].items():
-            if coluna not in colunas_arquivo:
-                return jsonify({'error': f'A coluna {coluna} não está presente'})
-            else:
-                tipo_dado = str(arquivo_excel[coluna].dtype)
+            if template['linhas'] != 0:
+                if len(arquivo) != template["linhas"]:
+                    return jsonify({'error': 'O número de linhas está incorreto'})
 
-            if tipo_esperado == 'string' and tipo_dado != 'object':
-                return jsonify({'error': f'A coluna {coluna} deve conter strings, mas o tipo real é {tipo_dado}'})
+            colunas_arquivo = arquivo.columns
+            for coluna, tipo_esperado in template['campos'].items():
+                if coluna not in colunas_arquivo:
+                    return jsonify({'error': f'A coluna {coluna} não está presente'})
+                else:
+                    tipo_dado = str(arquivo[coluna].dtype)
 
-            if tipo_esperado == 'int' and tipo_dado != 'int64':
-                return jsonify({'error': f'A coluna {coluna} deve conter inteiros, mas o tipo real é {tipo_dado}'})
+                if tipo_esperado == 'string' and tipo_dado != 'object':
+                    return jsonify({'error': f'A coluna {coluna} deve conter strings, mas o tipo real é {tipo_dado}'})
 
-            if tipo_esperado == 'date' and tipo_dado != 'datetime64[ns]':
-                return jsonify({'error': f'A coluna {coluna} deve conter datas, mas o tipo real é {tipo_dado}'})
+                if tipo_esperado == 'int' and tipo_dado != 'int64':
+                    return jsonify({'error': f'A coluna {coluna} deve conter inteiros, mas o tipo real é {tipo_dado}'})
 
-            if tipo_esperado == 'float' and tipo_dado != 'float64':
-                return jsonify({'error': f'A coluna {coluna} deve conter numeros decimais, mas o tipo real é {tipo_dado}'})
+                if tipo_esperado == 'date' and tipo_dado != 'datetime64[ns]':
+                    return jsonify({'error': f'A coluna {coluna} deve conter datas, mas o tipo real é {tipo_dado}'})
 
-        if not arquivo.filename.endswith(template['extensao']):
-            return jsonify({'error': 'A extensão do arquivo não corresponde ao template'})
+                if tipo_esperado == 'float' and tipo_dado != 'float64':
+                    return jsonify({'error': f'A coluna {coluna} deve conter numeros decimais, mas o tipo real é {tipo_dado}'})
 
+
+        if arquivo_recebido.filename.endswith('.xlsx') or arquivo_recebido.filename.endswith('.xls'):
+            arquivo = pd.read_excel(arquivo_recebido)
+
+            if not arquivo_recebido.filename.endswith(template['extensao']):
+                return jsonify({'error': 'A extensão do arquivo não corresponde ao template'})
+
+            numero_colunas = len(arquivo.columns)
+            numero_linhas = len(arquivo)
+
+            if numero_colunas != template['colunas']:
+                return jsonify({'error': 'O número de colunas está incorreto'})
+
+            if template['linhas'] != 0:
+                if numero_linhas != template['linhas']:
+                    return jsonify({'error': 'O número de linhas está incorreto'})
+
+            colunas_arquivo = arquivo.columns
+            for coluna, tipo_esperado in template['campos'].items():
+                if coluna not in colunas_arquivo:
+                    return jsonify({'error': f'A coluna {coluna} não está presente'})
+                else:
+                    tipo_dado = str(arquivo[coluna].dtype)
+
+                if tipo_esperado == 'string' and tipo_dado != 'object':
+                    return jsonify({'error': f'A coluna {coluna} deve conter strings, mas o tipo real é {tipo_dado}'})
+
+                if tipo_esperado == 'int' and tipo_dado != 'int64':
+                    return jsonify({'error': f'A coluna {coluna} deve conter inteiros, mas o tipo real é {tipo_dado}'})
+
+                if tipo_esperado == 'date' and tipo_dado != 'datetime64[ns]':
+                    return jsonify({'error': f'A coluna {coluna} deve conter datas, mas o tipo real é {tipo_dado}'})
+
+                if tipo_esperado == 'float' and tipo_dado != 'float64':
+                    return jsonify({'error': f'A coluna {coluna} deve conter numeros decimais, mas o tipo real é {tipo_dado}'})
+
+            
         # Enviando para o Google Drive
         credentials_path = 'backend\\pyApi\\projeto-beaba-chave.json'
 
@@ -69,19 +104,19 @@ def validar_arquivo():
         drive_service = build('drive', 'v3', credentials=credentials)
 
         file_metadata = {
-            'name': arquivo.filename,
+            'name': arquivo_recebido.filename,
             'parents': [os.getenv('DRIVE_FOLDER')]
         }
 
-        media = MediaIoBaseUpload(arquivo, mimetype='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', resumable=True)
+        media = MediaIoBaseUpload(arquivo_recebido, mimetype='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', resumable=True)
 
         file = drive_service.files().create(body=file_metadata, media_body=media, fields='id').execute()
-        print(f'Arquivo {arquivo.filename} enviado com sucesso. ID: {file["id"]}')
+        print(f'Arquivo {arquivo_recebido.filename} enviado com sucesso. ID: {file["id"]}')
 
         # Persistindo no Banco de Dados
         url = 'http://localhost:5000/salvar-upload'
         id_gdrive = file["id"]
-        nome_arquivo = arquivo.filename
+        nome_arquivo = arquivo_recebido.filename
         dados = template
         dados["id_gdrive"] = str(id_gdrive)
         dados["nome_arquivo"] = str(nome_arquivo)
@@ -96,6 +131,7 @@ def validar_arquivo():
         return jsonify({'error': str(e)})
 
 
+# Rota de download dos arquivos na pagina Uploads do usuario
 @app.route('/download/<string:id>/<string:nome>', methods=['GET'])
 def download_arquivo(id, nome):
     try:
@@ -129,6 +165,7 @@ def download_arquivo(id, nome):
         return jsonify({'error': str(e)})
 
 
+# Rota de criação de arquivos dos templates para download do usuario
 @app.route('/template-download', methods=['GET', 'POST'])
 def download_template():
     if request.method == 'POST':
