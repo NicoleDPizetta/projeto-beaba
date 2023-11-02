@@ -149,7 +149,7 @@ def download_template():
             download_nome = f'{nome}.xls'
         elif extensao == '.csv':
             excel_data = BytesIO()
-            df.to_csv(excel_data, index=False)
+            df.to_csv(excel_data, index=False, sep=';', decimal=',', date_format='%d/%m/%Y')
             mimetype = 'text/csv'
             download_nome = f'{nome}.csv'
 
