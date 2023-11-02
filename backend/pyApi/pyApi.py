@@ -2,7 +2,7 @@ import os
 from flask import Flask, request, jsonify, Response, send_file
 from flask_cors import CORS
 import pandas as pd
-import json 
+import json
 import requests
 from googleapiclient.discovery import build
 from google.oauth2 import service_account
@@ -13,6 +13,7 @@ from io import BytesIO
 
 app = Flask(__name__)
 CORS(app)
+
 
 @app.route('/validar', methods=['POST'])
 def validar_arquivo():
@@ -40,7 +41,7 @@ def validar_arquivo():
                 return jsonify({'error': f'A coluna {coluna} não está presente'})
             else:
                 tipo_dado = str(arquivo_excel[coluna].dtype)
-            
+
             if tipo_esperado == 'string' and tipo_dado != 'object':
                 return jsonify({'error': f'A coluna {coluna} deve conter strings, mas o tipo real é {tipo_dado}'})
 
@@ -49,15 +50,15 @@ def validar_arquivo():
 
             if tipo_esperado == 'date' and tipo_dado != 'datetime64[ns]':
                 return jsonify({'error': f'A coluna {coluna} deve conter datas, mas o tipo real é {tipo_dado}'})
-            
+
             if tipo_esperado == 'float' and tipo_dado != 'float64':
                 return jsonify({'error': f'A coluna {coluna} deve conter numeros decimais, mas o tipo real é {tipo_dado}'})
-        
+
         if not arquivo.filename.endswith(template['extensao']):
             return jsonify({'error': 'A extensão do arquivo não corresponde ao template'})
-        
+
         # Enviando para o Google Drive
-        credentials_path = 'backend\\validacao\\projeto-beaba-chave.json'
+        credentials_path = 'backend\\pyApi\\projeto-beaba-chave.json'
 
         load_dotenv()
 
@@ -94,11 +95,12 @@ def validar_arquivo():
     except Exception as e:
         return jsonify({'error': str(e)})
 
+
 @app.route('/download/<string:id>/<string:nome>', methods=['GET'])
 def download_arquivo(id, nome):
     try:
         # Credenciais do Google Drive
-        credentials_path = 'backend\\validacao\\projeto-beaba-chave.json'
+        credentials_path = 'backend\\pyApi\\projeto-beaba-chave.json'
 
         load_dotenv()
 
@@ -156,8 +158,9 @@ def download_template():
         excel_data.seek(0)
 
         return send_file(excel_data, mimetype=mimetype, as_attachment=True, download_name=download_nome)
-    
+
     return 'Envie um arquivo JSON com os dados do template via POST.'
+
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=4000)
