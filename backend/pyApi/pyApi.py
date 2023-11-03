@@ -2,6 +2,7 @@ import os
 from flask import Flask, request, jsonify, Response, send_file
 from flask_cors import CORS
 import pandas as pd
+from sqlalchemy import create_engine
 import json
 import requests
 from googleapiclient.discovery import build
@@ -10,6 +11,7 @@ from dotenv import load_dotenv
 from googleapiclient.http import MediaIoBaseUpload
 from googleapiclient.http import MediaIoBaseDownload
 from io import BytesIO
+import matplotlib.pyplot as plt
 
 app = Flask(__name__)
 CORS(app)
@@ -198,6 +200,39 @@ def download_template():
 
     return 'Envie um arquivo JSON com os dados do template via POST.'
 
+
+# Rota de criação e consulta dos relatorios
+@app.route('/relatorios', methods=['GET'])
+def criar_relatorios():
+    try:
+        db_config = {
+            'host': 'localhost',
+            'port': '5432',
+            'database': 'projeto_beaba',
+            'user': 'postgres',
+            'password': 'postgres'
+        }
+
+        query = 'SELECT * FROM beaba."Uploads"'
+
+        def query_to_dataframe(query, db_config):
+            connection_string = f"postgresql://{db_config['user']}:{db_config['password']}@{db_config['host']}:{db_config['port']}/{db_config['database']}"
+            engine = create_engine(connection_string)
+            dataframe = pd.read_sql_query(query, engine)
+            return dataframe
+
+        df= query_to_dataframe(query, db_config)
+
+        df["datas_uploads"] = pd.to_datetime(df["data_upload"])
+        df=df.sort_values("datas_uploads")
+        df['ano_mes'] = df['data_upload'].apply(lambda x: str(x.year) + "-" + str(x.month))
+
+        df_json = df.to_json(orient='records')
+
+        return df_json
+
+    except Exception as e:
+        return jsonify({'error': str(e)})
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=4000)

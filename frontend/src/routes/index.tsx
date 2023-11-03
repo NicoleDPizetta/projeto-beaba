@@ -10,6 +10,7 @@ import {
   PaginaLogin,
   PaginaCadastro,
   PaginaUploads,
+  PaginaRelatorios,
 } from "../pages";
 
 const isAuthenticated = localStorage.getItem("token") !== null;
@@ -61,7 +62,7 @@ export const AppRoutes = () => {
 
         <Route path="/usuarios" element={<PrivateRoute children={<PaginaGerenciarUsuarios />} redirectTo="/login" allowedPermissions={["ADMINISTRADOR"]} />} />
         
-        <Route path="/relatorios" element={<PrivateRoute children={<PaginaInicial />} redirectTo="/login" allowedPermissions={["ADMINISTRADOR"]} />} />
+        <Route path="/relatorios" element={<PrivateRoute children={<PaginaRelatorios />} redirectTo="/login" allowedPermissions={["ADMINISTRADOR"]} />} />
       </Routes>
     </BrowserRouter>
   );
