@@ -23,3 +23,5 @@ export * from "./pagina-inicial-components/TemplatesSalvosDoUsuario";
 export * from "./pagina-inicial-components/UploadsDoUsuario";
 export * from "./pagina-inicial-components/AbasDaHome";
 export * from "./abas-login-cadastro/AbasLoginCadastro";
+export * from "./relatorios-components/GraficoExtensoes";
+export * from "./relatorios-components/GraficosSquads";

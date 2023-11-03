@@ -23,6 +23,7 @@ import LastPageIcon from "@mui/icons-material/LastPage";
 import { styled } from "@mui/material/styles";
 import { LayoutBase } from "../../shared/layouts";
 import { pyApi } from "../../server/api/api";
+import { GraficoExtensoes, GraficoSquads } from "../../shared/components";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -123,6 +124,7 @@ export const PaginaRelatorios = () => {
     try {
       const response = await pyApi.get("/relatorios");
       const data = response.data;
+      console.log(data);
       setUploads(data);
     } catch (error) {
       console.error("Erro ao receber dados:", error);
@@ -152,7 +154,11 @@ export const PaginaRelatorios = () => {
             gap={4}
             padding={2}
           >
-            <Typography variant="h5">Relatórios</Typography>
+            <Box width={"100%"} display={"flex"} justifyContent={"space-around"} >
+              <GraficoExtensoes uploads={uploads} />
+              <GraficoSquads uploads={uploads} />
+            </Box>
+            
             <TableContainer component={Paper}>
               <Table sx={{ minWidth: 700 }} aria-label="custom pagination table" >
                 <TableHead>
