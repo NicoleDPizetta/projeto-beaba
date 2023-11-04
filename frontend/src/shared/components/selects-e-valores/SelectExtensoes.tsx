@@ -12,8 +12,8 @@ const extensions = [
     label: ".xlsx",
   },
   {
-    value: ".xlx",
-    label: ".xlx",
+    value: ".xls",
+    label: ".xls",
   },
   {
     value: ".csv",
