@@ -175,16 +175,20 @@ export const CriarTemplateForm: React.FC = () => {
               name="colunas"
               value={qntCampos}
               onChange={handleQuantidadeCamposChange}
+              inputProps={{ min: 0 }}
             />
 
             <TextField
+              required
               fullWidth
               id="quantidade-linhas"
               label="Quantidade de linhas"
               type="number"
               placeholder="Zero (0) para não limitar"
+              helperText={"Zero (0) para não limitar"}
               name="linhas"
               onChange={handleLinhasChange}
+              inputProps={{ min: 0 }}
             />
           </Box>
 
