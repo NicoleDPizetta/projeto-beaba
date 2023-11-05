@@ -5,6 +5,8 @@ import pandas as pd
 from sqlalchemy import create_engine
 import json
 import requests
+import xlwt
+import openpyxl
 from googleapiclient.discovery import build
 from google.oauth2 import service_account
 from dotenv import load_dotenv
@@ -185,7 +187,7 @@ def download_template():
             download_nome = f'{nome}.xlsx'
         elif extensao == '.xls':
             excel_data = BytesIO()
-            df.to_excel(excel_data, index=False, header=True, engine='xlwt')
+            df.to_excel(excel_data, index=False, header=True, engine='openpyxl')
             mimetype = 'application/vnd.ms-excel'
             download_nome = f'{nome}.xls'
         elif extensao == '.csv':

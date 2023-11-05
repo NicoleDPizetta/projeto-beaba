@@ -300,7 +300,7 @@ export const CardTemplateSalvo: React.FC<ICardTemplateProps> = ({
 
               <Button fullWidth component="label" variant="contained">
                 Upload
-                <VisualInputEscondido type="file" accept=".xlsx, .xlx, .csv" onChange={fazerUpload} />
+                <VisualInputEscondido type="file" accept=".xlsx, .xls, .csv" onChange={fazerUpload} />
               </Button>
             </Box>
           )}
