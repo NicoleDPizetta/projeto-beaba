@@ -21,9 +21,19 @@ export const PaginaTemplatesDisponiveis = () => {
   const getTemplates = async () => {
     try {
       const response = await api.get("/templates");
-      const data = response.data;
+      const data: TemplateInfos[] = response.data;
+      const templatesComNomeUsuario = await Promise.all(
+        data.map(async (template) => {
+          const userResponse = await api.get(`/usuarios/${template.criador}`);
+          const user = userResponse.data;
 
-      setTemplates(data);
+          return {
+            ...template, criador: user.nome_completo
+          };
+        })
+      );
+      
+      setTemplates(templatesComNomeUsuario);
     } catch (error) {
       console.error("Erro ao receber dados:", error);
     }
