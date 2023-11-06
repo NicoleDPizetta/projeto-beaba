@@ -125,19 +125,19 @@ export const PaginaRelatorios = () => {
       const response = await pyApi.get("/relatorios");
       const data: Upload[] = response.data;
       console.log(data);
-      const uploadsWithUserDetails = await Promise.all(
+      const uploadsComNomeUsuario = await Promise.all(
         data.map(async (upload) => {
           const userResponse = await api.get(`/usuarios/${upload.criador}`);
           const user = userResponse.data;
 
           return {
-            ...upload,
-            criador: user.nome_completo,
+            ...upload, criador: user.nome_completo
           };
         })
       );
-
-      setUploads(uploadsWithUserDetails);
+      
+      uploadsComNomeUsuario.sort((a, b) => b.data_upload - a.data_upload);
+      setUploads(uploadsComNomeUsuario);
     } catch (error) {
       console.error("Erro ao receber dados:", error);
     } finally {
