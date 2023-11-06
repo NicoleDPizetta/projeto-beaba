@@ -287,7 +287,7 @@ export const CardTemplateSalvo: React.FC<ICardTemplateProps> = ({
                 variant="body1"
                 color={theme.palette.primary.contrastText}
               >
-                {data_criacao}
+                {new Date(data_criacao).toLocaleString()}
               </Typography>
             </Box>
           </Box>
