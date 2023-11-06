@@ -6,9 +6,6 @@ import { api } from "../../../server/api/api";
 interface UsuarioLogado {
   id: string;
 }
-interface TemplatesSalvosID {
-  template_salvo: string;
-}
 
 interface TemplateInfos {
   id: string;
@@ -26,46 +23,62 @@ interface TemplateInfos {
 export const TemplatesSalvosDoUsuario = ({ id }: UsuarioLogado) => {
   const [templateInfos, setTemplateInfos] = useState<TemplateInfos[]>([]);
 
-  const [templatesSalvos, setTemplatesSalvos] = useState<TemplatesSalvosID[]>([]);
-
   const getTemplatesSalvos = async () => {
     try {
       const response = await api.get(`/home/${id}`);
       const data = response.data;
-      setTemplatesSalvos(data);
+      return data;
     } catch (error) {
       console.error("Erro ao receber templates salvos:", error);
+      return [];
+    }
+  };
+  
+  const getTemplateInfo = async (templateID: string) => {
+    try {
+      const response = await api.get(`/templates/${templateID}`);
+      const templateInfo = response.data;
+      return templateInfo;
+    } catch (error) {
+      console.error(`Erro ao receber informações do template ${templateID}:`, error);
+      return null;
+    }
+  };
+
+  const getUsuarioInfo = async (criador: string) => {
+    try {
+      const response = await api.get(`/usuarios/${criador}`);
+      const usuarioInfo = response.data;
+      return usuarioInfo.nome_completo;
+    } catch (error) {
+      console.error(`Erro ao receber informações do usuário ${criador}:`, error);
+      return criador;
     }
   };
 
   useEffect(() => {
+    const fetchData = async () => {
+      const templatesSalvos = await getTemplatesSalvos();
+      const templateInfosArray: TemplateInfos[] = [];
+
+      for (const templateSalvo of templatesSalvos) {
+        const templateInfo = await getTemplateInfo(templateSalvo.template_salvo);
+        if (templateInfo) {
+          const criador = await getUsuarioInfo(templateInfo.criador);
+          templateInfosArray.push({
+            ...templateInfo,
+            criador,
+          });
+        }
+      }
+
+      setTemplateInfos(templateInfosArray);
+    };
+
     if (id) {
-      getTemplatesSalvos();
+      fetchData();
     }
   }, [id]);
-
-  useEffect(() => {
-    if (templatesSalvos) {
-      const fetchTemplateInfo = async () => {
-        const templateInfosArray = [];
-        for (const templateSalvo of templatesSalvos) {
-          const templateID = templateSalvo.template_salvo;
-          try {
-            const response = await api.get(`/templates/${templateID}`);
-            const templateInfo = response.data;
-            templateInfosArray.push(templateInfo);
-          } catch (error) {
-            console.error(
-              `Erro ao receber informações do template ${templateID}:`,
-              error
-            );
-          }
-        }
-        setTemplateInfos(templateInfosArray);
-      };
-      fetchTemplateInfo();
-    }
-  }, [templatesSalvos]);
 
   return (
     <>
