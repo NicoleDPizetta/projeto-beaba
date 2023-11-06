@@ -22,7 +22,7 @@ import FirstPageIcon from "@mui/icons-material/FirstPage";
 import LastPageIcon from "@mui/icons-material/LastPage";
 import { styled } from "@mui/material/styles";
 import { LayoutBase } from "../../shared/layouts";
-import { pyApi } from "../../server/api/api";
+import { api, pyApi } from "../../server/api/api";
 import { GraficoExtensoes, GraficoSquads } from "../../shared/components";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
@@ -123,9 +123,21 @@ export const PaginaRelatorios = () => {
   const getRelatorios = async () => {
     try {
       const response = await pyApi.get("/relatorios");
-      const data = response.data;
+      const data: Upload[] = response.data;
       console.log(data);
-      setUploads(data);
+      const uploadsWithUserDetails = await Promise.all(
+        data.map(async (upload) => {
+          const userResponse = await api.get(`/usuarios/${upload.criador}`);
+          const user = userResponse.data;
+
+          return {
+            ...upload,
+            criador: user.nome_completo,
+          };
+        })
+      );
+
+      setUploads(uploadsWithUserDetails);
     } catch (error) {
       console.error("Erro ao receber dados:", error);
     } finally {
