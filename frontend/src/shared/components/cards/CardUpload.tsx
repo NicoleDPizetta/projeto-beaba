@@ -1,7 +1,6 @@
 import React from "react";
 import { Box, Typography, Paper, Button, useTheme } from "@mui/material";
 import { TabelaInfosArquivo } from "../tabela-infos-arquivo/TabelaInfosArquivo";
-import Avatar from "@mui/material/Avatar";
 import CalendarMonthOutlinedIcon from "@mui/icons-material/CalendarMonthOutlined";
 import { pyApi } from "../../../server/api/api";
 import { MoreOptionsButton } from "../modals/MoreOptionsButton";
@@ -15,7 +14,6 @@ interface ICardUploadProps {
   linhas: number | null;
   campos: JSON;
   squad: string;
-  criador: string;
   data_upload: string;
   template_origem: string;
 }
@@ -24,7 +22,6 @@ export const CardUpload: React.FC<ICardUploadProps> = ({
   id,
   id_gdrive,
   nome,
-  criador,
   data_upload,
   extensao,
   colunas,
@@ -95,18 +92,6 @@ export const CardUpload: React.FC<ICardUploadProps> = ({
             colunas={colunas}
             linhas={linhas}
           />
-
-          <Box
-            display={"flex"}
-            padding={2}
-            gap={1}
-            alignItems={"center"}
-            justifyContent={"center"}
-          >
-            <Typography variant="body1">
-              Template origem: {template_origem}
-            </Typography>
-          </Box>
         </Box>
 
         <Box
@@ -126,24 +111,12 @@ export const CardUpload: React.FC<ICardUploadProps> = ({
             gap={3}
             marginBottom={4}
           >
-            <Box display="flex" alignItems="center" gap={1}>
-              <Avatar
-                sx={{
-                  width: "1.5rem",
-                  height: "1.5rem",
-                  backgroundColor: theme.palette.primary.contrastText,
-                  color: theme.palette.primary.main,
-                }}
-                alt={criador}
-                src="/broken-image.jpg"
-              />
-              <Typography
-                variant="body1"
-                color={theme.palette.primary.contrastText}
-              >
-                {criador}
-              </Typography>
-            </Box>
+            <Typography
+              variant="body1"
+              color={theme.palette.primary.contrastText}
+            >
+              Template usado: {template_origem}
+            </Typography>
 
             <Box display="flex" alignItems="center" gap={1}>
               <CalendarMonthOutlinedIcon
@@ -155,7 +128,7 @@ export const CardUpload: React.FC<ICardUploadProps> = ({
                 variant="body1"
                 color={theme.palette.primary.contrastText}
               >
-                {data_upload}
+                {new Date(data_upload).toLocaleString()}
               </Typography>
             </Box>
           </Box>

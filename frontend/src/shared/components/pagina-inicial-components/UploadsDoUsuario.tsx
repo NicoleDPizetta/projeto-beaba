@@ -23,25 +23,47 @@ interface UploadInfos {
 }
 
 export const UploadsDoUsuario = ({ id }: UsuarioLogado) => {
-  const usuarioId = id;
   const [uploadsInfos, setUploadsInfos] = useState<UploadInfos[]>([]);
 
   const getUploads = async () => {
     try {
-      const response = await api.get<UploadInfos[]>(`/uploads/${usuarioId}`);
-      const data = response.data;
-      setUploadsInfos(data);
+      const response = await api.get<UploadInfos[]>(`/uploads/${id}`);
+      const data: UploadInfos[] = response.data;
+      const uploadsComTemplateOrigem = await Promise.all(
+        data.map(async (upload) => {
+          const templateID = upload.template_origem;
+          let templateName = upload.template_origem;
+          try {
+            const templateResponse = await api.get(`/templates/${templateID}`);
+            templateName = templateResponse.data.nome;
+          } catch (error) {
+            console.error(
+              `Erro ao obter o nome do template para upload ${upload.id}:`,
+              error
+            );
+          }
+
+          return {
+            ...upload,
+            template_origem: templateName,
+          };
+        })
+      );
+
+      setUploadsInfos(uploadsComTemplateOrigem);
     } catch (error) {
       console.error("Erro ao receber uploads do usuário logado:", error);
     }
   };
 
   useEffect(() => {
-    getUploads();
-  }, [usuarioId]);
+    if (id) {
+      getUploads();
+    }
+  }, [id]);
 
   return (
-    <Box>
+    <>
       {uploadsInfos.length > 0 ? (
         uploadsInfos.map((upload) => (
           <CardUpload
@@ -49,7 +71,6 @@ export const UploadsDoUsuario = ({ id }: UsuarioLogado) => {
             id={upload.id}
             id_gdrive={upload.id_gdrive}
             nome={upload.nome}
-            criador={upload.criador}
             data_upload={upload.data_upload}
             squad={upload.squad}
             extensao={upload.extensao}
@@ -62,6 +83,6 @@ export const UploadsDoUsuario = ({ id }: UsuarioLogado) => {
       ) : (
         <Typography variant="body1">Nenhum arquivo enviado ainda</Typography>
       )}
-    </Box>
+    </>
   );
 };
