@@ -1,9 +1,16 @@
 import React from "react";
-import { Box, Typography, Paper, Button, useTheme } from "@mui/material";
-import { TabelaInfosArquivo } from "../tabela-infos-arquivo/TabelaInfosArquivo";
-import CalendarMonthOutlinedIcon from "@mui/icons-material/CalendarMonthOutlined";
+import {
+  Box,
+  Typography,
+  Paper,
+  Button,
+  Table,
+  TableBody,
+  TableCell,
+  TableRow,
+  useTheme,
+} from "@mui/material";
 import { pyApi } from "../../../server/api/api";
-import { MoreOptionsButton } from "../modals/MoreOptionsButton";
 
 interface ICardUploadProps {
   id: string;
@@ -19,7 +26,6 @@ interface ICardUploadProps {
 }
 
 export const CardUpload: React.FC<ICardUploadProps> = ({
-  id,
   id_gdrive,
   nome,
   data_upload,
@@ -53,95 +59,71 @@ export const CardUpload: React.FC<ICardUploadProps> = ({
     }
   };
 
+  const linhasExibicao = linhas === 0 ? "Ilimitadas" : linhas;
+
   return (
-    <Paper elevation={1} sx={{ width: "46rem" }}>
+    <Paper elevation={1} sx={{ width: "28rem" }}>
       <Box
-        flex={1}
         display={"flex"}
         alignItems={"center"}
         justifyContent={"space-between"}
         padding={2}
-        borderBottom={`2px solid`}
+        borderBottom={`3px solid`}
         borderColor={theme.palette.primary.light}
+        bgcolor={theme.palette.info.main}
+        borderRadius={".3rem .3rem 0 0"}
       >
-        <Typography flex={1} variant={"h5"} color={theme.palette.info.dark}>
+        <Typography
+          flex={1}
+          variant={"h6"}
+          color={theme.palette.info.contrastText}
+        >
           {nome}
         </Typography>
 
-        <MoreOptionsButton children={<></>} />
+        <Button
+          variant="contained"
+          id="btn-salvar-template"
+          onClick={handleBaixar}
+        >
+          Baixar
+        </Button>
       </Box>
 
-      <Box display={"flex"} justifyContent={"space-between"}>
-        <Box
-          flex={2}
-          padding={"1rem"}
-          display={"flex"}
-          flexDirection={"column"}
-          gap={1}
+      <Box padding={2} display={"flex"} flexDirection={"column"}>
+        <Paper
+          elevation={0}
+          style={{ width: "90%", margin: "auto", borderRadius: "2" }}
         >
-          <Box display={"flex"} gap={1} alignItems={"center"}>
-            <Typography variant="body1">Squad:</Typography>
-            <Typography variant="body1" color={theme.palette.info.dark}>
-              {squad}
-            </Typography>
-          </Box>
-
-          <TabelaInfosArquivo
-            key={id}
-            extensao={extensao}
-            colunas={colunas}
-            linhas={linhas}
-          />
-        </Box>
-
-        <Box
-          flex={1}
-          bgcolor={theme.palette.info.dark}
-          display="flex"
-          flexDirection="column"
-          alignItems="center"
-          justifyItems="space-between"
-          padding="2rem"
-          borderRadius="0 0 .3rem 0"
-        >
-          <Box
-            display="flex"
-            flexDirection="column"
-            alignItems="flex-start"
-            gap={3}
-            marginBottom={4}
-          >
-            <Typography
-              variant="body1"
-              color={theme.palette.primary.contrastText}
-            >
-              Template usado: {template_origem}
-            </Typography>
-
-            <Box display="flex" alignItems="center" gap={1}>
-              <CalendarMonthOutlinedIcon
-                fontSize="medium"
-                color="info"
-                sx={{ color: theme.palette.primary.contrastText }}
-              />
-              <Typography
-                variant="body1"
-                color={theme.palette.primary.contrastText}
-              >
-                {new Date(data_upload).toLocaleString()}
-              </Typography>
-            </Box>
-          </Box>
-
-          <Button
-            fullWidth
-            variant="contained"
-            id="btn-salvar-template"
-            onClick={handleBaixar}
-          >
-            Baixar
-          </Button>
-        </Box>
+          <Table size="small">
+            <TableBody>
+              <TableRow>
+                <TableCell>Tipo de arquivo:</TableCell>
+                <TableCell>{extensao}</TableCell>
+              </TableRow>
+              <TableRow>
+                <TableCell>Colunas:</TableCell>
+                <TableCell>{colunas}</TableCell>
+              </TableRow>
+              <TableRow>
+                <TableCell>Limite de linhas:</TableCell>
+                <TableCell>{linhasExibicao}</TableCell>
+              </TableRow>
+              <TableRow>
+                <TableCell>Squad:</TableCell>
+                <TableCell>{squad}</TableCell>
+              </TableRow>
+              <TableRow>
+                <TableCell>Template usado: </TableCell>
+                <TableCell>{template_origem}</TableCell>
+              </TableRow>
+              <TableRow>
+                <TableCell>Data de upload:</TableCell>
+                <TableCell>{new Date(data_upload).toLocaleString()}</TableCell>
+              </TableRow>
+            </TableBody>
+          </Table>
+        </Paper>
       </Box>
     </Paper>
   );
