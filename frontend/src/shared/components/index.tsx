@@ -13,7 +13,7 @@ export * from "./criar-template-components/InfosLaterais";
 export * from "./modals/MoreOptionsButton";
 export * from "./modals/ModalTemplateOptions";
 export * from "./modals/ModalUsuarioOptions";
-export * from "./modals/ModalExcluirUsuario";
+export * from "./modals/ModalRevogarUsuario";
 export * from "./modals/ModalExcluirTemplate";
 export * from "./selects-e-valores/SelectSquads";
 export * from "./selects-e-valores/SelectExtensoes";

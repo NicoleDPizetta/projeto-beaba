@@ -10,12 +10,12 @@ import {
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 import { api } from "../../../server/api/api";
 
-interface IModalExcluirUsuarioProps {
+interface IModalRevogarUsuarioProps {
   id: string;
   userName: string;
 }
 
-export const ModalExcluirUsuario: React.FC<IModalExcluirUsuarioProps> = ({
+export const ModalRevogarUsuario: React.FC<IModalRevogarUsuarioProps> = ({
   id,
   userName,
 }) => {
@@ -47,7 +47,7 @@ export const ModalExcluirUsuario: React.FC<IModalExcluirUsuarioProps> = ({
   return (
     <>
       <Button variant="outlined" color="error" onClick={openModal}>
-        Deletar
+        Revogar acesso
       </Button>
 
       <Dialog open={open} onClose={closeModal}>
@@ -62,7 +62,7 @@ export const ModalExcluirUsuario: React.FC<IModalExcluirUsuarioProps> = ({
               borderColor={theme.palette.primary.main}
               padding={2}
             >
-              Excluir {userName}?
+              Revogar acesso de {userName}?
             </Typography>
 
             <Typography
@@ -70,7 +70,13 @@ export const ModalExcluirUsuario: React.FC<IModalExcluirUsuarioProps> = ({
               textAlign={"center"}
               padding={4}
             >
-              Atenção! Esta ação não pode ser desfeita, tem certeza?
+              <Typography
+              variant="h6"
+              textAlign={"center"}
+            >
+              Atenção!
+            </Typography>
+            O usuário não poderá mais acessar a plataforma, tem certeza?
             </Typography>
 
             <Box
@@ -80,7 +86,7 @@ export const ModalExcluirUsuario: React.FC<IModalExcluirUsuarioProps> = ({
               justifyContent={"space-evenly"}
             >
               <Button variant="contained" color="error" onClick={handleDelete}>
-                Excluir
+                Revogar
               </Button>
               <Button variant="contained" onClick={closeModal}>Cancelar</Button>
             </Box>

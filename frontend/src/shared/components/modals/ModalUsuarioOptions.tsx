@@ -8,7 +8,7 @@ import {
   useTheme,
 } from "@mui/material";
 import { api } from "../../../server/api/api";
-import { ModalExcluirUsuario } from "./ModalExcluirUsuario";
+import { ModalRevogarUsuario } from "./ModalRevogarUsuario";
 
 interface IModalUsuarioOptionsProps {
   userName: string;
@@ -114,7 +114,7 @@ export const ModalUsuarioOptions: React.FC<IModalUsuarioOptionsProps> = ({
         alignItems={"center"}
         justifyContent={"space-evenly"}
       >
-        <ModalExcluirUsuario id={id} userName={userName} />
+        <ModalRevogarUsuario id={id} userName={userName} />
         <Button variant="contained" onClick={handleSave}>
           Salvar
         </Button>
