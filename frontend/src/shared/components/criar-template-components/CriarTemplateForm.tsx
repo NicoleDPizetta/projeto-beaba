@@ -168,7 +168,6 @@ export const CriarTemplateForm: React.FC = () => {
             <TextField
               required
               fullWidth
-              id="quantidade-colunas"
               type="number"
               label="Quantidade de colunas"
               placeholder="Digite apenas números"
@@ -181,8 +180,7 @@ export const CriarTemplateForm: React.FC = () => {
             <TextField
               required
               fullWidth
-              id="quantidade-linhas"
-              label="Quantidade de linhas"
+              label="Limite de linhas"
               type="number"
               placeholder="Zero (0) para não limitar"
               helperText={"Zero (0) para não limitar"}
