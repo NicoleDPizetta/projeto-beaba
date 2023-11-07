@@ -14,6 +14,7 @@ export * from "./modals/MoreOptionsButton";
 export * from "./modals/ModalTemplateOptions";
 export * from "./modals/ModalUsuarioOptions";
 export * from "./modals/ModalRevogarUsuario";
+export * from "./modals/ModalLiberarAcessoUsuario";
 export * from "./modals/ModalExcluirTemplate";
 export * from "./selects-e-valores/SelectSquads";
 export * from "./selects-e-valores/SelectExtensoes";

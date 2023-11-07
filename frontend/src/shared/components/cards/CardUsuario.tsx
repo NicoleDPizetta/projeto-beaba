@@ -53,7 +53,7 @@ export const CardUsuario: React.FC<ICardUsuarioProps> = ({
           )}
         </Box>
 
-        <MoreOptionsButton children={<ModalUsuarioOptions id={userID} userName={userName} permissao={userPermissao}/>}/>
+        <MoreOptionsButton children={<ModalUsuarioOptions id={userID} userName={userName} userNickName={userNickName} permissao={userPermissao}/>}/>
       </Box>
 
       <Box

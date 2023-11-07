@@ -9,16 +9,16 @@ import {
 } from "@mui/material";
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 import { api } from "../../../server/api/api";
+import { ModalNovaSenha } from "./ModalNovaSenha";
 
-interface IModalRevogarUsuarioProps {
+interface IModalLiberarAcessoUsuarioProps {
   id: string;
   userName: string;
 }
 
-export const ModalRevogarUsuario: React.FC<IModalRevogarUsuarioProps> = ({
-  id,
-  userName,
-}) => {
+export const ModalLiberarAcessoUsuario: React.FC<
+  IModalLiberarAcessoUsuarioProps
+> = ({ id, userName }) => {
   const theme = useTheme();
 
   const [open, setModalOpen] = useState(false);
@@ -29,25 +29,26 @@ export const ModalRevogarUsuario: React.FC<IModalRevogarUsuarioProps> = ({
     setModalOpen(false);
   };
 
-  const handleRevogar = async (e: React.FormEvent) => {
+  const handleEdit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     try {
-      const response = await api.put(`/revogar/${id}`);
+      const novoAcesso = { id: id, nome_exibicao: userName, senha: "" };
+      const response = await api.put(`/usuarios/${id}`, novoAcesso);
 
       if (response.status === 200) {
-        console.log("Usuário excluído com sucesso!");
+        console.log("Sucesso ao salvar nova senha de acesso!");
         window.location.reload();
       }
     } catch (error) {
-      console.error("Erro ao excluir o usuário:", error);
+      console.error("Erro ao salvar nova senha de acesso:", error);
     }
   };
 
   return (
     <>
-      <Button variant="outlined" color="error" onClick={openModal}>
-        Revogar acesso
+      <Button variant="contained" color="warning" onClick={openModal}>
+        Liberar acesso
       </Button>
 
       <Dialog open={open} onClose={closeModal}>
@@ -62,14 +63,15 @@ export const ModalRevogarUsuario: React.FC<IModalRevogarUsuarioProps> = ({
               borderColor={theme.palette.primary.main}
               padding={2}
             >
-              Revogar acesso de {userName}?
+              Liberar acesso de {userName}?
             </Typography>
 
             <Typography variant="body1" textAlign={"center"} padding={4}>
               <Typography variant="h6" textAlign={"center"}>
                 Atenção!
               </Typography>
-              O usuário não poderá mais acessar a plataforma, tem certeza?
+              Você precisa fornecer a nova senha ao usuário para que ele possa
+              acessar novamente a plataforma. Solicite que ele a altere depois.
             </Typography>
 
             <Box
@@ -78,9 +80,7 @@ export const ModalRevogarUsuario: React.FC<IModalRevogarUsuarioProps> = ({
               alignItems={"center"}
               justifyContent={"space-evenly"}
             >
-              <Button variant="contained" color="error" onClick={handleRevogar}>
-                Revogar
-              </Button>
+              <ModalNovaSenha key={id} id={id} userName={userName} />
               <Button variant="contained" onClick={closeModal}>
                 Cancelar
               </Button>

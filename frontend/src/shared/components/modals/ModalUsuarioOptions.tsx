@@ -9,9 +9,11 @@ import {
 } from "@mui/material";
 import { api } from "../../../server/api/api";
 import { ModalRevogarUsuario } from "./ModalRevogarUsuario";
+import { ModalLiberarAcessoUsuario } from "./ModalLiberarAcessoUsuario";
 
 interface IModalUsuarioOptionsProps {
   userName: string;
+  userNickName: string;
   permissao: string;
   id: string;
 }
@@ -30,6 +32,7 @@ const permissoes = [
 
 export const ModalUsuarioOptions: React.FC<IModalUsuarioOptionsProps> = ({
   userName,
+  userNickName,
   permissao,
   id,
 }) => {
@@ -114,7 +117,12 @@ export const ModalUsuarioOptions: React.FC<IModalUsuarioOptionsProps> = ({
         alignItems={"center"}
         justifyContent={"space-evenly"}
       >
-        <ModalRevogarUsuario id={id} userName={userName} />
+        {userNickName == "ACESSO REVOGADO" ? (
+          <ModalLiberarAcessoUsuario id={id} userName={userName} />
+        ) : (
+          <ModalRevogarUsuario id={id} userName={userName} />
+        )}
+
         <Button variant="contained" onClick={handleSave}>
           Salvar
         </Button>

@@ -87,7 +87,7 @@ export class UsuariosController {
     }
   }
 
-  async excluirUsuario(req: Request, res: Response) {
+  async revogarUsuario(req: Request, res: Response) {
     try {
       const usuarioID = req.params.id;
       const usuario: Usuarios | null = await prisma.usuarios.findUnique({
@@ -142,6 +142,8 @@ export class UsuariosController {
         return;
       }
 
+      const hash_senha = await hash(senha, 8);
+
       const atualizarUsuario: Usuarios = await prisma.usuarios.update({
         where: { id: usuarioID },
         data: {
@@ -149,7 +151,7 @@ export class UsuariosController {
           nome_exibicao,
           email,
           cargo,
-          senha,
+          senha: hash_senha,
           permissao,
           squad,
         },

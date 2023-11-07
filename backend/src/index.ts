@@ -41,7 +41,7 @@ app.get("/usuarios", userController.consultarTodosUsuarios);
 
 app.get("/usuarios/:id", userController.consultarUsuarioPorID);
 
-app.delete("/usuarios/:id", userController.excluirUsuario);
+app.put("/revogar/:id", userController.revogarUsuario);
 
 app.put("/usuarios/:id", userController.editarUsuario);
 
