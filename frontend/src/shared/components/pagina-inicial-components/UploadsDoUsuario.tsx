@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { Typography } from "@mui/material";
 import { api } from "../../../server/api/api";
-import { Box } from "@mui/system";
 import { CardUpload } from "../cards/CardUpload";
 
 interface UsuarioLogado {
@@ -14,7 +13,7 @@ interface UploadInfos {
   nome: string;
   extensao: string;
   colunas: number;
-  linhas: number | null;
+  linhas: number;
   campos: JSON;
   squad: string;
   criador: string;

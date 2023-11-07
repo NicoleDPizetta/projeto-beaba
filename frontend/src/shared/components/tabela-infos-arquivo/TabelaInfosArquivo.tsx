@@ -4,7 +4,7 @@ import { Table, TableBody, TableCell, TableRow, Paper } from "@mui/material";
 interface TemplateInfos {
   extensao: string;
   colunas: number;
-  linhas: number | null;
+  linhas: number;
 }
 
 export const TabelaInfosArquivo: React.FC<TemplateInfos> = ({
@@ -13,7 +13,7 @@ export const TabelaInfosArquivo: React.FC<TemplateInfos> = ({
   linhas,
 }) => {
   useState<TemplateInfos[]>([]);
-  const linhasExibicao = linhas === null ? "Ilimitadas" : linhas;
+  const linhasExibicao = linhas === 0 ? "Ilimitadas" : linhas;
 
   return (
     <Paper elevation={0} style={{ width: "20rem", margin: "auto" }}>
@@ -28,7 +28,7 @@ export const TabelaInfosArquivo: React.FC<TemplateInfos> = ({
             <TableCell>{colunas}</TableCell>
           </TableRow>
           <TableRow>
-            <TableCell sx={{ fontSize: "1rem" }}>Linhas:</TableCell>
+            <TableCell sx={{ fontSize: "1rem" }}>Limite de linhas:</TableCell>
             <TableCell>{linhasExibicao}</TableCell>
           </TableRow>
         </TableBody>

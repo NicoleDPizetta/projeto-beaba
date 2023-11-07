@@ -8,7 +8,7 @@ interface TemplateInfos {
   nome: string;
   extensao: string;
   colunas: number;
-  linhas: number | null;
+  linhas: number;
   squad: string;
   criador: string;
   status: boolean;

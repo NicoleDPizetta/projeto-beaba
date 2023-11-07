@@ -26,7 +26,7 @@ interface ICardTemplateProps {
   nome: string;
   extensao: string;
   colunas: number;
-  linhas: number | null;
+  linhas: number;
   campos: JSON;
   squad: string;
   criador: string;
