@@ -90,23 +90,31 @@ export class UsuariosController {
   async excluirUsuario(req: Request, res: Response) {
     try {
       const usuarioID = req.params.id;
-      const usuarios: Usuarios | null = await prisma.usuarios.findUnique({
+      const usuario: Usuarios | null = await prisma.usuarios.findUnique({
         where: { id: usuarioID },
       });
 
-      if (!usuarios) {
+      if (!usuario) {
         return res.status(404).json({
           error: "ID de usuário não encontrado",
         });
       }
-      await prisma.usuarios.delete({
-        where: { id: usuarios.id },
+      const novo_nome_exibicao = "ACESSO REVOGADO"
+      const nova_senha = "usuario@revogado#QUERO"
+  
+      await prisma.usuarios.update({
+        where: { id: usuarioID },
+        data: {
+          nome_exibicao: novo_nome_exibicao,
+          senha:nova_senha,
+        },
       });
-      res.json("Usuário deletado com sucesso");
+
+      res.json("Acesso do usuário revogado com sucesso");
     } catch (error) {
-      console.error("Erro ao excluir usuário", error);
+      console.error("Erro ao revogar acesso do usuário", error);
       res.status(500).json({
-        error: "Não foi possível excluir este usuário",
+        error: "Não foi possível revogar acesso deste usuário",
       });
     }
   }

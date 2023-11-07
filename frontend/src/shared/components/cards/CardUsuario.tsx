@@ -1,11 +1,5 @@
 import React from "react";
-import {
-  Avatar,
-  Typography,
-  Box,
-  Paper,
-  useTheme,
-} from "@mui/material";
+import { Avatar, Typography, Box, Paper, useTheme } from "@mui/material";
 import { MoreOptionsButton } from "../modals/MoreOptionsButton";
 import { ModalUsuarioOptions } from "../modals/ModalUsuarioOptions";
 
@@ -51,9 +45,12 @@ export const CardUsuario: React.FC<ICardUsuarioProps> = ({
             src={avatarSrc}
             alt={userName}
           />
-          <Typography variant="h6" color={theme.palette.primary.main}>
-            {userName}
-          </Typography>
+
+          {userNickName == "ACESSO REVOGADO" ? (
+            <Typography variant="h6" color={theme.palette.info.main} >{userName}</Typography>
+          ) : (
+            <Typography variant="h6" color={theme.palette.primary.main}>{userName}</Typography>
+          )}
         </Box>
 
         <MoreOptionsButton children={<ModalUsuarioOptions id={userID} userName={userName} permissao={userPermissao}/>}/>
@@ -66,7 +63,7 @@ export const CardUsuario: React.FC<ICardUsuarioProps> = ({
         padding={2}
       >
         <Box
-        flex={1}
+          flex={1}
           display={"flex"}
           flexDirection={"column"}
           alignItems={"flex-start"}
@@ -79,7 +76,7 @@ export const CardUsuario: React.FC<ICardUsuarioProps> = ({
         </Box>
 
         <Box
-        flex={1}
+          flex={1}
           display={"flex"}
           flexDirection={"column"}
           alignItems={"flex-end"}
@@ -88,7 +85,13 @@ export const CardUsuario: React.FC<ICardUsuarioProps> = ({
         >
           <Typography variant="body1">{userMatricula}</Typography>
 
-          <Typography variant="body1">{userNickName}</Typography>
+          {userNickName == "ACESSO REVOGADO" ? (
+            <Typography variant="body2" color={theme.palette.info.contrastText} bgcolor={theme.palette.info.main} >
+              {userNickName}
+            </Typography>
+          ) : (
+            <Typography variant="body1">{userNickName}</Typography>
+          )}
         </Box>
       </Box>
 
