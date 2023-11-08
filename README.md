@@ -15,22 +15,34 @@ Este desafio consiste na criação de um Sistema de Gerenciamento de Templates d
 
 Esse projeto está sendo desenvolvido com as seguintes tecnologias:
 
+#### Front:
 - React
 - Typescript
-- Express
+- Node
 - Material UI
-- React RoutesDOM
-- Prisma
-- PostgreSQL
 - Axios
+- React RoutesDOM
+- ApexChart
+
+#### Back:
+- Typescript
+- Node
+- Express
+- Prisma
 - CORS
 - Nodemon
-- Figma
-- Versionamento com Git e Github
-
-Ainda serão adicionadas
+- JSON Web Token
 - Python
 - Flask
+- Pandas
+- SQLAlchemy
+
+#### Outros:
+- PostgreSQL
+- Google Cloud API
+- ESLint
+- Figma
+- Versionamento com Git e Github
 
 ## 💚 Preview site
 
