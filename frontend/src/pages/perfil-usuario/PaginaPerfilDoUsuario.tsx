@@ -42,6 +42,7 @@ export const PaginaPerfilDoUsuario: React.FC = () => {
   return (
     <LayoutBase>
       <PerfilUsuario
+        id={userID}
         nome_completo={nomeCompleto}
         nome_exibicao={nomeExibicao}
         cargo={userCargo}
