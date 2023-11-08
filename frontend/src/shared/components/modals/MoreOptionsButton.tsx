@@ -4,13 +4,11 @@ import {
   DialogContent,
   Box,
   IconButton,
-  useTheme,
 } from "@mui/material";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 
 export const MoreOptionsButton: React.FC<{ children: ReactNode }> = ({ children }) => {
-  const theme = useTheme();
   const [open, setModalOpen] = useState(false);
   const openModal = () => {setModalOpen(true)};
   const closeModal = () => {setModalOpen(false)};

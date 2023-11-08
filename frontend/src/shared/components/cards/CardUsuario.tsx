@@ -46,7 +46,7 @@ export const CardUsuario: React.FC<ICardUsuarioProps> = ({
             alt={userName}
           />
 
-          {userNickName == "ACESSO REVOGADO" ? (
+          {userNickName === "ACESSO REVOGADO" ? (
             <Typography variant="h6" color={theme.palette.info.main} >{userName}</Typography>
           ) : (
             <Typography variant="h6" color={theme.palette.primary.main}>{userName}</Typography>
@@ -85,7 +85,7 @@ export const CardUsuario: React.FC<ICardUsuarioProps> = ({
         >
           <Typography variant="body1">{userMatricula}</Typography>
 
-          {userNickName == "ACESSO REVOGADO" ? (
+          {userNickName === "ACESSO REVOGADO" ? (
             <Typography variant="body2" color={theme.palette.info.contrastText} bgcolor={theme.palette.info.main} >
               {userNickName}
             </Typography>

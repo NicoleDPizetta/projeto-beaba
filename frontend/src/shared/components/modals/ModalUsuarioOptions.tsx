@@ -117,7 +117,7 @@ export const ModalUsuarioOptions: React.FC<IModalUsuarioOptionsProps> = ({
         alignItems={"center"}
         justifyContent={"space-evenly"}
       >
-        {userNickName == "ACESSO REVOGADO" ? (
+        {userNickName === "ACESSO REVOGADO" ? (
           <ModalLiberarAcessoUsuario id={id} userName={userName} />
         ) : (
           <ModalRevogarUsuario id={id} userName={userName} />

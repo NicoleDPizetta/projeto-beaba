@@ -8,7 +8,6 @@ import {
   useTheme,
 } from "@mui/material";
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
-import { api } from "../../../server/api/api";
 import { ModalNovaSenha } from "./ModalNovaSenha";
 
 interface IModalLiberarAcessoUsuarioProps {
@@ -27,22 +26,6 @@ export const ModalLiberarAcessoUsuario: React.FC<
   };
   const closeModal = () => {
     setModalOpen(false);
-  };
-
-  const handleEdit = async (e: React.FormEvent) => {
-    e.preventDefault();
-
-    try {
-      const novoAcesso = { id: id, nome_exibicao: userName, senha: "" };
-      const response = await api.put(`/usuarios/${id}`, novoAcesso);
-
-      if (response.status === 200) {
-        console.log("Sucesso ao salvar nova senha de acesso!");
-        window.location.reload();
-      }
-    } catch (error) {
-      console.error("Erro ao salvar nova senha de acesso:", error);
-    }
   };
 
   return (

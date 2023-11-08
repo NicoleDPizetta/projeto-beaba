@@ -56,10 +56,8 @@ export const UploadsDoUsuario = ({ id }: UsuarioLogado) => {
   };
 
   useEffect(() => {
-    if (id) {
       getUploads();
-    }
-  }, [id]);
+  });
 
   return (
     <>

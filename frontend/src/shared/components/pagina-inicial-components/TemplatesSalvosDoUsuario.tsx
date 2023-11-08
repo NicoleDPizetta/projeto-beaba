@@ -78,7 +78,7 @@ export const TemplatesSalvosDoUsuario = ({ id }: UsuarioLogado) => {
     if (id) {
       fetchData();
     }
-  }, [id]);
+  });
 
   return (
     <>
