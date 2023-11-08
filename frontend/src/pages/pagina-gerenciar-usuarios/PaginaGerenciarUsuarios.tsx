@@ -1,5 +1,9 @@
 import { useEffect, useState } from "react";
-import { CardUsuario, GridBase } from "../../shared/components";
+import {
+  CardUsuario,
+  GridBase,
+  SelectFiltroSquad,
+} from "../../shared/components";
 import { LayoutBase } from "../../shared/layouts";
 import { api } from "../../server/api/api";
 
@@ -17,6 +21,7 @@ interface UsuarioInfos {
 
 export const PaginaGerenciarUsuarios = () => {
   const [usuarios, setUsuarios] = useState<UsuarioInfos[]>([]);
+  const [filtroSquad, setFiltroSquad] = useState<string>("Todos");
 
   const getUsuarios = async () => {
     try {
@@ -35,20 +40,32 @@ export const PaginaGerenciarUsuarios = () => {
 
   return (
     <LayoutBase>
+      <SelectFiltroSquad
+        value={filtroSquad}
+        onChange={(event: React.ChangeEvent<{ value: unknown }>) => {
+          setFiltroSquad(event.target.value as string);
+        }}
+        titleText="Gerenciar usuários"
+      />
+
       <GridBase>
-        {usuarios.map((usuario) => (
-          <CardUsuario
-            key={usuario.id}
-            userID={usuario.id}
-            userName={usuario.nome_completo}
-            userNickName={usuario.nome_exibicao}
-            userCargo={usuario.cargo}
-            userSquad={usuario.squad}
-            avatarSrc=""
-            userMatricula={usuario.matricula}
-            userPermissao={usuario.permissao}
-          />
-        ))}
+        {usuarios
+          .filter((usuario) =>
+            filtroSquad !== "Todos" ? usuario.squad === filtroSquad : true
+          )
+          .map((usuario) => (
+            <CardUsuario
+              key={usuario.id}
+              userID={usuario.id}
+              userName={usuario.nome_completo}
+              userNickName={usuario.nome_exibicao}
+              userCargo={usuario.cargo}
+              userSquad={usuario.squad}
+              avatarSrc=""
+              userMatricula={usuario.matricula}
+              userPermissao={usuario.permissao}
+            />
+          ))}
       </GridBase>
     </LayoutBase>
   );

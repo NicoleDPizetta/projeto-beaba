@@ -1,5 +1,9 @@
 import { useEffect, useState } from "react";
-import { CardTemplate, GridBase } from "../../shared/components";
+import {
+  CardTemplate,
+  GridBase,
+  SelectFiltroSquad,
+} from "../../shared/components";
 import { LayoutBase } from "../../shared/layouts";
 import { api } from "../../server/api/api";
 
@@ -17,6 +21,7 @@ interface TemplateInfos {
 
 export const PaginaTemplatesDisponiveis = () => {
   const [templates, setTemplates] = useState<TemplateInfos[]>([]);
+  const [filtroSquad, setFiltroSquad] = useState<string>("Todos");
 
   const getTemplates = async () => {
     try {
@@ -28,11 +33,12 @@ export const PaginaTemplatesDisponiveis = () => {
           const user = userResponse.data;
 
           return {
-            ...template, criador: user.nome_completo
+            ...template,
+            criador: user.nome_completo,
           };
         })
       );
-      
+
       setTemplates(templatesComNomeUsuario);
     } catch (error) {
       console.error("Erro ao receber dados:", error);
@@ -44,21 +50,33 @@ export const PaginaTemplatesDisponiveis = () => {
   }, []);
   return (
     <LayoutBase>
+      <SelectFiltroSquad
+        value={filtroSquad}
+        onChange={(event: React.ChangeEvent<{ value: unknown }>) => {
+          setFiltroSquad(event.target.value as string);
+        }}
+        titleText="Templates disponíveis"
+      />
+
       <GridBase>
-        {templates.map((template) => (
-          <CardTemplate
-            key={template.id}
-            id={template.id}
-            nome={template.nome}
-            criador={template.criador}
-            data_criacao={template.data_criacao}
-            status={template.status}
-            squad={template.squad}
-            extensao={template.extensao}
-            colunas={template.colunas}
-            linhas={template.linhas}
-          />
-        ))}
+        {templates
+          .filter((template) =>
+            filtroSquad !== "Todos" ? template.squad === filtroSquad : true
+          )
+          .map((template) => (
+            <CardTemplate
+              key={template.id}
+              id={template.id}
+              nome={template.nome}
+              criador={template.criador}
+              data_criacao={template.data_criacao}
+              status={template.status}
+              squad={template.squad}
+              extensao={template.extensao}
+              colunas={template.colunas}
+              linhas={template.linhas}
+            />
+          ))}
       </GridBase>
     </LayoutBase>
   );

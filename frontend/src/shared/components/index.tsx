@@ -21,6 +21,7 @@ export * from "./modals/ModalExcluirTemplate";
 export * from "./selects-e-valores/SelectSquads";
 export * from "./selects-e-valores/SelectExtensoes";
 export * from "./selects-e-valores/SelectTiposDados";
+export * from "./selects-e-valores/SelectFiltroSquad";
 export * from "./logo-box/LogoBox";
 export * from "./pagina-inicial-components/TemplatesSalvosDoUsuario";
 export * from "./pagina-inicial-components/UploadsDoUsuario";
