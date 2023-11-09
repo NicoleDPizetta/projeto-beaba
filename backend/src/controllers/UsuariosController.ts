@@ -154,6 +154,41 @@ export class UsuariosController {
     }
   }
 
+  async liberarUsuario(req: Request, res: Response) {
+    try {
+      const usuarioID = req.params.id;
+      const novaSenha = req.body.senha;
+      const novoNomeExibicao = req.body.nome_exibicao;
+
+      const usuarios: Usuarios | null = await prisma.usuarios.findUnique({
+        where: { id: usuarioID },
+      });
+      if (!usuarios) {
+        res.status(404).json({
+          error: "ID de usuário não encontrado",
+        });
+        return;
+      }
+
+      const hash_senha = await hash(novaSenha, 8);
+
+      const atualizarSenha: Usuarios = await prisma.usuarios.update({
+        where: { id: usuarioID },
+        data: {
+          senha: hash_senha,
+          nome_exibicao: novoNomeExibicao,
+        },
+      });
+
+      res.json(atualizarSenha);
+    } catch (error) {
+      console.error("Erro ao alterar senha", error);
+      res.status(500).json({
+        error: "Não foi possível alterar senha",
+      });
+    }
+  }
+
   async editarUsuario(req: Request, res: Response) {
     try {
       const usuarioID = req.body.id;

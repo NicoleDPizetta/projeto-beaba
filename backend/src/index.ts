@@ -47,6 +47,8 @@ app.put("/alterar-senha/:id", userController.alterarSenha);
 
 app.put("/usuarios/:id", userController.editarUsuario);
 
+app.put("/liberar-usuario/:id", userController.liberarUsuario);
+
 app.post("/criar-template", auth.authMiddleware, templatesController.criarNovoTemplate);
 
 app.get("/templates/:id", templatesController.consultarTemplatePorID);

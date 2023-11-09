@@ -23,8 +23,9 @@ export const ModalNovaSenha: React.FC<IModalNovaSenhaProps> = ({
   const theme = useTheme();
 
   const [newPassword, setNewPassword] = useState("");
-
+  const [isSaveButtonDisabled, setIsSaveButtonDisabled] = useState(true);
   const [open, setModalOpen] = useState(false);
+
   const openModal = () => {
     setModalOpen(true);
   };
@@ -34,14 +35,19 @@ export const ModalNovaSenha: React.FC<IModalNovaSenhaProps> = ({
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setNewPassword(event.target.value);
+    setIsSaveButtonDisabled(false);
   };
 
   const handleNovaSenha = async (e: React.FormEvent) => {
     e.preventDefault();
 
     try {
-      const novoAcesso = { id: id, nome_exibicao: userName, senha: newPassword };
-      const response = await api.put(`/usuarios/${id}`, novoAcesso);
+      const novoAcesso = {
+        id: id,
+        nome_exibicao: userName,
+        senha: newPassword,
+      };
+      const response = await api.put(`/liberar-usuario/${id}`, novoAcesso);
 
       if (response.status === 200) {
         console.log("Sucesso ao salvar nova senha de acesso!");
@@ -95,15 +101,20 @@ export const ModalNovaSenha: React.FC<IModalNovaSenhaProps> = ({
                   placeholder="Nova Senha"
                 />
                 <Button
+                  disabled={isSaveButtonDisabled}
                   variant="contained"
                   onClick={handleNovaSenha}
                 >
                   Salvar
                 </Button>
               </Box>
-                <Button variant="contained" color="secondary" onClick={closeModal}>
-                  Cancelar
-                </Button>
+              <Button
+                variant="contained"
+                color="secondary"
+                onClick={closeModal}
+              >
+                Cancelar
+              </Button>
             </Box>
           </Box>
 
