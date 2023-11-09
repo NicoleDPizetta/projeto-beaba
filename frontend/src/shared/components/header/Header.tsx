@@ -1,13 +1,9 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { Box, Button, TextField, Paper } from "@mui/material";
 import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
 import { MenuContaUsuario } from "../menu-conta-usuario/MenuContaUsuario";
 import { AuthUsuarioLogado } from "../../../middleware";
-
-interface IHeaderProps {
-  textoDaBusca?: string;
-  aoMudarTextoDeBusca?: (novoTexto: string) => void;
-}
 
 interface UsuarioLogadoInfos {
   id: string;
@@ -20,11 +16,10 @@ interface UsuarioLogadoInfos {
   email: string;
 }
 
-export const Header: React.FC<IHeaderProps> = ({
-  textoDaBusca = "",
-  aoMudarTextoDeBusca,
-}) => {
+export const Header = () => {
+  const navigate = useNavigate();
   const [usuarioLogado, setUsuarioLogado] = useState<UsuarioLogadoInfos>();
+  const [searchValue, setSearchValue] = useState("");
 
   const getUsuarioLogado = async () => {
     const usuario = await AuthUsuarioLogado();
@@ -38,6 +33,13 @@ export const Header: React.FC<IHeaderProps> = ({
   useEffect(() => {
     getUsuarioLogado();
   }, []);
+
+  const handleSearch = () => {
+    if (searchValue.trim() !== "") {
+      const termoCodificado = encodeURIComponent(searchValue);
+      navigate(`/resultados?busca=${termoCodificado}`);
+    }
+  };
 
   const nomeExibicao = usuarioLogado ? usuarioLogado.nome_exibicao : "Usuário!";
   const avatarAlt = usuarioLogado ? nomeExibicao : "Usuário";
@@ -56,12 +58,22 @@ export const Header: React.FC<IHeaderProps> = ({
         <TextField
           size="small"
           fullWidth
-          value={textoDaBusca}
-          onChange={(e) => aoMudarTextoDeBusca?.(e.target.value)}
-          placeholder="Pesquisar"
+          value={searchValue}
+          onChange={(e) => setSearchValue(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") {
+              handleSearch();
+            }
+          }}
+          placeholder="Pesquisar template por nome"
           type="search"
         />
-        <Button variant="contained" color="primary" disableElevation>
+        <Button
+          variant="contained"
+          color="primary"
+          disableElevation
+          onClick={handleSearch}
+        >
           <SearchOutlinedIcon />
         </Button>
       </Box>

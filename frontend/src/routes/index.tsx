@@ -12,6 +12,7 @@ import {
   PaginaUploads,
   PaginaRelatorios,
 } from "../pages";
+import { PaginaResultadoBusca } from "../pages/pagina-resultado-busca/PaginaResultadoBusca";
 
 const isAuthenticated = localStorage.getItem("token") !== null;
 
@@ -56,6 +57,8 @@ export const AppRoutes = () => {
         
         <Route path="/templates" element={<PrivateRoute children={<PaginaTemplatesDisponiveis />} redirectTo={"/login"} allowedPermissions={["PADRAO", "CRIADOR", "ADMINISTRADOR"]} /> } />
          
+        <Route path="/resultados" element={<PrivateRoute children={<PaginaResultadoBusca />} redirectTo="/login" allowedPermissions={["PADRAO", "CRIADOR", "ADMINISTRADOR"]} />} />
+
         <Route path="/criar-template" element={<PrivateRoute children={<PaginaCriarTemplate />} redirectTo="/login" allowedPermissions={["CRIADOR", "ADMINISTRADOR"]} />} />
         
         <Route path="/gerenciar-templates" element={<PrivateRoute children={<PaginaGerenciarTemplates />} redirectTo="/login" allowedPermissions={["CRIADOR", "ADMINISTRADOR"]} />} />

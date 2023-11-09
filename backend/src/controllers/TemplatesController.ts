@@ -98,7 +98,7 @@ export class TemplatesController {
       });
 
       if (!template) {
-        res.status(404).json({error: "ID do template não encontrado"});
+        res.status(404).json({ error: "ID do template não encontrado" });
       } else {
         await prisma.templates_salvos_do_Usuario.deleteMany({
           where: {
@@ -161,6 +161,35 @@ export class TemplatesController {
       console.error("Erro ao editar este template", error);
       res.status(500).json({
         error: "Não foi possível editar este template",
+      });
+    }
+  }
+
+  async realizarPesquisa(req: Request, res: Response) {
+    try {
+      const termo = req.params.term as string;
+      const templatesBusca: Templates[] = await prisma.templates.findMany({
+        where: {
+          status: true,
+          nome: {
+            contains: termo,
+            mode: "insensitive",
+          },
+        },
+      });
+
+      if (templatesBusca.length > 0) {
+        res.json(templatesBusca);
+      } else {
+        res.status(404).json({ error: "Nenhum template correspondente encontrado" });
+      }
+    } catch (error) {
+      console.error(
+        "Erro ao consultar templates com nome correspondente",
+        error
+      );
+      res.status(500).json({
+        error: "Não foi possível consultar templates por nome",
       });
     }
   }

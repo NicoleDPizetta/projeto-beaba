@@ -51,6 +51,8 @@ app.post("/criar-template", auth.authMiddleware, templatesController.criarNovoTe
 
 app.get("/templates/:id", templatesController.consultarTemplatePorID);
 
+app.get("/search/:term", templatesController.realizarPesquisa);
+
 app.get( "/templates", auth.authMiddleware, templatesController.consultarTemplatesAtivos);
 
 app.get("/gerenciar-templates", templatesController.consultarTemplatesInativos);
