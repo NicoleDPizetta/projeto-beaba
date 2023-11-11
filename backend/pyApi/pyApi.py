@@ -26,6 +26,8 @@ def validar_arquivo():
     try:
         arquivo_recebido = request.files['arquivo']
         template = json.loads(request.form['template'])
+        pasta_selecionada = request.form['repositorio_selecionado']
+        print(pasta_selecionada)
 
         if arquivo_recebido.filename.endswith('.csv'):
             arquivo = pd.read_csv(arquivo_recebido, sep=';', decimal=',', parse_dates=True, dayfirst=True, encoding='latin-1')
@@ -107,15 +109,41 @@ def validar_arquivo():
 
         drive_service = build('drive', 'v3', credentials=credentials)
 
-        file_metadata = {
-            'name': arquivo_recebido.filename,
-            'parents': [os.getenv('DRIVE_FOLDER')]
-        }
+        if pasta_selecionada == "Mercantil":
+            repositorio_destino = os.getenv('DRIVE_MERCANTIL')
+            file_metadata = {
+                'name': arquivo_recebido.filename,
+                'parents': [repositorio_destino]
+            }
+        elif pasta_selecionada == "Cartao":
+            repositorio_destino = os.getenv('DRIVE_CARTAO')
+            file_metadata = {
+                'name': arquivo_recebido.filename,
+                'parents': [repositorio_destino]
+            }
+        elif pasta_selecionada == "Mobile":
+            repositorio_destino = os.getenv('DRIVE_MOBILE')
+            file_metadata = {
+                'name': arquivo_recebido.filename,
+                'parents': [repositorio_destino]
+            }
+        elif pasta_selecionada == "DA":
+            repositorio_destino = os.getenv('DRIVE_DA')
+            file_metadata = {
+                'name': arquivo_recebido.filename,
+                'parents': [repositorio_destino]
+            }
+        elif pasta_selecionada == "Business TECH":
+            repositorio_destino = os.getenv('DRIVE_BUSINESSTECH')
+            file_metadata = {
+                'name': arquivo_recebido.filename,
+                'parents': [repositorio_destino]
+            }
 
         media = MediaIoBaseUpload(arquivo_recebido, mimetype='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', resumable=True)
 
         file = drive_service.files().create(body=file_metadata, media_body=media, fields='id').execute()
-        print(f'Arquivo {arquivo_recebido.filename} enviado com sucesso. ID: {file["id"]}')
+        print(f'Arquivo {arquivo_recebido.filename} enviado com sucesso. No repositório {pasta_selecionada}. Com o ID: {file["id"]}')
 
         # Persistindo no Banco de Dados
         url = 'http://localhost:5000/salvar-upload'

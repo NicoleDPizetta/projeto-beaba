@@ -6,16 +6,14 @@ import {
   Button,
   IconButton,
   useTheme,
-  Dialog,
 } from "@mui/material";
 import { TabelaInfosArquivo } from "../tabela-infos-arquivo/TabelaInfosArquivo";
 import Avatar from "@mui/material/Avatar";
 import CalendarMonthOutlinedIcon from "@mui/icons-material/CalendarMonthOutlined";
 import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
-import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 import { api, pyApi } from "../../../server/api/api";
 import { AuthUsuarioLogado } from "../../../middleware";
-import { styled } from "@mui/material/styles";
+import { ModalUpload } from "../modals/ModalUpload";
 
 interface UsuarioLogadoInfos {
   id: string;
@@ -34,18 +32,6 @@ interface ICardTemplateProps {
   data_criacao: string;
 }
 
-const VisualInputEscondido = styled("input")({
-  clip: "rect(0 0 0 0)",
-  clipPath: "inset(50%)",
-  height: 1,
-  overflow: "hidden",
-  position: "absolute",
-  bottom: 0,
-  left: 0,
-  whiteSpace: "nowrap",
-  width: 1,
-});
-
 export const CardTemplateSalvo: React.FC<ICardTemplateProps> = ({
   status,
   nome,
@@ -59,24 +45,9 @@ export const CardTemplateSalvo: React.FC<ICardTemplateProps> = ({
   linhas,
 }) => {
   const theme = useTheme();
-  const [open, setModalOpen] = useState(false);
-  const [errorDialogOpen, setErrorDialogOpen] = useState(false);
-  const [errorMessage, setErrorMessage] = useState("");
-
-  const openModal = () => {
-    setModalOpen(true);
-  };
-
-  const closeModal = () => {
-    setModalOpen(false);
-  };
-
-  const closeErrorDialog = () => {
-    setErrorDialogOpen(false);
-  };
 
   const [usuarioLogado, setUsuarioLogado] = useState<UsuarioLogadoInfos>();
-  
+
   const getUsuarioLogado = async () => {
     const usuario = await AuthUsuarioLogado();
     if (usuario) {
@@ -105,52 +76,6 @@ export const CardTemplateSalvo: React.FC<ICardTemplateProps> = ({
     }
   };
 
-  const fazerUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
-    event.preventDefault();
-    const usuarioLogadoId = usuarioLogado?.id;
-
-    const arquivo = event.target.files?.[0] || null;
-    const templateInfos = {
-      id,
-      nome,
-      status,
-      squad,
-      criador,
-      data_criacao,
-      campos,
-      extensao,
-      colunas,
-      linhas,
-      usuarioLogadoId,
-    };
-
-    const formData = new FormData();
-    formData.append("arquivo", arquivo as File);
-    formData.append("template", JSON.stringify(templateInfos));
-
-    try {
-      const response = await pyApi.post('http://localhost:4000/validar', formData,
-        {
-          headers: { "Content-Type": "multipart/form-data" },
-        }
-      );
-      const data = response.data;
-      console.log(data);
-      
-      if (data.hasOwnProperty("sucesso")) {
-        openModal();
-      } else {
-        const errorMessage = response.data.error;
-        console.log(errorMessage)
-        setErrorMessage(errorMessage);
-        setErrorDialogOpen(true);
-      }
-    } catch (error) {
-      setErrorDialogOpen(true);
-      console.error("Error:", error);
-    }
-  };
-
   const handleBaixarTemplate = async () => {
     try {
       /* Consultar template por ID Typescript */
@@ -159,15 +84,20 @@ export const CardTemplateSalvo: React.FC<ICardTemplateProps> = ({
       const templateData = responseTS.data;
 
       if (templateData) {
-        const responsePY = await pyApi.post(`/template-download`, templateData, {
-          responseType: "blob",
-        });
+        const responsePY = await pyApi.post(
+          `/template-download`,
+          templateData,
+          {
+            responseType: "blob",
+          }
+        );
 
         const { extensao, nome } = templateData;
         let mimeType;
-  
+
         if (extensao === ".xlsx") {
-          mimeType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+          mimeType =
+            "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
         } else if (extensao === ".xls") {
           mimeType = "application/vnd.ms-excel";
         } else if (extensao === ".csv") {
@@ -176,10 +106,10 @@ export const CardTemplateSalvo: React.FC<ICardTemplateProps> = ({
           console.error("Extensão de arquivo desconhecida");
           return;
         }
-        
+
         const blob = new Blob([responsePY.data], { type: mimeType });
         const url = window.URL.createObjectURL(blob);
-  
+
         const a = document.createElement("a");
         a.href = url;
         a.download = nome + extensao;
@@ -187,11 +117,11 @@ export const CardTemplateSalvo: React.FC<ICardTemplateProps> = ({
         document.body.appendChild(a);
         a.click();
         window.URL.revokeObjectURL(url);
-      };
+      }
     } catch (error) {
       console.error(`Erro ao baixar template: ${nome}`, error);
     }
-}
+  };
 
   /* Definindo a cor do template de acordo com o status (ativo / inativo) */
   const corTexto = status ? theme.palette.primary.light : theme.palette.info.main;
@@ -294,96 +224,32 @@ export const CardTemplateSalvo: React.FC<ICardTemplateProps> = ({
 
           {status && (
             <Box display={"flex"} gap={4}>
-              <Button fullWidth variant="contained" onClick={handleBaixarTemplate}>
+              <Button
+                fullWidth
+                variant="contained"
+                onClick={handleBaixarTemplate}
+              >
                 Baixar
               </Button>
 
-              <Button fullWidth component="label" variant="contained">
-                Upload
-                <VisualInputEscondido type="file" accept=".xlsx, .xls, .csv" onChange={fazerUpload} />
-              </Button>
+              <ModalUpload
+                key={"modal-upload"}
+                usuarioID={usuarioLogado?.id || ""}
+                id={id}
+                nome={nome}
+                extensao={extensao}
+                colunas={colunas}
+                linhas={linhas}
+                campos={campos}
+                squad={squad}
+                criador={criador}
+                status={status}
+                data_criacao={data_criacao}
+              />
             </Box>
           )}
         </Box>
       </Box>
-
-      <Dialog open={errorDialogOpen} onClose={closeErrorDialog}>
-        <Box position={"relative"} padding={2} display={"inline-flex"}>
-          <Box width={"100%"}>
-            <Typography
-              variant="h6"
-              textAlign={"center"}
-              fontWeight={700}
-              color={theme.palette.secondary.main}
-              borderBottom={"2px solid"}
-              borderColor={theme.palette.secondary.main}
-              padding={2}
-            >
-              Erro na validação!
-            </Typography>
-
-            <Typography variant="body1" textAlign={"center"} padding={4}>
-              {errorMessage}
-            </Typography>
-
-            <Box
-              width={"100%"}
-              display={"flex"}
-              alignItems={"center"}
-              justifyContent={"space-evenly"}
-            >
-              <Button variant="contained" onClick={closeErrorDialog} color="secondary">
-                Ok
-              </Button>
-            </Box>
-          </Box>
-
-          <Box position={"absolute"} right={8} top={8}>
-            <IconButton onClick={closeErrorDialog}>
-              <HighlightOffIcon />
-            </IconButton>
-          </Box>
-        </Box>
-      </Dialog>
-
-      <Dialog open={open} onClose={closeModal}>
-        <Box position={"relative"} padding={2} display={"inline-flex"}>
-          <Box width={"100%"}>
-            <Typography
-              variant="h6"
-              textAlign={"center"}
-              fontWeight={700}
-              color={theme.palette.primary.main}
-              borderBottom={"2px solid"}
-              borderColor={theme.palette.primary.main}
-              padding={2}
-            >
-              Enviado com sucesso!
-            </Typography>
-
-            <Typography variant="body1" textAlign={"center"} padding={4}>
-              Seu arquivo foi validado e enviado com sucesso!
-            </Typography>
-
-            <Box
-              width={"100%"}
-              display={"flex"}
-              alignItems={"center"}
-              justifyContent={"space-evenly"}
-            >
-              <Button variant="contained" onClick={closeModal}>
-                Ok
-              </Button>
-            </Box>
-          </Box>
-
-          <Box position={"absolute"} right={8} top={8}>
-            <IconButton onClick={closeModal}>
-              <HighlightOffIcon />
-            </IconButton>
-          </Box>
-        </Box>
-      </Dialog>
     </Paper>
   );
 };

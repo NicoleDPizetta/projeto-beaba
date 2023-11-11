@@ -18,6 +18,7 @@ export * from "./modals/ModalLiberarAcessoUsuario";
 export * from "./modals/ModalEditarMinhaSenha";
 export * from "./modals/ModalEditarMeuPerfil";
 export * from "./modals/ModalExcluirTemplate";
+export * from "./modals/ModalUpload"
 export * from "./selects-e-valores/SelectSquads";
 export * from "./selects-e-valores/SelectExtensoes";
 export * from "./selects-e-valores/SelectTiposDados";
