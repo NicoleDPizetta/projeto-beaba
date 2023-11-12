@@ -27,7 +27,6 @@ def validar_arquivo():
         arquivo_recebido = request.files['arquivo']
         template = json.loads(request.form['template'])
         pasta_selecionada = request.form['repositorio_selecionado']
-        print(pasta_selecionada)
 
         if arquivo_recebido.filename.endswith('.csv'):
             arquivo = pd.read_csv(arquivo_recebido, sep=';', decimal=',', parse_dates=True, dayfirst=True, encoding='latin-1')
@@ -42,24 +41,27 @@ def validar_arquivo():
                 if len(arquivo) != template["linhas"]:
                     return jsonify({'error': 'O número de linhas está incorreto'})
 
-            colunas_arquivo = arquivo.columns
             for coluna, tipo_esperado in template['campos'].items():
+                colunas_arquivo = arquivo[arquivo.columns]
                 if coluna not in colunas_arquivo:
                     return jsonify({'error': f'A coluna {coluna} não está presente'})
-                else:
-                    tipo_dado = str(arquivo[coluna].dtype)
 
-                if tipo_esperado == 'string' and tipo_dado != 'object':
-                    return jsonify({'error': f'A coluna {coluna} deve conter strings, mas o tipo real é {tipo_dado}'})
+                for valor_celula in colunas_arquivo[coluna].values:
+                    tipo_real = type(valor_celula).__name__
+                    #print(f'Esperado: {tipo_esperado}')
+                    #print(tipo_real)
+               
+                    if tipo_esperado == 'str' and tipo_real != 'str':
+                        return jsonify({'error': f'A coluna {coluna} deve conter strings, mas o tipo recebido não é compatível'})
 
-                if tipo_esperado == 'int' and tipo_dado != 'int64':
-                    return jsonify({'error': f'A coluna {coluna} deve conter inteiros, mas o tipo real é {tipo_dado}'})
+                    if tipo_esperado == 'int' and tipo_real != 'int64':
+                        return jsonify({'error': f'A coluna {coluna} deve conter inteiros, mas o tipo recebido não é compatível'})
 
-                if tipo_esperado == 'date' and tipo_dado != 'datetime64[ns]':
-                    return jsonify({'error': f'A coluna {coluna} deve conter datas, mas o tipo real é {tipo_dado}'})
+                    if tipo_esperado == 'date' and tipo_real != 'datetime64[ns]':
+                        return jsonify({'error': f'A coluna {coluna} deve conter datas, mas o tipo recebido não é compatível'})
 
-                if tipo_esperado == 'float' and tipo_dado != 'float64':
-                    return jsonify({'error': f'A coluna {coluna} deve conter numeros decimais, mas o tipo real é {tipo_dado}'})
+                    if tipo_esperado == 'float' and tipo_real != 'float64':
+                        return jsonify({'error': f'A coluna {coluna} deve conter numeros decimais, mas o tipo recebido não é compatível'})
 
 
         if arquivo_recebido.filename.endswith('.xlsx') or arquivo_recebido.filename.endswith('.xls'):
@@ -78,26 +80,27 @@ def validar_arquivo():
                 if numero_linhas != template['linhas']:
                     return jsonify({'error': 'O número de linhas está incorreto'})
 
-            colunas_arquivo = arquivo.columns
             for coluna, tipo_esperado in template['campos'].items():
+                colunas_arquivo = arquivo[arquivo.columns]
                 if coluna not in colunas_arquivo:
                     return jsonify({'error': f'A coluna {coluna} não está presente'})
-                else:
-                    tipo_dado = str(arquivo[coluna].dtype)
 
-                if tipo_esperado == 'string' and tipo_dado != 'object':
-                    return jsonify({'error': f'A coluna {coluna} deve conter strings, mas o tipo real é {tipo_dado}'})
+                for valor_celula in colunas_arquivo[coluna].values:
+                    tipo_real = type(valor_celula).__name__
+                    #print(tipo_real)
+               
+                    if tipo_esperado == 'str' and tipo_real != 'str':
+                        return jsonify({'error': f'A coluna {coluna} deve conter strings, mas o tipo recebido não é compatível'})
 
-                if tipo_esperado == 'int' and tipo_dado != 'int64':
-                    return jsonify({'error': f'A coluna {coluna} deve conter inteiros, mas o tipo real é {tipo_dado}'})
+                    if tipo_esperado == 'int' and tipo_real != 'int64':
+                        return jsonify({'error': f'A coluna {coluna} deve conter inteiros, mas o tipo recebido não é compatível'})
 
-                if tipo_esperado == 'date' and tipo_dado != 'datetime64[ns]':
-                    return jsonify({'error': f'A coluna {coluna} deve conter datas, mas o tipo real é {tipo_dado}'})
+                    if tipo_esperado == 'date' and tipo_real != 'datetime64':
+                        return jsonify({'error': f'A coluna {coluna} deve conter datas, mas o tipo recebido não é compatível'})
 
-                if tipo_esperado == 'float' and tipo_dado != 'float64':
-                    return jsonify({'error': f'A coluna {coluna} deve conter numeros decimais, mas o tipo real é {tipo_dado}'})
+                    if tipo_esperado == 'float' and tipo_real != 'float64':
+                        return jsonify({'error': f'A coluna {coluna} deve conter numeros decimais, mas o tipo recebido não é compatível'})
 
-            
         # Enviando para o Google Drive
         credentials_path = 'backend\\pyApi\\projeto-beaba-chave.json'
 
