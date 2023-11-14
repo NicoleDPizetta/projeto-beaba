@@ -34,7 +34,7 @@ const repositorios = [
     label: "Business TECH",
   },
   {
-    value: "Cartao",
+    value: "Cartão",
     label: "Cartão",
   },
   {

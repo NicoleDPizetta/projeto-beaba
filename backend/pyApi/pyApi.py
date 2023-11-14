@@ -118,7 +118,7 @@ def validar_arquivo():
                 'name': arquivo_recebido.filename,
                 'parents': [repositorio_destino]
             }
-        elif pasta_selecionada == "Cartao":
+        elif pasta_selecionada == "Cartão":
             repositorio_destino = os.getenv('DRIVE_CARTAO')
             file_metadata = {
                 'name': arquivo_recebido.filename,
@@ -155,6 +155,7 @@ def validar_arquivo():
         dados = template
         dados["id_gdrive"] = str(id_gdrive)
         dados["nome_arquivo"] = str(nome_arquivo)
+        dados["squad"] = str(pasta_selecionada)
         response = requests.post(url, json=dados)
 
         if response.status_code == 200:
