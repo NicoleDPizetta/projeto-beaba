@@ -18,7 +18,7 @@ export * from "./modals/ModalLiberarAcessoUsuario";
 export * from "./modals/ModalEditarMinhaSenha";
 export * from "./modals/ModalEditarMeuPerfil";
 export * from "./modals/ModalExcluirTemplate";
-export * from "./modals/ModalUpload"
+export * from "./modals/ModalUpload";
 export * from "./selects-e-valores/SelectSquads";
 export * from "./selects-e-valores/SelectExtensoes";
 export * from "./selects-e-valores/SelectTiposDados";
@@ -30,3 +30,5 @@ export * from "./pagina-inicial-components/AbasDaHome";
 export * from "./abas-login-cadastro/AbasLoginCadastro";
 export * from "./relatorios-components/GraficoExtensoes";
 export * from "./relatorios-components/GraficosSquads";
+export * from "./landing-page-components/BotoesLoginCadastro";
+export * from "./landing-page-components/Vantagens";

@@ -8,3 +8,5 @@ export * from "./perfil-usuario/PaginaPerfilDoUsuario";
 export * from "./pagina-cadastro/PaginaCadastro";
 export * from "./pagina-login/PaginaLogin";
 export * from "./pagina-relatorios/PaginaRelatorios";
+export * from "./pagina-resultado-busca/PaginaResultadoBusca";
+export * from "./landing-page/LandingPage";

@@ -1,3 +1,4 @@
+import React from "react"
 import { BrowserRouter, Routes, Route, Navigate, useNavigate } from "react-router-dom";
 import { UsuarioLogadoPermissao } from "./UsuarioLogadoPermissao";
 import {
@@ -11,8 +12,9 @@ import {
   PaginaCadastro,
   PaginaUploads,
   PaginaRelatorios,
+  PaginaResultadoBusca,
+  LandingPage,
 } from "../pages";
-import { PaginaResultadoBusca } from "../pages/pagina-resultado-busca/PaginaResultadoBusca";
 
 const isAuthenticated = localStorage.getItem("token") !== null;
 
@@ -45,6 +47,8 @@ export const AppRoutes = () => {
   return (
     <BrowserRouter>
       <Routes>
+        <Route path="/" element={<LandingPage />} />
+
         <Route path="/login" element={isAuthenticated ? <Navigate to="/home" replace /> : <PaginaLogin />} />
 
         <Route path="/cadastrar" element={isAuthenticated ? <Navigate to="/home" replace /> : <PaginaCadastro />} />
