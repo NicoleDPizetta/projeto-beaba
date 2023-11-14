@@ -38,6 +38,10 @@ export const PaginaGerenciarUsuarios = () => {
     getUsuarios();
   }, []);
 
+  const usuariosOrdenados = [...usuarios].sort((a, b) =>
+    a.nome_completo.localeCompare(b.nome_completo)
+  );
+
   return (
     <LayoutBase>
       <SelectFiltroSquad
@@ -49,7 +53,7 @@ export const PaginaGerenciarUsuarios = () => {
       />
 
       <GridBase>
-        {usuarios
+        {usuariosOrdenados
           .filter((usuario) =>
             filtroSquad !== "Todos" ? usuario.squad === filtroSquad : true
           )

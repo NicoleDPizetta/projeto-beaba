@@ -48,6 +48,11 @@ export const PaginaTemplatesDisponiveis = () => {
   useEffect(() => {
     getTemplates();
   }, []);
+
+  const templatesOrdenados = [...templates].sort((a, b) =>
+    a.nome.localeCompare(b.nome)
+  );
+
   return (
     <LayoutBase>
       <SelectFiltroSquad
@@ -59,7 +64,7 @@ export const PaginaTemplatesDisponiveis = () => {
       />
 
       <GridBase>
-        {templates
+        {templatesOrdenados
           .filter((template) =>
             filtroSquad !== "Todos" ? template.squad === filtroSquad : true
           )

@@ -48,6 +48,11 @@ export const PaginaGerenciarTemplates = () => {
   useEffect(() => {
     getTemplates();
   }, []);
+
+  const templatesOrdenados = [...templates].sort((a, b) =>
+    a.nome.localeCompare(b.nome)
+  );
+
   return (
     <LayoutBase>
       <SelectFiltroSquad
@@ -58,7 +63,7 @@ export const PaginaGerenciarTemplates = () => {
         titleText="Gerenciar templates inativos"
       />
       <GridBase>
-        {templates
+        {templatesOrdenados
           .filter((template) =>
             filtroSquad !== "Todos" ? template.squad === filtroSquad : true
           )
