@@ -7,6 +7,7 @@ import { MoreOptionsButton } from "../modals/MoreOptionsButton";
 import { ModalTemplateOptions } from "../modals/ModalTemplateOptions";
 import { api } from "../../../server/api/api";
 import { AuthUsuarioLogado } from "../../../middleware";
+import { ModalVisualizarCampos } from "../modals/ModalVisualizarCampos";
 
 interface UsuarioLogadoInfos {
   id: string;
@@ -22,6 +23,7 @@ interface ICardTemplateProps {
   criador: string;
   status: boolean;
   data_criacao: string;
+  campos: { [key: string]: string };
 }
 
 export const CardTemplate: React.FC<ICardTemplateProps> = ({
@@ -34,6 +36,7 @@ export const CardTemplate: React.FC<ICardTemplateProps> = ({
   extensao,
   colunas,
   linhas,
+  campos,
 }) => {
   const theme = useTheme();
   const [usuarioLogado, setUsuarioLogado] = useState<UsuarioLogadoInfos>();
@@ -125,6 +128,8 @@ export const CardTemplate: React.FC<ICardTemplateProps> = ({
             colunas={colunas}
             linhas={linhas}
           />
+
+          <ModalVisualizarCampos key={id+"visualizar-campos"} id={id} nome={nome} campos={campos} />
         </Box>
 
         <Box

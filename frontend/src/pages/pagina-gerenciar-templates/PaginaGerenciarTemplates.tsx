@@ -17,6 +17,7 @@ interface TemplateInfos {
   criador: string;
   status: boolean;
   data_criacao: string;
+  campos: { [key: string]: string };
 }
 
 export const PaginaGerenciarTemplates = () => {
@@ -79,6 +80,7 @@ export const PaginaGerenciarTemplates = () => {
               extensao={template.extensao}
               colunas={template.colunas}
               linhas={template.linhas}
+              campos={template.campos}
             />
           ))}
       </GridBase>

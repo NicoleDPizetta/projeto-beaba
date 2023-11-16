@@ -20,7 +20,7 @@ export * from "./modals/ModalEditarMeuPerfil";
 export * from "./modals/ModalExcluirTemplate";
 export * from "./modals/ModalUpload";
 export * from "./modals/ModalEditarTemplateInfos";
-export * from "./modals/ModalEditarTemplateCampos";
+export * from "./modals/ModalVisualizarCampos";
 export * from "./selects-e-valores/SelectSquads";
 export * from "./selects-e-valores/SelectExtensoes";
 export * from "./selects-e-valores/SelectTiposDados";

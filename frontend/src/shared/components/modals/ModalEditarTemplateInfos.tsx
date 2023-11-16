@@ -12,7 +12,6 @@ import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 import { api } from "../../../server/api/api";
 import { SelectSquads } from "../selects-e-valores/SelectSquads";
 import { SelectExtensoes } from "../selects-e-valores/SelectExtensoes";
-
 interface IModalProps {
   id: string;
   nome: string;
@@ -78,17 +77,19 @@ export const ModalEditarTemplateInfos: React.FC<IModalProps> = ({
         id: templateID,
         nome: nomeTemplate,
         extensao: selectedExtensao,
+        /* colunas: qntCampos, */
         linhas: qntLinhas,
+        /* campos: camposInfo, */
         squad: selectedSquad,
       };
 
       console.log(dataToSend);
 
-      const response = await api.put(`/templates/${templateID}`, dataToSend);
+      /* const response = await api.put(`/templates/${templateID}`, dataToSend);
 
       if (response.status === 200) {
         window.location.reload();
-      }
+      } */
     } catch (error) {
       console.error("Erro ao salvar alterações:", error);
     }

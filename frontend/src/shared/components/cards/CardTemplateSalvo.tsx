@@ -14,6 +14,7 @@ import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
 import { api, pyApi } from "../../../server/api/api";
 import { AuthUsuarioLogado } from "../../../middleware";
 import { ModalUpload } from "../modals/ModalUpload";
+import { ModalVisualizarCampos } from "../modals/ModalVisualizarCampos";
 
 interface UsuarioLogadoInfos {
   id: string;
@@ -168,6 +169,8 @@ export const CardTemplateSalvo: React.FC<ICardTemplateProps> = ({
             colunas={colunas}
             linhas={linhas}
           />
+
+          <ModalVisualizarCampos key={id+"visualizar-campos"} id={id} nome={nome} campos={campos} />
         </Box>
 
         <Box
