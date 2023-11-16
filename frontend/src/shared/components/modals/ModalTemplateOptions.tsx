@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Box, Typography, Grid, Switch, Button, useTheme } from "@mui/material";
 import { api } from "../../../server/api/api";
 import { ModalExcluirTemplate } from "./ModalExcluirTemplate";
+import { ModalEditarTemplateInfos } from "./ModalEditarTemplateInfos";
 import { UsuarioLogadoPermissao } from "../../../routes/UsuarioLogadoPermissao";
 
 interface IModalTemplateOptionsProps {
@@ -43,6 +44,8 @@ export const ModalTemplateOptions: React.FC<IModalTemplateOptionsProps> = ({
   if (permissoaAtual && !allowedPermissions.includes(permissoaAtual)) {
     return <ModalNaoAutorizado />;
   }
+
+  const templateInativo = (status === false)
 
   return (
     <Box
@@ -98,7 +101,10 @@ export const ModalTemplateOptions: React.FC<IModalTemplateOptionsProps> = ({
         alignItems={"center"}
         justifyContent={"space-evenly"}
       >
-        <ModalExcluirTemplate key={id} id={id} nome={nome}/>
+        <ModalExcluirTemplate key={id+ "Excluir"} id={id} nome={nome}/>
+        
+        {templateInativo ? <ModalEditarTemplateInfos key={id + "Editar"} id={id} nome={nome} />  :""}
+
         <Button variant="contained" onClick={handleSave}>
           Salvar
         </Button>
