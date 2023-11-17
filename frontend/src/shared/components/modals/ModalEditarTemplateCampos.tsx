@@ -3,7 +3,6 @@ import {
   Box,
   Button,
   Dialog,
-  DialogTitle,
   TextField,
   IconButton,
   Typography,
@@ -58,8 +57,8 @@ export const ModalEditarTemplateCampos: React.FC<IModalProps> = ({
   };
 
   const handleCampoChange = (campo: string, tipoDado: string) => {
-    setCamposInfo((prevCamposInfo) => ({
-      ...prevCamposInfo,
+    setNovosCampos((prevnovosCampos) => ({
+      ...prevnovosCampos,
       [campo]: tipoDado,
     }));
     setIsSaveButtonDisabled(false);
