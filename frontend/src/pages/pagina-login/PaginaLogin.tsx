@@ -76,6 +76,11 @@ export const PaginaLogin = () => {
           placeholder="Insira sua senha"
           value={formData.senha}
           onChange={handleChange}
+          onKeyDown={(event: React.KeyboardEvent<HTMLDivElement>) => {
+            if (event.key === 'Enter') {
+              handleSubmit(event)
+            }
+          }}
         />
 
         <Button variant="contained" onClick={handleSubmit}>Entrar</Button>
