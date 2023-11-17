@@ -21,6 +21,7 @@ export * from "./modals/ModalExcluirTemplate";
 export * from "./modals/ModalUpload";
 export * from "./modals/ModalEditarTemplateInfos";
 export * from "./modals/ModalVisualizarCampos";
+export * from "./modals/ModalEditarTemplateCampos";
 export * from "./selects-e-valores/SelectSquads";
 export * from "./selects-e-valores/SelectExtensoes";
 export * from "./selects-e-valores/SelectTiposDados";

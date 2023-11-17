@@ -28,8 +28,9 @@ export const NovoCampo: React.FC<{
       alignItems={"center"}
       justifyContent={"space-between"}
       paddingY={2}
+      gap={4}
     >
-      <Box width={"70%"}>
+      <Box flex={1}>
         <TextField
           fullWidth
           required

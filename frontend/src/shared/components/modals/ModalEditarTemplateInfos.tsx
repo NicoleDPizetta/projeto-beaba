@@ -12,6 +12,9 @@ import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 import { api } from "../../../server/api/api";
 import { SelectSquads } from "../selects-e-valores/SelectSquads";
 import { SelectExtensoes } from "../selects-e-valores/SelectExtensoes";
+import { ModalEditarTemplateCampos } from "./ModalEditarTemplateCampos";
+import { ModalVisualizarCampos } from "./ModalVisualizarCampos";
+
 interface IModalProps {
   id: string;
   nome: string;
@@ -38,6 +41,7 @@ export const ModalEditarTemplateInfos: React.FC<IModalProps> = ({
   const [open, setModalOpen] = useState(false);
 
   const [nomeTemplate, setNomeTemplate] = useState("");
+  const [qntCampos, setQtnCampos] = useState<number>(0);
   const [qntLinhas, setQntLinhas] = useState<number>(0);
   const [selectedExtensao, setSelectedExtensao] = useState("");
   const [selectedSquad, setSelectedSquad] = useState("");
@@ -56,12 +60,13 @@ export const ModalEditarTemplateInfos: React.FC<IModalProps> = ({
       const data: TemplateInfos = response.data;
       const templateInfos = data;
       setNomeTemplate(templateInfos.nome);
+      setQtnCampos(templateInfos.colunas);
       setQntLinhas(templateInfos.linhas);
       setSelectedExtensao(templateInfos.extensao);
       setSelectedSquad(templateInfos.squad);
       setCamposInfo(templateInfos.campos);
 
-      console.log(`campos: ${camposInfo}`);
+      console.log(camposInfo);
     } catch (error) {
       console.error("Erro ao receber dados:", error);
     }
@@ -77,19 +82,17 @@ export const ModalEditarTemplateInfos: React.FC<IModalProps> = ({
         id: templateID,
         nome: nomeTemplate,
         extensao: selectedExtensao,
-        /* colunas: qntCampos, */
         linhas: qntLinhas,
-        /* campos: camposInfo, */
         squad: selectedSquad,
       };
 
       console.log(dataToSend);
 
-      /* const response = await api.put(`/templates/${templateID}`, dataToSend);
+      const response = await api.put(`/templates/${templateID}`, dataToSend);
 
       if (response.status === 200) {
         window.location.reload();
-      } */
+      }
     } catch (error) {
       console.error("Erro ao salvar alterações:", error);
     }
@@ -183,6 +186,28 @@ export const ModalEditarTemplateInfos: React.FC<IModalProps> = ({
                       setSelectedExtensao(event.target.value as string);
                       setIsSaveButtonDisabled(false);
                     }}
+                  />
+                </Box>
+
+                <Box
+                  width={"95%"}
+                  display={"flex"}
+                  alignItems={"center"}
+                  justifyContent={"space-around"}
+                >
+                  <ModalVisualizarCampos
+                    key={id + "visualizar-campos"}
+                    id={id}
+                    nome={nome}
+                    campos={camposInfo}
+                  />
+
+                  <ModalEditarTemplateCampos
+                    key={id + "editarCampos"}
+                    id={templateID}
+                    nome={nome}
+                    colunas={qntCampos}
+                    campos={camposInfo}
                   />
                 </Box>
               </Box>
