@@ -32,47 +32,14 @@ export const GraficoExtensoes: React.FC<GraficoExtensoesProps> = ({
 
   const options: ApexOptions = {
     chart: {
-      height: 390,
-      type: "radialBar",
+      type: "donut",
     },
     labels: [".xlsx", ".xls", ".csv"],
-    plotOptions: {
-      radialBar: {
-        offsetY: 0,
-        startAngle: 0,
-        endAngle: 270,
-        hollow: {
-          margin: 5,
-          size: "30%",
-          background: "transparent",
-        },
-        dataLabels: {
-          name: {
-            show: false,
-          },
-          value: {
-            show: false,
-          },
-        },
-      },
+    dataLabels: {
+      enabled: true,
     },
-    colors: ["#39B549", "#F2CA30", "#008D53"],
     legend: {
-      show: true,
-      floating: true,
-      fontSize: "16px",
-      position: "left",
-      offsetX: 20,
-      offsetY: 10,
-      labels: {
-        useSeriesColors: true,
-      },
-      formatter: function (seriesName, opts) {
-        return seriesName + ":  " + opts.w.globals.series[opts.seriesIndex] + "%";
-      },
-      itemMargin: {
-        vertical: 3,
-      },
+      position: "bottom",
     },
   };
 
@@ -90,8 +57,8 @@ export const GraficoExtensoes: React.FC<GraficoExtensoesProps> = ({
       <ReactApexChart
         options={options}
         series={series}
-        type="radialBar"
-        height={250}
+        type="donut"
+        height={300}
       />
     </Box>
   );
