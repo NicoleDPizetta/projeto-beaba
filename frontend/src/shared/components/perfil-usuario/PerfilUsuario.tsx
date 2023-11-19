@@ -24,6 +24,7 @@ interface IPerfilUsuarioProps {
   squad: string;
   avatarSrc: string;
   avatarAlt: string;
+  permissao: string;
 }
 
 export const PerfilUsuario: React.FC<IPerfilUsuarioProps> = ({
@@ -36,6 +37,7 @@ export const PerfilUsuario: React.FC<IPerfilUsuarioProps> = ({
   squad,
   avatarSrc,
   avatarAlt,
+  permissao,
 }) => {
   const theme = useTheme();
 
@@ -113,6 +115,10 @@ export const PerfilUsuario: React.FC<IPerfilUsuarioProps> = ({
                 <TableRow hover>
                   <TableCell sx={coloredTableCellStyle}>Cargo: </TableCell>
                   <TableCell sx={tableCellStyle}>{cargo}</TableCell>
+                </TableRow>
+                <TableRow hover>
+                  <TableCell sx={coloredTableCellStyle}>Permissao: </TableCell>
+                  <TableCell sx={tableCellStyle}>{permissao}</TableCell>
                 </TableRow>
               </TableBody>
             </Table>

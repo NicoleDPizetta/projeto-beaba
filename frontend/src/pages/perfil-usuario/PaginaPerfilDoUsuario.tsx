@@ -11,6 +11,7 @@ interface UsuarioLogadoInfos {
   squad: string;
   cargo: string;
   email: string;
+  permissao: string;
 }
 
 export const PaginaPerfilDoUsuario: React.FC = () => {
@@ -38,6 +39,7 @@ export const PaginaPerfilDoUsuario: React.FC = () => {
   const userCargo = usuarioLogado ? usuarioLogado.cargo : "";
   const avatarAlt = usuarioLogado ? nomeExibicao : "";
   const avatarUsuario = usuarioLogado ? usuarioLogado.nome_completo : avatarAlt;
+  const userPermissao = usuarioLogado ? usuarioLogado.permissao : "";
 
   return (
     <LayoutBase>
@@ -51,6 +53,7 @@ export const PaginaPerfilDoUsuario: React.FC = () => {
         squad={nomeSquad}
         avatarSrc={avatarUsuario}
         avatarAlt={avatarAlt}
+        permissao={userPermissao}
       />
     </LayoutBase>
   );
