@@ -20,13 +20,13 @@ interface IModalUsuarioOptionsProps {
 
 const permissoes = [
   {
-    value: "ADMINISTRADOR",
+    value: "PADRAO",
   },
   {
     value: "CRIADOR",
   },
   {
-    value: "PADRAO",
+    value: "ADMINISTRADOR",
   },
 ];
 
@@ -84,15 +84,7 @@ export const ModalUsuarioOptions: React.FC<IModalUsuarioOptionsProps> = ({
 
       <Box
         width={"98%"}
-        display={"flex"}
-        justifyContent={"space-between"}
-        gap={12}
       >
-        <Box>
-          <Button variant="contained">Relatório</Button>
-        </Box>
-
-        <Box flex={1}>
           <TextField
             fullWidth
             select
@@ -108,7 +100,6 @@ export const ModalUsuarioOptions: React.FC<IModalUsuarioOptionsProps> = ({
               </MenuItem>
             ))}
           </TextField>
-        </Box>
       </Box>
 
       <Box
