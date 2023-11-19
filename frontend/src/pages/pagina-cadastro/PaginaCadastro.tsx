@@ -5,6 +5,8 @@ import {
   TextField,
   Button,
   MenuItem,
+  Snackbar,
+  Alert,
   useTheme,
 } from "@mui/material";
 import { AbasLoginCadastro, LogoBox } from "../../shared/components";
@@ -36,15 +38,22 @@ const squads = [
 export const PaginaCadastro = () => {
   const theme = useTheme();
 
+  const handleSnackbarClose = () => setSnackbarOpen(false);
+
   const [formData, setFormData] = useState({
     nome_completo: "",
     nome_exibicao: "",
     email: "",
+    confirmarEmail: "",
     matricula: "",
     cargo: "",
     senha: "",
+    confirmarSenha: "",
     squad: "",
   });
+
+  const [error, setError] = useState("");
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -54,8 +63,30 @@ export const PaginaCadastro = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
+    if (formData.email !== formData.confirmarEmail) {
+      setError("Os campos de email não correspondem!");
+      setSnackbarOpen(true);
+      return;
+    }
+
+    if (formData.senha !== formData.confirmarSenha) {
+      setError("Os campos de senha não correspondem!");
+      setSnackbarOpen(true);
+      return;
+    }
+
+    const dataToSend = {
+      nome_completo: formData.nome_completo,
+      nome_exibicao: formData.nome_exibicao,
+      email: formData.email,
+      matricula: formData.matricula,
+      cargo: formData.cargo,
+      senha: formData.senha,
+      squad: formData.squad,
+    };
+
     try {
-      const response = await api.post("/cadastrar", formData);
+      const response = await api.post("/cadastrar", dataToSend);
       const data = response.data;
       console.log(data);
 
@@ -63,11 +94,20 @@ export const PaginaCadastro = () => {
         console.log("Sucesso!");
         window.location.href = "http://localhost:3000/login";
       } else {
-        console.log("Falha ao criar usuário");
+        setError("Falha ao criar usuário");
+        setSnackbarOpen(true);
       }
-    } catch (error) {
-      alert("Email já cadastrado");
-      console.log("Erro ao enviar dados:", error);
+    } catch (error: any) {
+      if (error.response && error.response.data && error.response.data.error) {
+        setError(error.response.data.error);
+      } else if (error.response && error.response.data) {
+        setError(error.response.data);
+      } else {
+        setError(
+          "Não foi possível realizar o cadastro. Tente novamente mais tarde."
+        );
+      }
+      setSnackbarOpen(true);
     }
   };
 
@@ -94,6 +134,22 @@ export const PaginaCadastro = () => {
         gap={4}
       >
         <AbasLoginCadastro />
+
+        <Snackbar
+          anchorOrigin={{ vertical: "top", horizontal: "center" }}
+          open={snackbarOpen}
+          autoHideDuration={6000}
+          onClose={handleSnackbarClose}
+        >
+          <Alert
+            onClose={handleSnackbarClose}
+            severity="error"
+            sx={{ width: "100%" }}
+          >
+            {error}
+          </Alert>
+        </Snackbar>
+
         <Box width={"100%"} display={"flex"} flexDirection={"column"} gap={4}>
           <TextField
             required
@@ -186,8 +242,11 @@ export const PaginaCadastro = () => {
               required
               fullWidth
               label="Confirme seu email"
+              name="confirmarEmail"
               type="email"
               placeholder="Confirme seu email"
+              value={formData.confirmarEmail}
+              onChange={handleChange}
             />
           </Box>
 
@@ -212,8 +271,11 @@ export const PaginaCadastro = () => {
               required
               fullWidth
               label="Confirme sua senha"
+              name="confirmarSenha"
+              value={formData.confirmarSenha}
               type="password"
               placeholder="Confirme sua senha"
+              onChange={handleChange}
             />
           </Box>
         </Box>

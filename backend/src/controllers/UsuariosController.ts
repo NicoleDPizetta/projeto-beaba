@@ -23,17 +23,25 @@ export class UsuariosController {
       if (!email || !senha) {
         return res
           .status(400)
-          .json({ error: "Campos obrigatórios não preenchidos" });
+          .json({ error: "Campos obrigatórios não preenchidos!" });
       }
 
       const hash_senha = await hash(senha, 8);
 
-      const usuarioJaExiste = await prisma.usuarios.findUnique({
+      const emailJaExiste = await prisma.usuarios.findUnique({
         where: { email },
       });
 
-      if (usuarioJaExiste) {
-        return res.status(400).json("Email já existente");
+      if (emailJaExiste) {
+        return res.status(400).json("Email já cadastrado!");
+      }
+
+      const matriculaJaExiste = await prisma.usuarios.findUnique({
+        where: { matricula },
+      });
+
+      if (matriculaJaExiste) {
+        return res.status(400).json("Matricula já cadastrada!");
       }
 
       const novoUsuario = await prisma.usuarios.create({
@@ -51,7 +59,7 @@ export class UsuariosController {
     } catch (error) {
       console.error("Erro ao criar novo usuário", error);
       res.status(500).json({
-        error: "Não foi possível criar um novo usuário",
+        error: "Não foi possível realizar o cadastro",
       });
     }
   }
