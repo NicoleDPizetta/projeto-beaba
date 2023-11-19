@@ -1,15 +1,33 @@
-import { Box, Paper, TextField, Button, useTheme } from "@mui/material";
+import React, { useState } from "react";
+import {
+  Box,
+  Paper,
+  TextField,
+  Button,
+  Snackbar,
+  Alert,
+  useTheme,
+} from "@mui/material";
 import { AbasLoginCadastro, LogoBox } from "../../shared/components";
-import { useState } from "react";
 import { api } from "../../server/api/api";
+
+interface ApiResponse {
+  token?: string;
+  error?: string;
+}
 
 export const PaginaLogin = () => {
   const theme = useTheme();
+
+  const handleSnackbarClose = () => setSnackbarOpen(false);
 
   const [formData, setFormData] = useState({
     email: "",
     senha: "",
   });
+
+  const [error, setError] = useState("");
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -20,19 +38,26 @@ export const PaginaLogin = () => {
     e.preventDefault();
 
     try {
-      const response = await api.post("/login", formData) 
-      const data = response.data
-      console.log(data)
+      const response = await api.post<ApiResponse>("/login", formData);
+      const data = response.data;
+      console.log(data);
 
-      if(data.token) {
-        localStorage.setItem('token', data.token);
+      if (data.token) {
+        localStorage.setItem("token", data.token);
         window.location.href = "http://localhost:3000/home";
       } else {
-        console.log("Falha ao receber Token")
+        setError("Falha ao receber Token");
+        setSnackbarOpen(true);
       }
-
-    } catch (error) {
-      console.error("Erro ao enviar dados:", error);
+    } catch (error: any) {
+      if (error.response && error.response.data && error.response.data.error) {
+        setError(error.response.data.error);
+      } else {
+        setError(
+          "Não foi possível realizar o login. Tente novamente mais tarde."
+        );
+      }
+      setSnackbarOpen(true);
     }
   };
 
@@ -59,6 +84,22 @@ export const PaginaLogin = () => {
         gap={4}
       >
         <AbasLoginCadastro />
+
+        <Snackbar
+          anchorOrigin={{ vertical: "top", horizontal: "center" }}
+          open={snackbarOpen}
+          autoHideDuration={6000}
+          onClose={handleSnackbarClose}
+        >
+          <Alert
+            onClose={handleSnackbarClose}
+            severity="error"
+            sx={{ width: "100%" }}
+          >
+            {error}
+          </Alert>
+        </Snackbar>
+
         <TextField
           fullWidth
           label="Email"
@@ -77,13 +118,15 @@ export const PaginaLogin = () => {
           value={formData.senha}
           onChange={handleChange}
           onKeyDown={(event: React.KeyboardEvent<HTMLDivElement>) => {
-            if (event.key === 'Enter') {
-              handleSubmit(event)
+            if (event.key === "Enter") {
+              handleSubmit(event);
             }
           }}
         />
 
-        <Button variant="contained" onClick={handleSubmit}>Entrar</Button>
+        <Button variant="contained" onClick={handleSubmit}>
+          Entrar
+        </Button>
       </Paper>
     </Box>
   );

@@ -21,7 +21,7 @@ export class AuthController {
       });
 
       if (!usuario) {
-        return res.status(400).json({ error: "Usuário não existe" });
+        return res.status(400).json({ error: "Email não cadastrado" });
       }
       
       const payload = {
@@ -33,7 +33,7 @@ export class AuthController {
 
       if (!senhaValida) {
         console.log({ Error });
-        return res.status(400).json({ error: "Senha incorreta" });
+        return res.status(400).json({ error: "Senha incorreta!" });
       }
 
       if (!secretKey) {
