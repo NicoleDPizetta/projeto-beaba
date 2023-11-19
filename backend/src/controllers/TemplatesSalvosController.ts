@@ -26,6 +26,17 @@ export class TemplatesSalvosController {
         return res.status(404).json({ error: "Template não encontrado." });
       }
 
+      const templateJaSalvo = await prisma.templates_salvos_do_Usuario.findFirst({
+        where: {
+          usario_dono: usuarioId,
+          template_salvo: templateId,
+        },
+      });
+
+      if (templateJaSalvo) {
+        return res.status(400).json({ error: "Template já foi salvo anteriormente." });
+      }
+
       const templateSalvo = await prisma.templates_salvos_do_Usuario.create({
         data: {
           usario_dono: usuarioId,

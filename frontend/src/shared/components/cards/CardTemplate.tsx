@@ -1,5 +1,13 @@
 import React, { useState, useEffect } from "react";
-import { Box, Typography, Paper, Button, useTheme } from "@mui/material";
+import {
+  Box,
+  Typography,
+  Paper,
+  Button,
+  Snackbar,
+  Alert,
+  useTheme,
+} from "@mui/material";
 import { TabelaInfosArquivo } from "../tabela-infos-arquivo/TabelaInfosArquivo";
 import Avatar from "@mui/material/Avatar";
 import CalendarMonthOutlinedIcon from "@mui/icons-material/CalendarMonthOutlined";
@@ -40,6 +48,9 @@ export const CardTemplate: React.FC<ICardTemplateProps> = ({
 }) => {
   const theme = useTheme();
   const [usuarioLogado, setUsuarioLogado] = useState<UsuarioLogadoInfos>();
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState("");
+  const [snackbarSeverity, setSnackbarSeverity] = useState<"success" | "warning">("success");
 
   const getUsuarioLogado = async () => {
     const usuario = await AuthUsuarioLogado();
@@ -66,12 +77,18 @@ export const CardTemplate: React.FC<ICardTemplateProps> = ({
         });
 
         if (response.status === 200) {
-          console.log("Template salvo com sucesso!");
+          setSnackbarSeverity("success");
+          setSnackbarMessage("Template salvo!");
+          setSnackbarOpen(true);
         } else {
-          console.error("Erro ao salvar o template:", response.data.error);
+          setSnackbarSeverity("warning");
+          setSnackbarMessage("Erro ao salvar o template.");
+          setSnackbarOpen(true);
         }
       } catch (error) {
-        console.error("Erro ao salvar o template:", error);
+        setSnackbarSeverity("warning");
+        setSnackbarMessage("Template já foi salvo anteriormente");
+        setSnackbarOpen(true);
       }
     }
   };
@@ -83,6 +100,21 @@ export const CardTemplate: React.FC<ICardTemplateProps> = ({
 
   return (
     <Paper elevation={1} sx={{ width: "46rem" }}>
+      <Snackbar
+        anchorOrigin={{ vertical: "top", horizontal: "center" }}
+        open={snackbarOpen}
+        autoHideDuration={6000}
+        onClose={() => setSnackbarOpen(false)}
+      >
+        <Alert
+          variant="filled"
+          onClose={() => setSnackbarOpen(false)}
+          severity={snackbarSeverity}
+        >
+          {snackbarMessage}
+        </Alert>
+      </Snackbar>
+
       <Box
         flex={1}
         display={"flex"}
